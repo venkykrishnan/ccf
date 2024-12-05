@@ -62,6 +62,7 @@ public class CompanyEndpoint {
 //                                                       Company.FiscalInfo fiscalInfo //,
 //                                                       String bankId
     ) {
+        logger.info("Actual Creating company id={} naicsCode={}, fiscalInfo={} url={}", companyId, experiment.naicsCode(), experiment.fiscalInfo(), experiment.url());
         logger.info("Creating company id={} naicsCode={} urlString={}", companyId, 345, "https://example.com");
         logger.info("Creating fiscalInfo={} bankId={}", experiment.fiscalInfo(), "dse");
         Company.CompanyMetadata companyMetadata = new Company.CompanyMetadata(345, "https://example.com", experiment.fiscalInfo(), "dse");

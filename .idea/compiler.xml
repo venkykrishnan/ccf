@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+      </profile>
+      <profile name="Annotation profile for ccf" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <processor name="akka.javasdk.tooling.processor.ComponentAnnotationProcessor" />
+        <processorPath useClasspath="false">
+          <entry name="$MAVEN_REPOSITORY$/io/akka/akka-javasdk-annotation-processor/3.0.0/akka-javasdk-annotation-processor-3.0.0.jar" />
+          <entry name="$MAVEN_REPOSITORY$/org/scala-lang/scala-library/2.13.15/scala-library-2.13.15.jar" />
+          <entry name="$MAVEN_REPOSITORY$/com/typesafe/config/1.4.2/config-1.4.2.jar" />
+        </processorPath>
+        <module name="ccf" />
+      </profile>
+    </annotationProcessing>
+    <bytecodeTargetLevel target="21" />
+  </component>
+  <component name="JavacSettings">
+    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="ccf" options="-Xlint:deprecation -parameters" />
+    </option>
+  </component>
+</project>

@@ -21,17 +21,6 @@ public record Company(String companyId, Integer naicsCode, URL url,
 
     public record CompanyExperiment(Integer naicsCode, URL url,
                                     FiscalInfo fiscalInfo, String bankId) {
-        public CompanyExperiment(Integer naicsCode, String urlString, FiscalInfo fiscalInfo) {
-
-            URL urlNew = null;
-            try {
-                urlNew = new URL(urlString);
-            } catch (Exception e) {
-                throw new IllegalArgumentException("Invalid URL: " + urlString);
-            }
-            this(naicsCode, urlNew, fiscalInfo, null);
-
-        }
     }
 
     public record CompanyMetadata(Integer naicsCode, String urlString,
