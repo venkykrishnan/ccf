@@ -7,23 +7,25 @@ import java.time.Month;
 import java.time.Year;
 import java.util.List;
 
-public record Company(String companyId, Integer naicsCode, URL url,
-                      FiscalInfo fiscalInfo, String bankId,
+public record Company(String companyId,
+                      CompanyMetadata metadata,
+//                      Integer naicsCode, URL url,
+//                      FiscalInfo fiscalInfo, String bankId,
                       CompanyInstanceType instanceType,
                       List<String> users, LocalDate publishedPeriod,
                       CompanyStatus status,
                       LocalDateTime creationTimestamp, LocalDateTime modificationTimestamp
                       ) {
-    public Company(String companyId, Integer naicsCode, URL url, FiscalInfo fiscalInfo, String bankId) {
-        this(companyId, naicsCode, url, fiscalInfo, bankId, CompanyInstanceType.ACTUAL, null, LocalDate.now(),
-                CompanyStatus.COMPANY_INITIALIZED, LocalDateTime.now(), LocalDateTime.now());
-    }
+//    public Company(String companyId, Integer naicsCode, URL url, FiscalInfo fiscalInfo, String bankId) {
+//        this(companyId, naicsCode, url, fiscalInfo, bankId, CompanyInstanceType.ACTUAL, null, LocalDate.now(),
+//                CompanyStatus.COMPANY_INITIALIZED, LocalDateTime.now(), LocalDateTime.now());
+//    }
 
-    public record CompanyExperiment(Integer naicsCode, URL url,
-                                    FiscalInfo fiscalInfo, String bankId) {
-    }
+//    public record CompanyExperiment(Integer naicsCode, URL url,
+//                                    FiscalInfo fiscalInfo, String bankId) {
+//    }
 
-    public record CompanyMetadata(Integer naicsCode, String urlString,
+    public record CompanyMetadata(Integer naicsCode, URL url,
                                   FiscalInfo fiscalInfo, String bankId) {
     }
 
@@ -34,18 +36,17 @@ public record Company(String companyId, Integer naicsCode, URL url,
     }
 
     public Company onCompanyCreated(CompanyEvent.CompanyCreated companyCreated) {
-        return new Company(companyId, companyCreated.naicsCode(), companyCreated.url(),
-                companyCreated.fiscalInfo(), companyCreated.bankId(), instanceType, users, publishedPeriod,
+        return new Company(companyId, metadata, instanceType, users, publishedPeriod,
                 CompanyStatus.COMPANY_INITIALIZED, creationTimestamp, LocalDateTime.now());
     }
     public Company onCompanyUserAdded(CompanyEvent.CompanyUserAdded companyUserAdded) {
         var updatedUsers = users;
         updatedUsers.add(companyUserAdded.userId());
-        return new Company(companyId, naicsCode, url, fiscalInfo, bankId, instanceType, updatedUsers, publishedPeriod,
+        return new Company(companyId, metadata, instanceType, updatedUsers, publishedPeriod,
                 status, creationTimestamp, LocalDateTime.now());
     }
     public Company onCompanyPublishedPeriodChanged(CompanyEvent.CompanyPublishedPeriodChanged companyPublishedPeriodChanged) {
-        return new Company(companyId, naicsCode, url, fiscalInfo, bankId, instanceType, users,
+        return new Company(companyId, metadata, instanceType, users,
                 companyPublishedPeriodChanged.publishedPeriod(), status, creationTimestamp, LocalDateTime.now());
     }
 }

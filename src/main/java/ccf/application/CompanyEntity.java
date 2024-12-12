@@ -41,7 +41,7 @@ public class CompanyEntity extends EventSourcedEntity<Company, CompanyEvent> {
 
     @Override
     public Company emptyState() {
-        return new Company(entityId, null, null, null, null);
+        return new Company(entityId, null, null, null, null, null, null, null);
     }
 
     public ReadOnlyEffect<Company> getCompany() {
@@ -54,25 +54,19 @@ public class CompanyEntity extends EventSourcedEntity<Company, CompanyEvent> {
             return effects().error("Company is already created");
         }
 
-//        String urlString = "testing";
-//        Company.FiscalInfo fiscalInfo = null;
-//        String bankId = "bank1";
-        UrlValidator urlValidator = new UrlValidator();
-        boolean isValidUrl = urlValidator.isValid(companyMetadata.urlString());
-        if (!isValidUrl) {
-            logger.info("Invalid URL: {}", companyMetadata.urlString());
-            return effects().error("Invalid URL");
-        }
+//        UrlValidator urlValidator = new UrlValidator();
+//        boolean isValidUrl = urlValidator.isValid(companyMetadata.urlString());
+//        if (!isValidUrl) {
+//            logger.info("Invalid URL: {}", companyMetadata.urlString());
+//            return effects().error("Invalid URL");
+//        }
         try {
-            URL url = new URL(companyMetadata.urlString());
 
-            logger.info("Creating company url Protocol={}, host={} path={}, query={}",
-                    url.getProtocol(), url.getHost(), url.getPath(), url.getQuery());
+            logger.info("Creating company, metadata={}", companyMetadata);
 
             // TODO: validate fiscal info
 
-            var event = new CompanyEvent.CompanyCreated(companyMetadata.naicsCode(), url,
-                    companyMetadata.fiscalInfo(), companyMetadata.bankId());
+            var event = new CompanyEvent.CompanyCreated(companyMetadata);
             return effects()
                     .persist(event)
                     .thenReply(newState -> Done.getInstance());
