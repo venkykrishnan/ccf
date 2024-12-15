@@ -1,6 +1,8 @@
+/Users/vkrishnan/Projects/JavaProjects/ccf/src/main/java/ccf/CompanyRegistrySetup.java
 /Users/vkrishnan/Projects/JavaProjects/ccf/src/main/java/ccf/api/CompanyEndpoint.java
-/Users/vkrishnan/Projects/JavaProjects/ccf/src/main/java/ccf/api/HelloWorldEndpoint.java
+/Users/vkrishnan/Projects/JavaProjects/ccf/src/main/java/ccf/application/CompaniesByUserView.java
 /Users/vkrishnan/Projects/JavaProjects/ccf/src/main/java/ccf/application/CompanyEntity.java
+/Users/vkrishnan/Projects/JavaProjects/ccf/src/main/java/ccf/domain/Companies.java
 /Users/vkrishnan/Projects/JavaProjects/ccf/src/main/java/ccf/domain/Company.java
 /Users/vkrishnan/Projects/JavaProjects/ccf/src/main/java/ccf/domain/CompanyEvent.java
 /Users/vkrishnan/Projects/JavaProjects/ccf/src/main/java/ccf/domain/CompanyInstanceType.java

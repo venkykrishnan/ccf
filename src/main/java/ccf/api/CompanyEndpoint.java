@@ -9,13 +9,14 @@ import akka.javasdk.annotations.http.Put;
 import akka.javasdk.client.ComponentClient;
 import akka.http.javadsl.model.HttpResponse;
 import akka.javasdk.http.HttpResponses;
+import ccf.application.CompaniesByUserView;
 import ccf.application.CompanyEntity;
+import ccf.domain.Companies;
 import ccf.domain.Company;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.time.LocalDate;
 import java.util.concurrent.CompletionStage;
 
 @Acl(allow = @Acl.Matcher(principal = Acl.Principal.INTERNET))
@@ -30,14 +31,16 @@ public class CompanyEndpoint {
     }
     @Get("/{companyId}")
     public CompletionStage<Company> get(String companyId) {
-        logger.info("Get company id {}", companyId);
+//        CCFLogger.log(logger, "Getting company",
+//                Map.of("companyId", companyId));
         return componentClient.forEventSourcedEntity(companyId)
                 .method(CompanyEntity::getCompany)
                 .invokeAsync();
     }
     @Post("/{companyId}/user")
     public CompletionStage<HttpResponse> addUser(String companyId, Company.NewUser userId) {
-        logger.info("Adding user to company id={} userId={}", companyId, userId);
+//        CCFLogger.log(logger, "Adding user to company",
+//                Map.of("companyId", companyId, "userId", userId.toString()));
         return componentClient.forEventSourcedEntity(companyId)
                 .method(CompanyEntity::addUser)
                 .invokeAsync(userId)
@@ -49,7 +52,8 @@ public class CompanyEndpoint {
     }
     @Put("/{companyId}/publish-period")
     public CompletionStage<HttpResponse> changePublishedPeriod(String companyId, Company.PublishedPeriod publishedPeriod) {
-        logger.info("Changing published period for company id={} publishedPeriod={}", companyId, publishedPeriod);
+//        CCFLogger.log(logger, "Changing published period",
+//                Map.of("companyId", companyId, "publishedPeriod", publishedPeriod.toString()));
         return componentClient.forEventSourcedEntity(companyId)
                 .method(CompanyEntity::changePublishedPeriod)
                 .invokeAsync(publishedPeriod)
@@ -59,10 +63,18 @@ public class CompanyEndpoint {
     public CompletionStage<HttpResponse> createCompany(String companyId,
                                                        Company.CompanyMetadata metadata
     ) {
-        logger.info("Actual Creating company id={} metadata={}", companyId, metadata);
+//        CCFLogger.log(logger, "Actual Creating company",
+//                Map.of("companyId", companyId, "metadata", metadata.toString()));
         return componentClient.forEventSourcedEntity(companyId)
                 .method(CompanyEntity::createCompany)
                 .invokeAsync(metadata)
                 .thenApply(__ -> HttpResponses.ok());
     }
+    @Get("/by-user/{user}")
+    public CompletionStage<Companies> companiesByUser(String user) {
+        return componentClient.forView()
+                .method(CompaniesByUserView::getCompanies)
+                .invokeAsync(user);
+    }
+
 }

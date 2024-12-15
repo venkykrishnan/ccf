@@ -7,16 +7,11 @@ import akka.javasdk.eventsourcedentity.EventSourcedEntityContext;
 import ccf.domain.Company;
 import ccf.domain.CompanyEvent;
 import ccf.domain.CompanyStatus;
-import ccf.util.CCFLogger;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.slf4j.MDC;
-
-import java.time.LocalDate;
-import java.util.Map;
 
 @ComponentId("company")
 public class CompanyEntity extends EventSourcedEntity<Company, CompanyEvent> {
@@ -24,9 +19,11 @@ public class CompanyEntity extends EventSourcedEntity<Company, CompanyEvent> {
     private final String entityId;
     private final Logger logger = LoggerFactory.getLogger(CompanyEntity.class);
 
+    // constructor used to initialize the entityId
     public CompanyEntity(EventSourcedEntityContext context) {
         entityId = context.entityId();
     }
+
     @JsonTypeInfo(use = JsonTypeInfo.Id.NAME)
     @JsonSubTypes({
             @JsonSubTypes.Type(value = CompanyResult.Success.class, name = "Success"),
@@ -57,7 +54,7 @@ public class CompanyEntity extends EventSourcedEntity<Company, CompanyEvent> {
         }
 
         try {
-            CCFLogger.log(logger,"Create company", Map.of("company_id", entityId, "metadata", companyMetadata.toString()));
+//            CCFLogger.log(logger,"Create company", Map.of("company_id", entityId, "metadata", companyMetadata.toString()));
 //            MDC.put("company_id", entityId);
 //            MDC.put("metadata", companyMetadata.toString());
 //            logger.info("Creating company");
