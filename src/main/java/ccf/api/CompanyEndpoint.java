@@ -35,8 +35,8 @@ public class CompanyEndpoint {
                 .method(CompanyEntity::getCompany)
                 .invokeAsync();
     }
-    @Put("/{companyId}/user")
-    public CompletionStage<HttpResponse> addUser(String companyId, String userId) {
+    @Post("/{companyId}/user")
+    public CompletionStage<HttpResponse> addUser(String companyId, Company.NewUser userId) {
         logger.info("Adding user to company id={} userId={}", companyId, userId);
         return componentClient.forEventSourcedEntity(companyId)
                 .method(CompanyEntity::addUser)
@@ -48,7 +48,7 @@ public class CompanyEndpoint {
                 });
     }
     @Put("/{companyId}/publish-period")
-    public CompletionStage<HttpResponse> changePublishedPeriod(String companyId, LocalDate publishedPeriod) {
+    public CompletionStage<HttpResponse> changePublishedPeriod(String companyId, Company.PublishedPeriod publishedPeriod) {
         logger.info("Changing published period for company id={} publishedPeriod={}", companyId, publishedPeriod);
         return componentClient.forEventSourcedEntity(companyId)
                 .method(CompanyEntity::changePublishedPeriod)
@@ -57,15 +57,9 @@ public class CompanyEndpoint {
     }
     @Post("/{companyId}/create")
     public CompletionStage<HttpResponse> createCompany(String companyId,
-//                                                       Integer naicsCode, String urlString,
                                                        Company.CompanyMetadata metadata
-//                                                       Company.FiscalInfo fiscalInfo //,
-//                                                       String bankId
     ) {
-        logger.info("Actual Creating company id={} naicsCode={}, fiscalInfo={} url={}", companyId, metadata.naicsCode(), metadata.fiscalInfo(), metadata.url());
-//        logger.info("Creating company id={} naicsCode={} urlString={}", companyId, 345, "https://example.com");
-//        logger.info("Creating fiscalInfo={} bankId={}", metadata.fiscalInfo(), "dse");
-//        Company.CompanyMetadata companyMetadata = new Company.CompanyMetadata(345, "https://example.com", experiment.fiscalInfo(), "dse");
+        logger.info("Actual Creating company id={} metadata={}", companyId, metadata);
         return componentClient.forEventSourcedEntity(companyId)
                 .method(CompanyEntity::createCompany)
                 .invokeAsync(metadata)

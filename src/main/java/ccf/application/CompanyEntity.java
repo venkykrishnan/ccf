@@ -7,14 +7,16 @@ import akka.javasdk.eventsourcedentity.EventSourcedEntityContext;
 import ccf.domain.Company;
 import ccf.domain.CompanyEvent;
 import ccf.domain.CompanyStatus;
+import ccf.util.CCFLogger;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import org.apache.commons.validator.routines.UrlValidator;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.slf4j.MDC;
 
-import java.net.URL;
 import java.time.LocalDate;
+import java.util.Map;
 
 @ComponentId("company")
 public class CompanyEntity extends EventSourcedEntity<Company, CompanyEvent> {
@@ -41,7 +43,7 @@ public class CompanyEntity extends EventSourcedEntity<Company, CompanyEvent> {
 
     @Override
     public Company emptyState() {
-        return new Company(entityId, null, null, null, null, null, null, null);
+        return new Company(entityId, null, null, null, null, CompanyStatus.COMPANY_DISABLED, null, null);
     }
 
     public ReadOnlyEffect<Company> getCompany() {
@@ -49,22 +51,17 @@ public class CompanyEntity extends EventSourcedEntity<Company, CompanyEvent> {
     }
 
     public Effect<Done> createCompany(Company.CompanyMetadata companyMetadata) {
-        if (currentState().status() != CompanyStatus.COMPANY_INITIALIZED) {
+        if (currentState().status() != CompanyStatus.COMPANY_DISABLED) {
             logger.info("Company id={} is already created", entityId);
             return effects().error("Company is already created");
         }
 
-//        UrlValidator urlValidator = new UrlValidator();
-//        boolean isValidUrl = urlValidator.isValid(companyMetadata.urlString());
-//        if (!isValidUrl) {
-//            logger.info("Invalid URL: {}", companyMetadata.urlString());
-//            return effects().error("Invalid URL");
-//        }
         try {
-
-            logger.info("Creating company, metadata={}", companyMetadata);
-
-            // TODO: validate fiscal info
+            CCFLogger.log(logger,"Create company", Map.of("company_id", entityId, "metadata", companyMetadata.toString()));
+//            MDC.put("company_id", entityId);
+//            MDC.put("metadata", companyMetadata.toString());
+//            logger.info("Creating company");
+//            MDC.clear();
 
             var event = new CompanyEvent.CompanyCreated(companyMetadata);
             return effects()
@@ -75,25 +72,31 @@ public class CompanyEntity extends EventSourcedEntity<Company, CompanyEvent> {
             return effects().error("Invalid URL");
         }
     }
-    public Effect<CompanyResult> addUser(String userId) {
-        if (currentState().status() != CompanyStatus.COMPANY_INITIALIZED) {
+    public Effect<CompanyResult> addUser(Company.NewUser userInfo) {
+        logger.info("Adding user to company id={} userId={}", entityId, userInfo.userId());
+        if (currentState().status() == CompanyStatus.COMPANY_DISABLED) {
+//            CCFLogger.log(logger,"add user failed as Company not initialized", Map.of("company_id", entityId));
+//            logger.info("Company id={} is not an initialized state for adding a user", entityId);
             logger.info("Company id={} is not an initialized state for adding a user", entityId);
             return effects().reply(new CompanyResult.IncorrectUserId("Company is not an initialized state for adding a user"));
         }
+        logger.info("Before check for contains (1)");
 
-        if(currentState().users().contains(userId)) {
-            logger.info("User {} is already added to company id={}", userId, entityId);
+        if(currentState().status() == CompanyStatus.COMPANY_INITIALIZED && currentState().users().contains(userInfo.userId())) {
+            logger.info("User {} is already added to company id={}", userInfo.userId(), entityId);
             return effects().reply(new CompanyResult.IncorrectUserId("User is already added to company"));
         }
+        logger.info("After check for contains (2)");
 
-        var event = new CompanyEvent.CompanyUserAdded(userId);
+        var event = new CompanyEvent.CompanyUserAdded(userInfo.userId());
+        logger.info("After creating an event (3)");
+
         return effects()
                 .persist(event)
                 .thenReply(newState -> new CompanyResult.Success());
     }
-    public Effect<Done> changePublishedPeriod(LocalDate publishedPeriod) {
-        // TODO validate input
-        var event = new CompanyEvent.CompanyPublishedPeriodChanged(publishedPeriod);
+    public Effect<Done> changePublishedPeriod(Company.PublishedPeriod publishedPeriod) {
+        var event = new CompanyEvent.CompanyPublishedPeriodChanged(publishedPeriod.publishedPeriod());
         return effects()
                 .persist(event)
                 .thenReply(newState -> Done.getInstance());

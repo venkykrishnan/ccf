@@ -10,4 +10,9 @@
  -->
 <included>
     <logger name="ccf" level="INFO"/>
+<!--    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">-->
+<!--        <encoder>-->
+<!--            <pattern>%d{HH:mm:ss.SSS} level=%level logger=%logger{36} msg="%message" %replace(%mdc){'=',' '}%n</pattern>-->
+<!--        </encoder>-->
+<!--    </appender>-->
 </included>

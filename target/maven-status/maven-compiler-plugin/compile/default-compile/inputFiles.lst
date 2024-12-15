@@ -4,4 +4,7 @@
 /Users/vkrishnan/Projects/JavaProjects/ccf/src/main/java/ccf/domain/Company.java
 /Users/vkrishnan/Projects/JavaProjects/ccf/src/main/java/ccf/domain/CompanyEvent.java
 /Users/vkrishnan/Projects/JavaProjects/ccf/src/main/java/ccf/domain/CompanyInstanceType.java
+/Users/vkrishnan/Projects/JavaProjects/ccf/src/main/java/ccf/domain/CompanyMinMaxNumberOfYears.java
+/Users/vkrishnan/Projects/JavaProjects/ccf/src/main/java/ccf/domain/CompanyMinMaxStartYear.java
 /Users/vkrishnan/Projects/JavaProjects/ccf/src/main/java/ccf/domain/CompanyStatus.java
+/Users/vkrishnan/Projects/JavaProjects/ccf/src/main/java/ccf/util/CCFLogger.java
