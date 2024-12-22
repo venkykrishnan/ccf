@@ -4,3 +4,23 @@ curl -i -XPOST -H "Content-Type: application/json" localhost:9000/companies/abc/
 {"userId": "venky"}'
 curl -i -XPUT -H "Content-Type: application/json" localhost:9000/companies/abc/publish-period -d '
 {"publishedPeriod": "2024-11-30"}'
+curl -i -XGET -H "Content-Type: application/json" localhost:9000/companies/abc
+
+----
+curl -i -XPOST -H "Content-Type: application/json" localhost:9000/companies/xyz/create -d '
+{"naicsCode":34000, "url":"http://www.nk.com", "fiscalInfo": {"startYear": 2024,"numberOfYears":3, "startMonth": "JANUARY"}, "bankId": 567}'
+curl -i -XPOST -H "Content-Type: application/json" localhost:9000/companies/xyz/user -d '
+{"userId": "krishnan"}'
+curl -i -XPUT -H "Content-Type: application/json" localhost:9000/companies/xyz/publish-period -d '
+{"publishedPeriod": "2024-12-31"}'
+curl -i -XGET -H "Content-Type: application/json" localhost:9000/companies/xyz
+---
+curl -i -XPOST -H "Content-Type: application/json" localhost:9000/companies/opq/create -d '
+{"naicsCode":34000, "url":"http://www.vk.com", "fiscalInfo": {"startYear": 2025,"numberOfYears":3, "startMonth": "JANUARY"}, "bankId": 567}'
+curl -i -XPOST -H "Content-Type: application/json" localhost:9000/companies/opq/user -d '
+{"userId": "alice"}'
+curl -i -XPUT -H "Content-Type: application/json" localhost:9000/companies/opq/publish-period -d '
+{"publishedPeriod": "2025-12-31"}'
+curl -i -XGET -H "Content-Type: application/json" localhost:9000/companies/opq
+
+curl -i -XGET -H "Content-Type: application/json" localhost:9000/companies//by-user/venky

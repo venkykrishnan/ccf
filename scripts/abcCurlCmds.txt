@@ -1,0 +1,8 @@
+curl -i -XPOST -H "Content-Type: application/json" localhost:9000/companies/abc/create -d '
+{"naicsCode":34000, "url":"http://www.vk.com", "fiscalInfo": {"startYear": 2023,"numberOfYears":2, "startMonth": "JANUARY"}, "bankId": 567}'
+curl -i -XPOST -H "Content-Type: application/json" localhost:9000/companies/abc/user -d '
+{"userId": "venky"}'
+curl -i -XPUT -H "Content-Type: application/json" localhost:9000/companies/abc/publish-period -d '
+{"publishedPeriod": "2024-11"}'
+curl -i -XGET -H "Content-Type: application/json" localhost:9000/companies/abc
+

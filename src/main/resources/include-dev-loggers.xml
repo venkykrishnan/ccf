@@ -9,10 +9,14 @@
      when the application runs. 
  -->
 <included>
-    <logger name="ccf" level="INFO"/>
+    <logger name="ccf" level="DEBUG"/>
     <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
             <pattern>%d{HH:mm:ss.SSS} level=%level logger=%logger{36} msg="%message" %replace(%mdc){'=',' '}%n</pattern>
         </encoder>
     </appender>
+    <!--
+        If you want debug logs at the akka level, then uncomment the line below - vk 18 Dec 2024
+    -->
+<!--    <logger name="akka" level="DEBUG" />-->
 </included>

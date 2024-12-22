@@ -1,0 +1,4 @@
+curl -i -XGET -H "Content-Type: application/json" localhost:9000/companies/all
+curl -i -XGET -H "Content-Type: application/json" localhost:9000/companies/by-user/venky
+curl -i -XGET -H "Content-Type: application/json" localhost:9000/companies/by-publish/offset/1
+

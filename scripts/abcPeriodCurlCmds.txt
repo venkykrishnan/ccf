@@ -1,0 +1,2 @@
+curl -i -XGET -H "Content-Type: application/json" localhost:9000/companies/abc/fiscal-dates/PREVIOUS_MONTH/PUBLISHED_DATE
+

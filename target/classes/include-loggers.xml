@@ -9,5 +9,5 @@
      when the application runs. 
  -->
 <included>
-    <logger name="ccf" level="INFO"/>
+    <logger name="ccf" level="DEBUG"/>
 </included>

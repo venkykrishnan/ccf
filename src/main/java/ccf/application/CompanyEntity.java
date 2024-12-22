@@ -6,12 +6,19 @@ import akka.javasdk.eventsourcedentity.EventSourcedEntity;
 import akka.javasdk.eventsourcedentity.EventSourcedEntityContext;
 import ccf.domain.Company;
 import ccf.domain.CompanyEvent;
+import ccf.domain.CompanyInstanceType;
 import ccf.domain.CompanyStatus;
+import ccf.util.period.FiscalAsOf;
+import ccf.util.period.FiscalOperators;
+import ccf.util.period.FiscalYearUtils;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.time.Instant;
+import java.util.List;
 
 @ComponentId("company")
 public class CompanyEntity extends EventSourcedEntity<Company, CompanyEvent> {
@@ -37,14 +44,57 @@ public class CompanyEntity extends EventSourcedEntity<Company, CompanyEvent> {
         }
     }
 
+    @JsonTypeInfo(use = JsonTypeInfo.Id.NAME)
+    @JsonSubTypes({
+            @JsonSubTypes.Type(value = CompanyPeriodResult.PeriodInstant.class, name = "PeriodInstant"),
+            @JsonSubTypes.Type(value = CompanyPeriodResult.PeriodListInstant.class, name = "PeriodListInstant"),
+            @JsonSubTypes.Type(value = CompanyPeriodResult.PeriodInteger.class, name = "PeriodListInt"),
+            @JsonSubTypes.Type(value = CompanyPeriodResult.IncorrectPeriodOp.class, name = "IncorrectPeriodOp")})
+    public sealed interface CompanyPeriodResult {
+        record PeriodInstant(Instant instant) implements CompanyPeriodResult {
+        }
+        record PeriodListInstant(List<Instant> instant) implements CompanyPeriodResult {
+        }
+        record PeriodInteger(Integer integer) implements CompanyPeriodResult {
+        }
+        record IncorrectPeriodOp(String message) implements CompanyPeriodResult {
+        }
+    }
 
     @Override
     public Company emptyState() {
-        return new Company(entityId, null, null, null, null, CompanyStatus.COMPANY_DISABLED, null, null);
+        return new Company(entityId, null, null, CompanyInstanceType.ACTUAL, null,
+                Instant.now(), CompanyStatus.COMPANY_DISABLED,
+                Instant.now(), Instant.now());
     }
 
     public ReadOnlyEffect<Company> getCompany() {
         return effects().reply(currentState());
+    }
+
+    public ReadOnlyEffect<CompanyPeriodResult> getPeriodOps(FiscalYearUtils.GetPeriodOpsRequest getPeriodOpsRequest) {
+        try {
+            Object result = FiscalYearUtils.invokeMethod(getPeriodOpsRequest,
+                    currentState().fiscalYears(), currentState().publishedPeriod());
+            return switch (result) {
+                case Instant instant -> effects().reply(new CompanyPeriodResult.PeriodInstant(instant));
+                case Integer i -> effects().reply(new CompanyPeriodResult.PeriodInteger(i));
+                case List<?> list -> {
+                    if (list.isEmpty() || list.getFirst() instanceof Instant) {
+                        @SuppressWarnings("unchecked")
+                        List<Instant> instantList = (List<Instant>) list;
+                        yield effects().reply(new CompanyPeriodResult.PeriodListInstant(instantList));
+                    } else {
+                        yield effects().reply(new CompanyPeriodResult.IncorrectPeriodOp("Invalid period operation"));
+                    }
+                }
+                case null, default ->
+                        effects().reply(new CompanyPeriodResult.IncorrectPeriodOp("Invalid period operation"));
+            };
+        } catch (Exception e) {
+            logger.error("Invalid period operation: {}", e.getMessage());
+            return effects().reply(new CompanyPeriodResult.IncorrectPeriodOp("Invalid period operation"));
+        }
     }
 
     public Effect<Done> createCompany(Company.CompanyMetadata companyMetadata) {
@@ -59,13 +109,19 @@ public class CompanyEntity extends EventSourcedEntity<Company, CompanyEvent> {
 //            MDC.put("metadata", companyMetadata.toString());
 //            logger.info("Creating company");
 //            MDC.clear();
-
-            var event = new CompanyEvent.CompanyCreated(companyMetadata);
+            // TODO: Need to get user Id from JWT and populate the user list here.
+            Company.CompanyCreateInfo companyCreateInfo = new Company.CompanyCreateInfo(
+                    entityId, companyMetadata, CompanyInstanceType.ACTUAL,
+                    List.of("vnkAdmin"), Instant.now(),
+                    CompanyStatus.COMPANY_INITIALIZED_NO_USERS,
+                    Instant.now(), Instant.now()
+            );
+            var event = new CompanyEvent.CompanyCreated(companyCreateInfo);
             return effects()
                     .persist(event)
                     .thenReply(newState -> Done.getInstance());
         } catch (Exception e) {
-            logger.info("Creating company Invalid URL: " + e.getMessage());
+            logger.info("Creating company Invalid URL:{} ",e.getMessage());
             return effects().error("Invalid URL");
         }
     }
@@ -77,23 +133,20 @@ public class CompanyEntity extends EventSourcedEntity<Company, CompanyEvent> {
             logger.info("Company id={} is not an initialized state for adding a user", entityId);
             return effects().reply(new CompanyResult.IncorrectUserId("Company is not an initialized state for adding a user"));
         }
-        logger.info("Before check for contains (1)");
 
         if(currentState().status() == CompanyStatus.COMPANY_INITIALIZED && currentState().users().contains(userInfo.userId())) {
             logger.info("User {} is already added to company id={}", userInfo.userId(), entityId);
             return effects().reply(new CompanyResult.IncorrectUserId("User is already added to company"));
         }
-        logger.info("After check for contains (2)");
 
         var event = new CompanyEvent.CompanyUserAdded(userInfo.userId());
-        logger.info("After creating an event (3)");
 
         return effects()
                 .persist(event)
                 .thenReply(newState -> new CompanyResult.Success());
     }
-    public Effect<Done> changePublishedPeriod(Company.PublishedPeriod publishedPeriod) {
-        var event = new CompanyEvent.CompanyPublishedPeriodChanged(publishedPeriod.publishedPeriod());
+    public Effect<Done> changePublishedPeriod(Instant publishedPeriod) {
+        var event = new CompanyEvent.CompanyPublishedPeriodChanged(publishedPeriod);
         return effects()
                 .persist(event)
                 .thenReply(newState -> Done.getInstance());
