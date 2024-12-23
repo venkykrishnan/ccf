@@ -10,7 +10,9 @@ import ccf.domain.CompanyEvent;
 import ccf.domain.CompanyRow;
 import ccf.domain.PublishPeriodRequest;
 import ccf.util.serializer.CustomInstantDeserializer;
+import ccf.util.serializer.CustomInstantSerializer;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.time.Instant;
 
@@ -41,10 +43,9 @@ public class CompaniesByFilterView extends View {
         return queryResult();
     }
 
-    //    @Query("SELECT * AS companies FROM companies_by_filter WHERE :offsetMonth = companyId")
-    @Query("SELECT * AS companies FROM companies_by_filter where  publishedPeriod < :offsetMonth")
+    @Query("SELECT * AS companies FROM companies_by_filter WHERE publishedPeriod < :publishedPeriod")
     public QueryEffect<Companies> getPublishPeriodOffBy(
-            Instant offsetMonth) {
+            PublishPeriodRequest offsetMonth) {
         return queryResult();
     }
 

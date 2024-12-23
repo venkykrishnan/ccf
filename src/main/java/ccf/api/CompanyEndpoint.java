@@ -136,7 +136,7 @@ public class CompanyEndpoint {
                         "asOfPublishPeriodRequest", asOfPublishPeriodRequest.toString()));
         return componentClient.forView()
                 .method(CompaniesByFilterView::getPublishPeriodOffBy)
-                .invokeAsync(offsetMonth);
+                .invokeAsync(asOfPublishPeriodRequest);
     }
 
 }

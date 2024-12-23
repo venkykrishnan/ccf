@@ -29,13 +29,13 @@ public class CustomInstantDeserializer extends JsonDeserializer<Instant> {
             // Convert LocalDate to Instant (UTC time at start of day)
             return firstDay.atStartOfDay().toInstant(ZoneOffset.UTC);
         } catch (DateTimeParseException e) {
-            throw new CustomDateTimeParseException("Expecting YYYY-MM format, invalid input: " + input, e);
+            throw new CustomInstantParseException("Expecting YYYY-MM format, invalid input: " + input, e);
         }
     }
 }
 
-class CustomDateTimeParseException extends RuntimeException {
-    public CustomDateTimeParseException(String message, Throwable cause) {
+class CustomInstantParseException extends RuntimeException {
+    public CustomInstantParseException(String message, Throwable cause) {
         super(message, cause);
     }
 }

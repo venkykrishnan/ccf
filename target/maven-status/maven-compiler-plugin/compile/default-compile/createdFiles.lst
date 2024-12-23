@@ -1,5 +1,6 @@
 ccf/domain/Company.class
 ccf/util/serializer/CustomLocalDateTimeDeserializer.class
+ccf/util/serializer/CustomObjectMapperConfig.class
 ccf/application/CompanyEntity$CompanyPeriodResult.class
 ccf/domain/CompanyEvent$CompanyCreated.class
 ccf/domain/CompanyStatus.class
@@ -10,17 +11,18 @@ ccf/domain/Company$CompanyCreateInfo.class
 ccf/application/CompaniesByUserView.class
 ccf/util/period/FiscalYearUtils.class
 ccf/application/CompanyEntity$CompanyPeriodResult$PeriodInstant.class
-ccf/util/serializer/CustomDateTimeParseException.class
 ccf/util/period/FiscalOperators.class
 ccf/util/serializer/CustomInstantDeserializer.class
 ccf/application/CompaniesByFilterView$CompaniesByFilter.class
 ccf/util/serializer/AkkaLocalDateTimeModule.class
+ccf/util/serializer/CustomInstantParseException.class
 ccf/util/period/FiscalAsOf.class
 ccf/domain/CompanyEvent.class
 ccf/util/serializer/CustomLocalDateTimeModule.class
 ccf/util/serializer/AkkaDateTimeSerializer.class
 ccf/domain/Company$NewUser.class
 ccf/application/CompanyEntity$CompanyPeriodResult$PeriodInteger.class
+ccf/util/serializer/CustomInstantSerializer.class
 ccf/util/period/FiscalYearUtils$1.class
 META-INF/akka-javasdk-components.conf
 ccf/domain/CompanyEvent$CompanyUserAdded.class
@@ -51,4 +53,5 @@ ccf/application/CompanyEntity$CompanyPeriodResult$IncorrectPeriodOp.class
 ccf/util/serializer/AkkaDateTimeModule.class
 ccf/domain/CompanyRow.class
 ccf/application/CompaniesByFilterView.class
+ccf/util/serializer/CustomInstantModule.class
 ccf/application/CompanyEntity$CompanyResult$IncorrectUserId.class

@@ -31,8 +31,6 @@ public class CompaniesByUserView extends View {
             return ret;
         }
     }
-
-//    @Query("SELECT * AS companies FROM companies_by_user")
     @Query("SELECT * AS companies FROM companies_by_user WHERE :user = ANY(users)")
     public View.QueryEffect<Companies> getCompanies(String user) {
         return queryResult();
