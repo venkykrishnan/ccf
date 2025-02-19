@@ -1,6 +1,7 @@
 package ccf.util.period;
 
 import java.time.*;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,6 +20,7 @@ public record FiscalYear(Year year, Month startMonth, List<Instant> months, List
         for (int i = 0; i < 12; i++) {
             Month currentMonth = startMonth.plus(i);
             LocalDateTime startOfMonth = LocalDateTime.of(year.getValue(), currentMonth, 1, 0, 0);
+//            Instant instant = startOfMonth.atZone(ZoneId.systemDefault()).toInstant().truncatedTo(ChronoUnit.MONTHS);
             Instant instant = startOfMonth.atZone(ZoneId.systemDefault()).toInstant();
             instants.add(instant);
         }

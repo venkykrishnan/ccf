@@ -1,14 +1,11 @@
 package ccf.application;
 
-import akka.http.javadsl.model.DateTime;
 import akka.javasdk.annotations.ComponentId;
 import akka.javasdk.annotations.Consume;
 import akka.javasdk.annotations.Query;
 import akka.javasdk.view.TableUpdater;
 import akka.javasdk.view.View;
 import ccf.domain.*;
-
-import java.util.List;
 
 @ComponentId("companies_by_user")
 public class CompaniesByUserView extends View {

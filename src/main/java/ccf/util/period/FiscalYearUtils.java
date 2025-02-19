@@ -1,6 +1,7 @@
 package ccf.util.period;
 
 import java.time.*;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,12 +37,19 @@ public class FiscalYearUtils {
 
     // 1. Previous month
     private static Instant getPreviousMonth(FiscalYears fiscalYears, Instant currentInstant) {
-        FiscalYear firstFiscalYear = fiscalYears.fiscalYears().getFirst();
-        Instant firstMonth = firstFiscalYear.months().getFirst();
-
-        if (currentInstant.equals(firstMonth)) {
-            throw new IllegalStateException("Cannot get previous month as this is the first month of the first fiscal year.");
-        }
+//        List<Instant> allMonths = new ArrayList<>();
+//        for (FiscalYear fiscalYear : fiscalYears.fiscalYears()) {
+//            allMonths.addAll(fiscalYear.months());
+//        }
+//
+//        int currentIndex = allMonths.indexOf(currentInstant);
+//        if (currentIndex == -1) {
+//            throw new IllegalArgumentException("Current instant is not found in the fiscal years.");
+//        }
+//        if (currentIndex == 0) {
+//            throw new IllegalStateException("Cannot get previous month as this is the first month of the first fiscal year.");
+//        }
+//        return allMonths.get(currentIndex - 1);
 
         return currentInstant.atZone(ZoneId.systemDefault())
                 .minusMonths(1)

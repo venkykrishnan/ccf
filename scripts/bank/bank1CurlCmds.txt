@@ -1,0 +1,4 @@
+curl -i -XPOST -H "Content-Type: application/json" localhost:9000/banks/bank1/create -d '
+{"naicsCode":44000, "url":"http://www.bank1.com"}'
+curl -i -XGET -H "Content-Type: application/json" localhost:9000/banks/bank1
+
