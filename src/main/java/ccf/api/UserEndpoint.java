@@ -40,12 +40,12 @@ public class UserEndpoint {
     }
 
     @Post("/{userId}/create")
-    public CompletionStage<HttpResponse> createBank(String bankId,
+    public CompletionStage<HttpResponse> createUser(String userId,
                                                        User.UserInput userInput
     ) {
         CCFLog.debug(logger, "creating user",
-                Map.of("userId", bankId, "userInput", userInput.toString()));
-        return componentClient.forEventSourcedEntity(bankId)
+                Map.of("userId", userId, "userInput", userInput.toString()));
+        return componentClient.forEventSourcedEntity(userId)
                 .method(UserEntity::createUser)
                 .invokeAsync(userInput)
                 .thenApply(__ -> HttpResponses.ok());

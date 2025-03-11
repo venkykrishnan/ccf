@@ -19,9 +19,12 @@ public class UsersByFilterView extends View {
             var ret = switch (event) {
                 case UserEvent.UserCreated created->
                         // User.UserCreateInfo
-                    effects().updateRow(new UserRow(created.createInfo().userId(),
-                            created.createInfo().fullName(),
-                            created.createInfo().role(), created.createInfo().status()));
+                        effects().updateRow(new UserRow(created.createInfo().userId(),
+                                created.createInfo().fullName(),
+                                null, created.createInfo().status()));
+//                    effects().updateRow(new UserRow(created.createInfo().userId(),
+//                            created.createInfo().fullName(),
+//                            created.createInfo().role(), created.createInfo().status()));
                 case UserEvent.UserStatusChanged statusChanged ->
                         effects().updateRow(rowState().onStatusChanged(statusChanged.enable()));
             };

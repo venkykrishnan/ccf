@@ -40,7 +40,7 @@ public class UserEntity extends EventSourcedEntity<User, UserEvent> {
 
     @Override
     public User emptyState() {
-        return new User(entityId, null, UserRole.USER_ROLE_INTERNAL, UserInstanceType.USER_INSTANCE_TYPE_ACTUAL,
+        return new User(entityId, null, null, UserInstanceType.USER_INSTANCE_TYPE_ACTUAL,
                 UserStatus.USER_NOT_INITIALIZED, Instant.now(), Instant.now());
     }
 
@@ -61,8 +61,10 @@ public class UserEntity extends EventSourcedEntity<User, UserEvent> {
 //            logger.info("Creating company");
 //            MDC.clear();
             User.UserCreateInfo userCreateInfo =
-                    new User.UserCreateInfo(entityId, userInput.fullName(), userInput.role(), userInput.instanceType(),
+                    new User.UserCreateInfo(entityId, userInput.fullName(), UserRole.USER_ROLE_FINANCE, userInput.instanceType(),
                             UserStatus.BANK_ENABLED, Instant.now(), Instant.now());
+//            new User.UserCreateInfo(entityId, userInput.fullName(), userInput.role(), userInput.instanceType(),
+//                    UserStatus.BANK_ENABLED, Instant.now(), Instant.now());
             var event = new UserEvent.UserCreated(userCreateInfo);
             return effects()
                     .persist(event)
