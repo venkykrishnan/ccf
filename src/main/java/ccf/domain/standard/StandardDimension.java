@@ -17,6 +17,6 @@ public record StandardDimension(String name, String description,
     public record TaxonomyVersion(StandardVersion version, List<StandardDimensionRow> rows) {
 
     }
-    public record StandardDimensionRow(String value, String parent) {
+    public record StandardDimensionRow(String value, String description, String parent) {
     }
 }
