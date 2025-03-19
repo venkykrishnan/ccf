@@ -64,6 +64,7 @@ public record Standard(String name, String description,
             logger.info("Taxonomy already exists in the dimension.");
             throw new IllegalArgumentException("Taxonomy %s already exists.".formatted(standardTaxonomyAdded.taxonomyCreate().name()));
         }
+
         var newTaxonomy = new StandardDimension.Taxonomy(
                 standardTaxonomyAdded.taxonomyCreate().name(),
                 standardTaxonomyAdded.taxonomyCreate().description(),
@@ -71,6 +72,56 @@ public record Standard(String name, String description,
                 List.of());
         var newTaxonomies = new java.util.HashMap<>(dimension.taxonomies());
         newTaxonomies.put(standardTaxonomyAdded.taxonomyCreate().name(), newTaxonomy);
+        var newDimension = new StandardDimension(
+                dimension.name(),
+                dimension.description(),
+                dimension.domains(),
+                newTaxonomies
+        );
+        var newDimensions = new java.util.ArrayList<>(List.copyOf(dimensions()));
+        newDimensions.remove(dimension);
+        newDimensions.add(newDimension);
+        return new Standard(name(), description(), domains(), newDimensions);
+    }
+
+    public Standard onStandardTaxonomyVersionAdded(StandardEvent.StandardTaxonomyVersionAdded standardTaxonomyVersionAdded) {
+        // First check if the dimension exists (if it doesn't, throw an exception)
+        // Then check if the taxonomy exists (if it doesn't, throw an exception)
+        // Then check if the version already exists (if it does, throw an exception)
+        var dimension = dimensions().stream()
+                .filter(d -> d.name().equals(standardTaxonomyVersionAdded.taxonomyVersionCreate().dimensionName()))
+                .findFirst()
+                .orElseThrow(() -> new IllegalArgumentException("Dimension %s does not exist.".formatted(standardTaxonomyVersionAdded.taxonomyVersionCreate().dimensionName())));
+        var taxonomy = dimension.taxonomies().get(standardTaxonomyVersionAdded.taxonomyVersionCreate().taxonomyName());
+        if (taxonomy == null) {
+            logger.info("Taxonomy does not exist in the dimension.");
+            throw new IllegalArgumentException("Taxonomy %s does not exist.".formatted(standardTaxonomyVersionAdded.taxonomyVersionCreate().taxonomyName()));
+        }
+
+        // HIA 18 Mar 25
+        var transactionVersion = taxonomy.taxonomyVersions().stream()
+                .filter(v -> v.version().version().equals(
+                        standardTaxonomyVersionAdded.taxonomyVersionCreate().standardVersion().version()))
+                .findFirst()
+                .orElseThrow(() -> new IllegalArgumentException("Version %s already exists.".formatted(
+                        standardTaxonomyVersionAdded.taxonomyVersionCreate().standardVersion().version())));
+        // Create a rows list with the an empty list of rows
+        var newRows = new java.util.ArrayList<>(List.copyOf(transactionVersion.rows()));
+        var newVersion = new StandardDimension.TaxonomyVersion(
+                standardTaxonomyVersionAdded.taxonomyVersionCreate().standardVersion(),
+                newRows
+        );
+        var newVersions = new java.util.ArrayList<>(taxonomy.taxonomyVersions());
+        newVersions.remove(version);
+        newVersions.add(newVersion);
+        var newTaxonomy = new StandardDimension.Taxonomy(
+                taxonomy.name(),
+                taxonomy.description(),
+                taxonomy.defaultVersion(),
+                newVersions
+        );
+        var newTaxonomies = new java.util.HashMap<>(dimension.taxonomies());
+        newTaxonomies.put(taxonomy.name(), newTaxonomy);
         var newDimension = new StandardDimension(
                 dimension.name(),
                 dimension.description(),

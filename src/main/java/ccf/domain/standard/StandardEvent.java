@@ -19,7 +19,7 @@ public sealed interface StandardEvent {
     record StandardTaxonomyAdded(StandardDimension.TaxonomyCreate taxonomyCreate) implements StandardEvent {
     }
     @TypeName("standard-taxonomy-version-added")
-    record StandardTaxonomyVersionAdded(String dimensionName, String taxonomyName, StandardDimension.TaxonomyVersion taxonomyVersion) implements StandardEvent {
+    record StandardTaxonomyVersionAdded(StandardDimension.TaxonomyVersionCreate taxonomyVersionCreate) implements StandardEvent {
     }
     @TypeName("standard-dimension-rows-added")
     record StandardDimensionRowsAdded(String dimensionName, String taxonomyName, String versionName,

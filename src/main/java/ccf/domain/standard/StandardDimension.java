@@ -13,15 +13,12 @@ public record StandardDimension(String name, String description,
 
     public record StandardDimensionCreate(String name, String description, List<String> domains) {}
     public record TaxonomyCreate(String dimensionName, String name, String description) {}
-
+    public record TaxonomyVersionCreate(String dimensionName, String taxonomyName, StandardVersion standardVersion, Boolean isDefault) {}
     // The taxonomyMap is a map of a Taxonomy Name to a Taxonomy object
     public record Taxonomy(String name, String description, StandardVersion defaultVersion,
                            List<TaxonomyVersion> taxonomyVersions) {
     }
     public record TaxonomyVersion(StandardVersion version, List<StandardDimensionRow> rows) {
-        public TaxonomyVersion(StandardVersion version) {
-            this(version, List.of());
-        }
     }
     public record StandardDimensionRow(String value, String description, String parent) {
 
