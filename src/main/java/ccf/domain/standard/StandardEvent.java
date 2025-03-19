@@ -22,46 +22,39 @@ public sealed interface StandardEvent {
     record StandardTaxonomyVersionAdded(StandardDimension.TaxonomyVersionCreate taxonomyVersionCreate) implements StandardEvent {
     }
     @TypeName("standard-dimension-rows-added")
-    record StandardDimensionRowsAdded(String dimensionName, String taxonomyName, String versionName,
-                                      List<StandardDimension.StandardDimensionRow> dimensionRows) implements StandardEvent {
+    record StandardDimensionRowsAdded(StandardDimension.DimensionRowsAdd rowsAdd) implements StandardEvent {
     }
     @TypeName("standard-dimension-row-added")
-    record StandardDimensionRowAdded(String dimensionName, String taxonomyName, String versionName,
-                                     StandardDimension.StandardDimensionRow dimensionRow) implements StandardEvent {
+    record StandardDimensionRowAdded(StandardDimension.DimensionRowAdd rowAdd) implements StandardEvent {
     }
     @TypeName("standard-dimension-default-version-changed")
-    record StandardDimensionDefaultVersionChanged(String dimensionName, String taxonomyName,
-                                                  StandardVersion version) implements StandardEvent {
+    record StandardTaxonomyPublish(StandardDimension.TaxonomyVersionPublish taxonomyVersionPublish) implements StandardEvent {
     }
-    @TypeName("standard-dimension-row-changed")
-    record StandardDimensionRowChanged(String dimensionName, String taxonomyName, String versionName,
-                                       StandardDimension.StandardDimensionRow dimensionRow) implements StandardEvent {
+    @TypeName("standard-taxonomy-default-version-set")
+    record StandardTaxonomyDefaultVersionSet(StandardDimension.TaxonomyVersionDefault taxonomyVersionDefault) implements StandardEvent {
     }
     //</editor-fold>
     //<editor-fold desc="Clean up">
     // Cleaning up: should not remove row that's a parent
     @TypeName("standard-dimension-row-removed")
-    record StandardDimensionRowRemoved(String dimensionName, String taxonomyName, String versionName,
-                                       String value) implements StandardEvent {
+    record StandardDimensionRowRemoved(StandardDimension.DimensionRowRemove dimensionRowRemove) implements StandardEvent {
     }
     // Cleaning up: initialize dimensions-rows (to List.of()) for this TaxonomyVersion
     // do not allow deleting the TaxonomyVersion if its the defaultVersion
     @TypeName("standard-dimension-rows-removed")
-    record StandardDimensionRowsRemoved(String dimensionName, String taxonomyName,
-                                        StandardVersion version) implements StandardEvent {
+    record StandardDimensionRowsRemoved(StandardDimension.DimensionRowsRemove dimensionRowsRemove) implements StandardEvent {
     }
     @TypeName("standard-taxonomy-version-removed")
-    record StandardTaxonomyVersionRemoved(String dimensionName, String taxonomyName,
-                                                   StandardVersion version) implements StandardEvent {
+    record StandardTaxonomyVersionRemoved(StandardDimension.TaxonomyVersionRemove taxonomyVersionRemove) implements StandardEvent {
     }
     @TypeName("standard-taxonomy-removed")
-    record StandardTaxonomyRemoved(String dimensionName, String taxonomyName) implements StandardEvent {
+    record StandardTaxonomyRemoved(StandardDimension.TaxonomyRemove taxonomyRemove) implements StandardEvent {
     }
     @TypeName("standard-dimension-removed")
-    record StandardDimensionRemoved(String dimensionName) implements StandardEvent {
+    record StandardDimensionRemoved(StandardDimension.DimensionRemove dimensionRemove) implements StandardEvent {
     }
     @TypeName("standard-domain-removed")
-    record StandardDomainRemoved(String domainName) implements StandardEvent {
+    record StandardDomainRemoved(StandardDimension.DomainRemove domainRemove) implements StandardEvent {
     }
     //</editor-fold>
 }

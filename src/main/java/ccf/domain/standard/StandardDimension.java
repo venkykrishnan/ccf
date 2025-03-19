@@ -14,11 +14,21 @@ public record StandardDimension(String name, String description,
     public record StandardDimensionCreate(String name, String description, List<String> domains) {}
     public record TaxonomyCreate(String dimensionName, String name, String description) {}
     public record TaxonomyVersionCreate(String dimensionName, String taxonomyName, StandardVersion standardVersion, Boolean isDefault) {}
+    public record TaxonomyVersionPublish(String dimensionName, String taxonomyName, StandardVersion standardVersion, Boolean isPublished) {}
+    public record TaxonomyVersionDefault(String dimensionName, String taxonomyName, StandardVersion standardVersion) {}
+    public record DimensionRowAdd(String dimensionName, String taxonomyName, String versionName, StandardDimensionRow row) {}
+    public record DimensionRowsAdd(String dimensionName, String taxonomyName, String versionName, List<StandardDimensionRow> rows) {}
+    public record DimensionRowRemove(String dimensionName, String taxonomyName, String versionName, String value) {}
+    public record DimensionRowsRemove(String dimensionName, String taxonomyName, StandardVersion version) {}
+    public record TaxonomyVersionRemove(String dimensionName, String taxonomyName, StandardVersion version) {}
+    public record TaxonomyRemove(String dimensionName, String taxonomyName) {}
+    public record DimensionRemove(String dimensionName) {}
+    public record DomainRemove(String domainName) {}
     // The taxonomyMap is a map of a Taxonomy Name to a Taxonomy object
     public record Taxonomy(String name, String description, StandardVersion defaultVersion,
                            List<TaxonomyVersion> taxonomyVersions) {
     }
-    public record TaxonomyVersion(StandardVersion version, List<StandardDimensionRow> rows) {
+    public record TaxonomyVersion(StandardVersion version, Boolean isPublished, List<StandardDimensionRow> rows) {
     }
     public record StandardDimensionRow(String value, String description, String parent) {
 

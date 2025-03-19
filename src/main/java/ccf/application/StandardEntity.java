@@ -155,8 +155,8 @@ public class StandardEntity extends EventSourcedEntity<Standard, StandardEvent> 
             case StandardEvent.StandardTaxonomyVersionAdded evt -> currentState().onStandardTaxonomyVersionAdded(evt);
             case StandardEvent.StandardDimensionRowsAdded evt -> currentState().onStandardDimensionRowsAdded(evt);
             case StandardEvent.StandardDimensionRowAdded evt -> currentState().onStandardDimensionRowAdded(evt);
-            case StandardEvent.StandardDimensionDefaultVersionChanged evt -> currentState().onStandardDimensionDefaultVersionChanged(evt);
-            case StandardEvent.StandardDimensionRowChanged evt -> currentState().onStandardDimensionRowChanged(evt);
+            case StandardEvent.StandardTaxonomyDefaultVersionSet evt -> currentState().onStandardTaxonomyDefaultVersionSet(evt);
+            case StandardEvent.StandardTaxonomyPublish evt -> currentState().onStandardTaxonomyPublished(evt);
             //</editor-fold>
 
             //<editor-fold desc="Clean up">
