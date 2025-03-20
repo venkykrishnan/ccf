@@ -7,8 +7,6 @@ package ccf.domain.standard;
  * (3) a list of taxonomies, each of which is associated with a standard dimension.
  */
 
-import ccf.application.StandardEntity;
-import ccf.domain.Company;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -269,7 +267,7 @@ public record Standard(String name, String description,
             logger.info("Taxonomy does not exist in the dimension.");
             throw new IllegalArgumentException("Taxonomy %s does not exist.".formatted(defaultVersionSet.taxonomyVersionDefault().taxonomyName()));
         }
-        var taxonomyVersion = taxonomy.taxonomyVersions().stream()
+        taxonomy.taxonomyVersions().stream()
                 .filter(v -> v.version().version().equals(
                         defaultVersionSet.taxonomyVersionDefault().standardVersion().version()))
                 .findFirst()
@@ -319,6 +317,7 @@ public record Standard(String name, String description,
                 standardTaxonomyPublish.taxonomyVersionPublish().isPublished(),
                 taxonomyVersion.rows()
         );
+        // HIA: 19 Mar 2025
         var newTaxonomy = new StandardDimension.Taxonomy(
                 taxonomy.name(),
                 taxonomy.description(),
@@ -340,6 +339,7 @@ public record Standard(String name, String description,
     }
     //</editor-fold>
 
+    //<editor-fold desc="Clean Up">
     public Standard onStandardDimensionRowRemoved(StandardEvent.StandardDimensionRowRemoved standardDimensionRowRemoved) {
         // First check if the dimension exists (if it doesn't, throw an exception)
         // Then check if the taxonomy exists (if it doesn't, throw an exception)
@@ -413,4 +413,115 @@ public record Standard(String name, String description,
         newDimensions.add(newDimension);
         return new Standard(name(), description(), domains(), newDimensions);
     }
+
+    public Standard onStandardTaxonomyVersionRemoved(StandardEvent.StandardTaxonomyVersionRemoved standardTaxonomyVersionRemoved) {
+        // First check if the dimension exists (if it doesn't, throw an exception)
+        // Then check if the taxonomy exists (if it doesn't, throw an exception)
+        // Then check if the version exists (if it doesn't, throw an exception)
+        // Then check if the version is the default version (if it is, throw an exception)
+        // Then remove the version
+        var dimension = dimensions().stream()
+                .filter(d -> d.name().equals(standardTaxonomyVersionRemoved.taxonomyVersionRemove().dimensionName()))
+                .findFirst()
+                .orElseThrow(() -> new IllegalArgumentException("Dimension %s does not exist.".formatted(standardTaxonomyVersionRemoved.taxonomyVersionRemove().dimensionName())));
+        var taxonomy = dimension.taxonomies().get(standardTaxonomyVersionRemoved.taxonomyVersionRemove().taxonomyName());
+        if (taxonomy == null) {
+            logger.info("Taxonomy does not exist in the dimension.");
+            throw new IllegalArgumentException("Taxonomy %s does not exist.".formatted(standardTaxonomyVersionRemoved.taxonomyVersionRemove().taxonomyName()));
+        }
+        var taxonomyVersion = taxonomy.taxonomyVersions().stream()
+                .filter(v -> v.version().version().equals(
+                        standardTaxonomyVersionRemoved.taxonomyVersionRemove().version().version()))
+                .findFirst()
+                .orElseThrow(() -> new IllegalArgumentException("TaxonomyVersion %s does not exist.".formatted(standardTaxonomyVersionRemoved.taxonomyVersionRemove().version().version())));
+        if (taxonomy.defaultVersion().version().equals(standardTaxonomyVersionRemoved.taxonomyVersionRemove().version().version())) {
+            logger.info("Cannot remove the default version.");
+            throw new IllegalArgumentException("Cannot remove the default version.");
+        }
+        var newVersions = new ArrayList<>(taxonomy.taxonomyVersions());
+        newVersions.removeIf(v -> v.version().version().equals(standardTaxonomyVersionRemoved.taxonomyVersionRemove().version().version()));
+        var newTaxonomy = new StandardDimension.Taxonomy(
+                taxonomy.name(),
+                taxonomy.description(),
+                taxonomy.defaultVersion(),
+                newVersions
+        );
+        var newTaxonomies = new java.util.HashMap<>(dimension.taxonomies());
+        newTaxonomies.put(taxonomy.name(), newTaxonomy);
+        var newDimension = new StandardDimension(
+                dimension.name(),
+                dimension.description(),
+                dimension.domains(),
+                newTaxonomies);
+        var newDimensions = new ArrayList<>(List.copyOf(dimensions()));
+        newDimensions.remove(dimension);
+        newDimensions.add(newDimension);
+        return new Standard(name(), description(), domains(), newDimensions);
+    }
+
+    public Standard onStandardTaxonomyRemoved(StandardEvent.StandardTaxonomyRemoved standardTaxonomyRemoved) {
+        // First check if the dimension exists (if it doesn't, throw an exception)
+        // Then check if the taxonomy exists (if it doesn't, throw an exception)
+        // Then check if the taxonomy has any versions (if it does, throw an exception)
+        // Then remove the taxonomy
+        var dimension = dimensions().stream()
+                .filter(d -> d.name().equals(standardTaxonomyRemoved.taxonomyRemove().dimensionName()))
+                .findFirst()
+                .orElseThrow(() -> new IllegalArgumentException("Dimension %s does not exist.".formatted(standardTaxonomyRemoved.taxonomyRemove().dimensionName())));
+        var taxonomy = dimension.taxonomies().get(standardTaxonomyRemoved.taxonomyRemove().taxonomyName());
+        if (taxonomy == null) {
+            logger.info("Taxonomy does not exist in the dimension.");
+            throw new IllegalArgumentException("Taxonomy %s does not exist.".formatted(standardTaxonomyRemoved.taxonomyRemove().taxonomyName()));
+        }
+        if (!taxonomy.taxonomyVersions().isEmpty()) {
+            logger.info("Taxonomy has versions.");
+            throw new IllegalArgumentException("Taxonomy %s has versions.".formatted(standardTaxonomyRemoved.taxonomyRemove().taxonomyName()));
+        }
+        var newTaxonomies = new java.util.HashMap<>(dimension.taxonomies());
+        newTaxonomies.remove(taxonomy.name());
+        var newDimension = new StandardDimension(
+                dimension.name(),
+                dimension.description(),
+                dimension.domains(),
+                newTaxonomies);
+        var newDimensions = new ArrayList<>(List.copyOf(dimensions()));
+        newDimensions.remove(dimension);
+        newDimensions.add(newDimension);
+        return new Standard(name(), description(), domains(), newDimensions);
+    }
+
+    public Standard onStandardDimensionRemoved(StandardEvent.StandardDimensionRemoved standardDimensionRemoved) {
+        // First check if the dimension exists (if it doesn't, throw an exception)
+        // Then check if the dimension has any taxonomies (if it does, throw an exception)
+        // Then remove the dimension
+        var dimension = dimensions().stream()
+                .filter(d -> d.name().equals(standardDimensionRemoved.dimensionRemove().dimensionName()))
+                .findFirst()
+                .orElseThrow(() -> new IllegalArgumentException("Dimension %s does not exist.".formatted(standardDimensionRemoved.dimensionRemove().dimensionName())));
+        if (!dimension.taxonomies().isEmpty()) {
+            logger.info("Dimension has taxonomies.");
+            throw new IllegalArgumentException("Dimension %s has taxonomies.".formatted(standardDimensionRemoved.dimensionRemove().dimensionName()));
+        }
+        var newDimensions = new ArrayList<>(List.copyOf(dimensions()));
+        newDimensions.remove(dimension);
+        return new Standard(name(), description(), domains(), newDimensions);
+    }
+
+    public Standard onStandardDomainRemoved(StandardEvent.StandardDomainRemoved standardDomainRemoved) {
+        // First check if the domain exists (if it doesn't, throw an exception)
+        // Then check if the domain is associated with any dimensions (if it is, throw an exception)
+        // Then remove the domain
+        var domain = domains().stream()
+                .filter(d -> d.name().equals(standardDomainRemoved.domainRemove().domainName()))
+                .findFirst()
+                .orElseThrow(() -> new IllegalArgumentException("Domain %s does not exist.".formatted(standardDomainRemoved.domainRemove().domainName())));
+        if (dimensions().stream().anyMatch(d -> d.domains().contains(domain.name()))) {
+            logger.info("Domain is associated with dimensions.");
+            throw new IllegalArgumentException("Domain %s is associated with dimensions.".formatted(standardDomainRemoved.domainRemove().domainName()));
+        }
+        var newDomains = new ArrayList<>(List.copyOf(domains()));
+        newDomains.remove(domain);
+        return new Standard(name(), description(), newDomains, dimensions());
+    }
+    //</editor-fold>
 }
