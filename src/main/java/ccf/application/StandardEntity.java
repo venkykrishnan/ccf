@@ -7,10 +7,14 @@ import akka.javasdk.eventsourcedentity.EventSourcedEntityContext;
 import ccf.domain.standard.Standard;
 
 import ccf.domain.standard.StandardEvent;
+import ccf.domain.standard.StandardStatus;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import ccf.util.CCFLog;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.Map;
 
 @ComponentId("standard")
 public class StandardEntity extends EventSourcedEntity<Standard, StandardEvent> {
@@ -25,14 +29,12 @@ public class StandardEntity extends EventSourcedEntity<Standard, StandardEvent> 
 
     @JsonTypeInfo(use = JsonTypeInfo.Id.NAME)
     @JsonSubTypes({
-            @JsonSubTypes.Type(value = CompanyResult.Success.class, name = "Success"),
-            @JsonSubTypes.Type(value = CompanyResult.IncorrectUserId.class, name = "IncorrectUserId")})
-    public sealed interface CompanyResult {
-
-        record IncorrectUserId(String message) implements CompanyResult {
+            @JsonSubTypes.Type(value = StandardResult.Success.class, name = "Success"),
+            @JsonSubTypes.Type(value = StandardResult.IncorrectInput.class, name = "IncorrectUserId")})
+    public sealed interface StandardResult {
+        record IncorrectInput(String inputType, String message) implements StandardResult {
         }
-
-        record Success() implements CompanyResult {
+        record Success() implements StandardResult {
         }
     }
 
@@ -54,70 +56,36 @@ public class StandardEntity extends EventSourcedEntity<Standard, StandardEvent> 
     }
 
     @Override
-    public Company emptyState() {
-        return new Company(entityId, null, null, CompanyInstanceType.ACTUAL, null,
-                Instant.now(), CompanyStatus.COMPANY_DISABLED,
-                Instant.now(), Instant.now());
+    public Standard emptyState() {
+        return new Standard(entityId, null, null, null, StandardStatus.STANDARD_DISABLED);
     }
 
-    public ReadOnlyEffect<Company> getCompany() {
+    public ReadOnlyEffect<Standard> getStandard() {
         return effects().reply(currentState());
     }
 
-    public ReadOnlyEffect<CompanyPeriodResult> getPeriodOps(FiscalYearUtils.GetPeriodOpsRequest getPeriodOpsRequest) {
-        try {
-            Object result = FiscalYearUtils.invokeMethod(getPeriodOpsRequest,
-                    currentState().fiscalYears(), currentState().publishedPeriod());
-            return switch (result) {
-                case Instant instant -> effects().reply(new CompanyPeriodResult.PeriodInstant(instant));
-                case Integer i -> effects().reply(new CompanyPeriodResult.PeriodInteger(i));
-                case List<?> list -> {
-                    if (list.isEmpty() || list.getFirst() instanceof Instant) {
-                        @SuppressWarnings("unchecked")
-                        List<Instant> instantList = (List<Instant>) list;
-                        yield effects().reply(new CompanyPeriodResult.PeriodListInstant(instantList));
-                    } else {
-                        yield effects().reply(new CompanyPeriodResult.IncorrectPeriodOp("Invalid period operation"));
-                    }
-                }
-                case null, default ->
-                        effects().reply(new CompanyPeriodResult.IncorrectPeriodOp("Invalid period operation"));
-            };
-        } catch (Exception e) {
-            logger.error("Invalid period operation: {}", e.getMessage());
-            return effects().reply(new CompanyPeriodResult.IncorrectPeriodOp("Invalid period operation"));
-        }
-    }
-
-    public Effect<Done> createCompany(Company.CompanyMetadata companyMetadata) {
-        if (currentState().status() != CompanyStatus.COMPANY_DISABLED) {
-            logger.info("Company id={} is already created", entityId);
+    public Effect<Done> createStandard(Standard.StandardCreate standardCreate) {
+        if (currentState().status() != StandardStatus.STANDARD_DISABLED) {
+            CCFLog.error(logger, "Creating standard failed, already created",
+                    Map.of("name", standardCreate.name()));
+            logger.info("Standard id={} is already created", entityId);
             return effects().error("Company is already created");
         }
 
         try {
-//            CCFLogger.log(logger,"Create company", Map.of("company_id", entityId, "metadata", companyMetadata.toString()));
-//            MDC.put("company_id", entityId);
-//            MDC.put("metadata", companyMetadata.toString());
-//            logger.info("Creating company");
-//            MDC.clear();
-            // TODO: Need to get user Id from JWT and populate the user list here.
-            Company.CompanyCreateInfo companyCreateInfo = new Company.CompanyCreateInfo(
-                    entityId, companyMetadata, CompanyInstanceType.ACTUAL,
-                    List.of("vnkAdmin"), Instant.now(),
-                    CompanyStatus.COMPANY_INITIALIZED_NO_USERS,
-                    Instant.now(), Instant.now()
-            );
-            var event = new CompanyEvent.CompanyCreated(companyCreateInfo);
+            var event = new StandardEvent.StandardCreated(standardCreate);
             return effects()
                     .persist(event)
                     .thenReply(newState -> Done.getInstance());
         } catch (Exception e) {
-            logger.info("Creating company Invalid URL:{} ",e.getMessage());
-            return effects().error("Invalid URL");
+            CCFLog.error(logger, "Creating standard failed, already created",
+                    Map.of("name", standardCreate.name(),
+                            "error", e.getMessage()));
+            return effects().error(e.getMessage());
         }
     }
-    public Effect<CompanyResult> addUser(Company.NewUser userInfo) {
+    // HIA: 20 Mar 25
+    public Effect<StandardResult> addDomain(Company.NewUser userInfo) {
         logger.info("Adding user to company id={} userId={}", entityId, userInfo.userId());
         if (currentState().status() == CompanyStatus.COMPANY_DISABLED) {
 //            CCFLogger.log(logger,"add user failed as Company not initialized", Map.of("company_id", entityId));

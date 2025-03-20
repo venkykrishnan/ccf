@@ -30,7 +30,11 @@ public record StandardDimension(String name, String description,
     }
     public record TaxonomyVersion(StandardVersion version, Boolean isPublished, List<StandardDimensionRow> rows) {
     }
-    public record StandardDimensionRow(String value, String description, String parent) {
+    public record StandardDimensionRow(String value, String description,
+                                       List<String> aliases,
+                                       List<String> keywords,
+                                       Map<String, String> hints,
+                                       String parent) {
 
     }
 }

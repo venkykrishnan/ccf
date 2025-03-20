@@ -16,7 +16,8 @@ import java.util.Map;
 
 public record Standard(String name, String description,
                        List<StandardDomain> domains,
-                       List<StandardDimension> dimensions) {
+                       List<StandardDimension> dimensions,
+                       StandardStatus status) {
     private static final Logger logger = LoggerFactory.getLogger(Standard.class);
 
     public record StandardCreate(String name, String description) {
@@ -25,7 +26,7 @@ public record Standard(String name, String description,
     //<editor-fold desc="Create & Modify">
     public Standard onStandardCreated(StandardEvent.StandardCreated standardCreated) {
         return new Standard(standardCreated.standardCreate().name,
-                standardCreated.standardCreate().description, List.of(), List.of());
+                standardCreated.standardCreate().description, List.of(), List.of(), StandardStatus.STANDARD_INITIALIZED);
     }
 
     public Standard onStandardDomainAdded(StandardEvent.StandardDomainAdded standardDomainAdded) {
@@ -35,7 +36,7 @@ public record Standard(String name, String description,
         }
         var newDomains = new java.util.ArrayList<>(List.copyOf(domains()));
         newDomains.add(standardDomainAdded.standardDomain());
-        return new Standard(name(), description(), newDomains, dimensions());
+        return new Standard(name(), description(), newDomains, dimensions(),status());
     }
 
     public Standard onStandardDimensionAdded(StandardEvent.StandardDimensionAdded standardDimensionAdded) {
@@ -50,7 +51,7 @@ public record Standard(String name, String description,
                 Map.of());
         var newDimensions = new java.util.ArrayList<>(List.copyOf(dimensions()));
         newDimensions.add(newDimension);
-        return new Standard(name(), description(), domains(), newDimensions);
+        return new Standard(name(), description(), domains(), newDimensions,status());
     }
 
     public Standard onStandardTaxonomyAdded(StandardEvent.StandardTaxonomyAdded standardTaxonomyAdded) {
@@ -67,7 +68,7 @@ public record Standard(String name, String description,
         }
 
         var newDimensions = getStandardDimensions(standardTaxonomyAdded, dimension);
-        return new Standard(name(), description(), domains(), newDimensions);
+        return new Standard(name(), description(), domains(), newDimensions,status());
     }
 
     private ArrayList<StandardDimension> getStandardDimensions(StandardEvent.StandardTaxonomyAdded standardTaxonomyAdded, StandardDimension dimension) {
@@ -116,7 +117,7 @@ public record Standard(String name, String description,
         }
 
         var newDimensions = getStandardDimensions(standardTaxonomyVersionAdded, taxonomy, dimension);
-        return new Standard(name(), description(), domains(), newDimensions);
+        return new Standard(name(), description(), domains(), newDimensions,status());
     }
 
     private ArrayList<StandardDimension> getStandardDimensions(StandardEvent.StandardTaxonomyVersionAdded standardTaxonomyVersionAdded, StandardDimension.Taxonomy taxonomy, StandardDimension dimension) {
@@ -198,7 +199,7 @@ public record Standard(String name, String description,
         var newDimensions = new ArrayList<>(List.copyOf(dimensions()));
         newDimensions.remove(dimension);
         newDimensions.add(newDimension);
-        return new Standard(name(), description(), domains(), newDimensions);
+        return new Standard(name(), description(), domains(), newDimensions,status());
     }
 
     public Standard onStandardDimensionRowsAdded(StandardEvent.StandardDimensionRowsAdded standardDimensionRowsAdded) {
@@ -251,7 +252,7 @@ public record Standard(String name, String description,
         var newDimensions = new ArrayList<>(List.copyOf(dimensions()));
         newDimensions.remove(dimension);
         newDimensions.add(newDimension);
-        return new Standard(name(), description(), domains(), newDimensions);
+        return new Standard(name(), description(), domains(), newDimensions,status());
     }
 
     public Standard onStandardTaxonomyDefaultVersionSet(StandardEvent.StandardTaxonomyDefaultVersionSet defaultVersionSet) {
@@ -290,7 +291,7 @@ public record Standard(String name, String description,
         var newDimensions = new ArrayList<>(List.copyOf(dimensions()));
         newDimensions.remove(dimension);
         newDimensions.add(newDimension);
-        return new Standard(name(), description(), domains(), newDimensions);
+        return new Standard(name(), description(), domains(), newDimensions,status());
     }
 
     public Standard onStandardTaxonomyPublished(StandardEvent.StandardTaxonomyPublish standardTaxonomyPublish) {
@@ -312,17 +313,21 @@ public record Standard(String name, String description,
                         standardTaxonomyPublish.taxonomyVersionPublish().standardVersion().version()))
                 .findFirst()
                 .orElseThrow(() -> new IllegalArgumentException("TaxonomyVersion %s does not exist.".formatted(standardTaxonomyPublish.taxonomyVersionPublish().standardVersion().version())));
-        var newVersion = new StandardDimension.TaxonomyVersion(
+        var newTaxonomyVersion = new StandardDimension.TaxonomyVersion(
                 taxonomyVersion.version(),
                 standardTaxonomyPublish.taxonomyVersionPublish().isPublished(),
                 taxonomyVersion.rows()
         );
-        // HIA: 19 Mar 2025
+        // Now the taxonomyVersions needs to be updated with this new version
+        var newVersions = new ArrayList<>(taxonomy.taxonomyVersions());
+        newVersions.removeIf(v -> v.version().version().equals(taxonomyVersion.version().version()));
+        newVersions.add(newTaxonomyVersion);
+
         var newTaxonomy = new StandardDimension.Taxonomy(
                 taxonomy.name(),
                 taxonomy.description(),
                 taxonomy.defaultVersion(),
-                taxonomy.taxonomyVersions()
+                newVersions
         );
         var newTaxonomies = new java.util.HashMap<>(dimension.taxonomies());
         newTaxonomies.put(taxonomy.name(), newTaxonomy);
@@ -335,7 +340,7 @@ public record Standard(String name, String description,
         var newDimensions = new ArrayList<>(List.copyOf(dimensions()));
         newDimensions.remove(dimension);
         newDimensions.add(newDimension);
-        return new Standard(name(), description(), domains(), newDimensions);
+        return new Standard(name(), description(), domains(), newDimensions,status());
     }
     //</editor-fold>
 
@@ -375,7 +380,7 @@ public record Standard(String name, String description,
         var newDimensions = new ArrayList<>(List.copyOf(dimensions()));
         newDimensions.remove(dimension);
         newDimensions.add(newDimension);
-        return new Standard(name(), description(), domains(), newDimensions);
+        return new Standard(name(), description(), domains(), newDimensions,status());
     }
 
     public Standard onStandardDimensionRowsRemoved(StandardEvent.StandardDimensionRowsRemoved standardDimensionRowsRemoved) {
@@ -411,7 +416,7 @@ public record Standard(String name, String description,
         var newDimensions = new ArrayList<>(List.copyOf(dimensions()));
         newDimensions.remove(dimension);
         newDimensions.add(newDimension);
-        return new Standard(name(), description(), domains(), newDimensions);
+        return new Standard(name(), description(), domains(), newDimensions,status());
     }
 
     public Standard onStandardTaxonomyVersionRemoved(StandardEvent.StandardTaxonomyVersionRemoved standardTaxonomyVersionRemoved) {
@@ -456,7 +461,7 @@ public record Standard(String name, String description,
         var newDimensions = new ArrayList<>(List.copyOf(dimensions()));
         newDimensions.remove(dimension);
         newDimensions.add(newDimension);
-        return new Standard(name(), description(), domains(), newDimensions);
+        return new Standard(name(), description(), domains(), newDimensions,status());
     }
 
     public Standard onStandardTaxonomyRemoved(StandardEvent.StandardTaxonomyRemoved standardTaxonomyRemoved) {
@@ -487,7 +492,7 @@ public record Standard(String name, String description,
         var newDimensions = new ArrayList<>(List.copyOf(dimensions()));
         newDimensions.remove(dimension);
         newDimensions.add(newDimension);
-        return new Standard(name(), description(), domains(), newDimensions);
+        return new Standard(name(), description(), domains(), newDimensions,status());
     }
 
     public Standard onStandardDimensionRemoved(StandardEvent.StandardDimensionRemoved standardDimensionRemoved) {
@@ -504,7 +509,7 @@ public record Standard(String name, String description,
         }
         var newDimensions = new ArrayList<>(List.copyOf(dimensions()));
         newDimensions.remove(dimension);
-        return new Standard(name(), description(), domains(), newDimensions);
+        return new Standard(name(), description(), domains(), newDimensions,status());
     }
 
     public Standard onStandardDomainRemoved(StandardEvent.StandardDomainRemoved standardDomainRemoved) {
@@ -521,7 +526,7 @@ public record Standard(String name, String description,
         }
         var newDomains = new ArrayList<>(List.copyOf(domains()));
         newDomains.remove(domain);
-        return new Standard(name(), description(), newDomains, dimensions());
+        return new Standard(name(), description(), newDomains, dimensions(),status());
     }
     //</editor-fold>
 }
