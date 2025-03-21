@@ -75,7 +75,8 @@ public record Standard(String name, String description,
                 .orElseThrow(() -> new IllegalArgumentException("Dimension %s does not exist.".formatted(standardTaxonomyAdded.taxonomyCreate().dimensionName())));
         var taxonomy = dimension.taxonomies().get(standardTaxonomyAdded.taxonomyCreate().name());
         if (taxonomy != null) {
-            logger.info("Taxonomy already exists in the dimension.");
+            CCFLog.error(logger, "Adding a taxonomy failed, already created",
+                    Map.of("name", standardTaxonomyAdded.taxonomyCreate().name()));
             throw new IllegalArgumentException("Taxonomy %s already exists.".formatted(standardTaxonomyAdded.taxonomyCreate().name()));
         }
 
@@ -113,7 +114,8 @@ public record Standard(String name, String description,
                 .orElseThrow(() -> new IllegalArgumentException("Dimension %s does not exist.".formatted(standardTaxonomyVersionAdded.taxonomyVersionCreate().dimensionName())));
         var taxonomy = dimension.taxonomies().get(standardTaxonomyVersionAdded.taxonomyVersionCreate().taxonomyName());
         if (taxonomy == null) {
-            logger.info("Taxonomy does not exist in the dimension.");
+            CCFLog.error(logger, "Adding a taxonomy version failed, taxonomy does not exist",
+                    Map.of("name", standardTaxonomyVersionAdded.taxonomyVersionCreate().taxonomyName()));
             throw new IllegalArgumentException("Taxonomy %s does not exist.".formatted(standardTaxonomyVersionAdded.taxonomyVersionCreate().taxonomyName()));
         }
 
@@ -123,7 +125,8 @@ public record Standard(String name, String description,
                 .findFirst()
                 .orElse(null);
         if (taxonomyVersion != null) {
-            logger.info("Version already exists in the taxonomy.");
+            CCFLog.error(logger, "Adding a taxonomy version failed, taxonomy version already exists",
+                    Map.of("name", standardTaxonomyVersionAdded.taxonomyVersionCreate().taxonomyName()));
             throw new IllegalArgumentException("Version %s already exists.".formatted(
                     standardTaxonomyVersionAdded.taxonomyVersionCreate().standardVersion().version()));
         }
