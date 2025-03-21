@@ -7,6 +7,7 @@ package ccf.domain.standard;
  * (3) a list of taxonomies, each of which is associated with a standard dimension.
  */
 
+import ccf.util.CCFLog;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -29,20 +30,31 @@ public record Standard(String name, String description,
                 standardCreated.standardCreate().description, List.of(), List.of(), StandardStatus.STANDARD_INITIALIZED_NO_DOMAINS);
     }
 
-    public Standard onStandardDomainAdded(StandardEvent.StandardDomainAdded standardDomainAdded) {
+    public Standard onStandardDomainAdded(StandardEvent.StandardDomainAdded standardDomainAdded) throws StandardException {
         if (domains().stream().anyMatch(d -> d.name().equals(standardDomainAdded.standardDomain().name()))) {
-            logger.info("Domain already exists in the standard.");
-            throw new IllegalArgumentException("Domain %s already exists".formatted(standardDomainAdded.standardDomain().name()));
+            CCFLog.error(logger, "Adding a domain failed, already created",
+                    Map.of("name", standardDomainAdded.standardDomain().name()));
+            throw new StandardException(standardDomainAdded.standardDomain().name(), "Domain already exists in the standard.");
         }
         var newDomains = new java.util.ArrayList<>(List.copyOf(domains()));
         newDomains.add(standardDomainAdded.standardDomain());
-        return new Standard(name(), description(), newDomains, dimensions(),status());
+        return new Standard(name(), description(), newDomains, dimensions(),StandardStatus.STANDARD_INITIALIZED);
     }
 
     public Standard onStandardDimensionAdded(StandardEvent.StandardDimensionAdded standardDimensionAdded) {
         if (dimensions().stream().anyMatch(d -> d.name().equals(standardDimensionAdded.standardDimensionCreate().name()))) {
-            logger.info("Dimension already exists in the standard.");
+            CCFLog.error(logger, "Adding a dimension failed, already created",
+                    Map.of("name", standardDimensionAdded.standardDimensionCreate().name()));
             throw new IllegalArgumentException("Dimension %s already exists.".formatted(standardDimensionAdded.standardDimensionCreate().name()));
+        }
+        // Check if the domains listed in the standardDimensionCreate are valid (i.e. they exist in the standard)
+        for (var domain : standardDimensionAdded.standardDimensionCreate().domains()) {
+            if (domains().stream().noneMatch(d -> d.name().equals(domain))) {
+                CCFLog.error(logger, "Adding a dimension failed, domain does not exist",
+                        Map.of("name", standardDimensionAdded.standardDimensionCreate().name(),
+                                "domain", domain));
+                throw new IllegalArgumentException("Domain %s does not exist in the standard.".formatted(domain));
+            }
         }
         StandardDimension newDimension = new StandardDimension(
                 standardDimensionAdded.standardDimensionCreate().name(),
@@ -51,7 +63,7 @@ public record Standard(String name, String description,
                 Map.of());
         var newDimensions = new java.util.ArrayList<>(List.copyOf(dimensions()));
         newDimensions.add(newDimension);
-        return new Standard(name(), description(), domains(), newDimensions,status());
+        return new Standard(name(), description(), domains(), newDimensions,StandardStatus.STANDARD_INITIALIZED);
     }
 
     public Standard onStandardTaxonomyAdded(StandardEvent.StandardTaxonomyAdded standardTaxonomyAdded) {

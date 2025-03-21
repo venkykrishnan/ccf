@@ -4,11 +4,8 @@ import akka.Done;
 import akka.javasdk.annotations.ComponentId;
 import akka.javasdk.eventsourcedentity.EventSourcedEntity;
 import akka.javasdk.eventsourcedentity.EventSourcedEntityContext;
-import ccf.domain.standard.Standard;
+import ccf.domain.standard.*;
 
-import ccf.domain.standard.StandardDomain;
-import ccf.domain.standard.StandardEvent;
-import ccf.domain.standard.StandardStatus;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import ccf.util.CCFLog;
@@ -39,23 +36,6 @@ public class StandardEntity extends EventSourcedEntity<Standard, StandardEvent> 
         }
     }
 
-    @JsonTypeInfo(use = JsonTypeInfo.Id.NAME)
-    @JsonSubTypes({
-            @JsonSubTypes.Type(value = CompanyPeriodResult.PeriodInstant.class, name = "PeriodInstant"),
-            @JsonSubTypes.Type(value = CompanyPeriodResult.PeriodListInstant.class, name = "PeriodListInstant"),
-            @JsonSubTypes.Type(value = CompanyPeriodResult.PeriodInteger.class, name = "PeriodListInt"),
-            @JsonSubTypes.Type(value = CompanyPeriodResult.IncorrectPeriodOp.class, name = "IncorrectPeriodOp")})
-    public sealed interface CompanyPeriodResult {
-        record PeriodInstant(Instant instant) implements CompanyPeriodResult {
-        }
-        record PeriodListInstant(List<Instant> instant) implements CompanyPeriodResult {
-        }
-        record PeriodInteger(Integer integer) implements CompanyPeriodResult {
-        }
-        record IncorrectPeriodOp(String message) implements CompanyPeriodResult {
-        }
-    }
-
     @Override
     public Standard emptyState() {
         return new Standard(entityId, null, null, null, StandardStatus.STANDARD_DISABLED);
@@ -69,7 +49,6 @@ public class StandardEntity extends EventSourcedEntity<Standard, StandardEvent> 
         if (currentState().status() != StandardStatus.STANDARD_DISABLED) {
             CCFLog.error(logger, "Creating standard failed, already created",
                     Map.of("name", standardCreate.name()));
-            logger.info("Standard id={} is already created", entityId);
             return effects().error("Company is already created");
         }
 
@@ -86,9 +65,8 @@ public class StandardEntity extends EventSourcedEntity<Standard, StandardEvent> 
         }
     }
 
-    // HIA: 20 March 2025 - working on addDomain (how to handle exceptions)
-
     public Effect<StandardResult> addDomain(StandardDomain standardDomain) {
+        try {
         CCFLog.info(logger, "Adding domain", Map.of("standard", entityId, "domain", standardDomain.name()));
         if (currentState().status() == StandardStatus.STANDARD_DISABLED) {
             CCFLog.error(logger, "Adding domain failed as standard is disabled", Map.of("standard", entityId, "domain", standardDomain.name()));
@@ -100,6 +78,157 @@ public class StandardEntity extends EventSourcedEntity<Standard, StandardEvent> 
         return effects()
                 .persist(event)
                 .thenReply(newState -> new StandardResult.Success());
+        } catch (IllegalArgumentException ie) {
+            CCFLog.error(logger, "Adding domain failed", Map.of("standard", entityId, "domain", standardDomain.name(), "error", ie.getMessage()));
+            return effects().reply(new StandardResult.IncorrectAdd("addDomain", ie.getMessage()));
+        }
+        catch (Exception e) {
+            CCFLog.error(logger, "Adding domain failed", Map.of("standard", entityId, "domain", standardDomain.name(), "error", e.getMessage()));
+            return effects().error(e.getMessage());
+        }
+    }
+
+    public Effect<StandardResult> addDimension(StandardDimension.StandardDimensionCreate standardDimensionCreate) {
+        try {
+            CCFLog.info(logger, "Adding dimension", Map.of("standard", entityId, "dimension", standardDimensionCreate.name()));
+            if (currentState().status() == StandardStatus.STANDARD_INITIALIZED_NO_DOMAINS) {
+                CCFLog.error(logger, "Adding dimension failed as standard is disabled", Map.of("standard", entityId, "dimension", standardDimensionCreate.name()));
+                return effects().reply(new StandardResult.IncorrectAdd("addDimension", "failed as standard %s is disabled".formatted(standardDimensionCreate.name())));
+            }
+            var event = new StandardEvent.StandardDimensionAdded(standardDimensionCreate);
+            return effects()
+                    .persist(event)
+                    .thenReply(newState -> new StandardResult.Success());
+        } catch (IllegalArgumentException ie) {
+            CCFLog.error(logger, "Adding dimension failed", Map.of("standard", entityId, "dimension", standardDimensionCreate.name(), "error", ie.getMessage()));
+            return effects().reply(new StandardResult.IncorrectAdd("addDimension", ie.getMessage()));
+        }
+        catch (Exception e) {
+            CCFLog.error(logger, "Adding dimension failed", Map.of("standard", entityId, "dimension", standardDimensionCreate.name(), "error", e.getMessage()));
+            return effects().error(e.getMessage());
+        }
+    }
+
+    public Effect<StandardResult> addTaxonomy(StandardDimension.TaxonomyCreate taxonomyCreate) {
+        try {
+            CCFLog.info(logger, "Adding taxonomy", Map.of("standard", entityId, "taxonomy", taxonomyCreate.name()));
+            if (currentState().status() != StandardStatus.STANDARD_INITIALIZED) {
+                CCFLog.error(logger, "Adding taxonomy failed as standard is disabled", Map.of("standard", entityId, "taxonomy", taxonomyCreate.name()));
+                return effects().reply(new StandardResult.IncorrectAdd("addTaxonomy", "failed as standard %s is disabled".formatted(taxonomyCreate.name())));
+            }
+            var event = new StandardEvent.StandardTaxonomyAdded(taxonomyCreate);
+            return effects()
+                    .persist(event)
+                    .thenReply(newState -> new StandardResult.Success());
+        } catch (IllegalArgumentException ie) {
+            CCFLog.error(logger, "Adding taxonomy failed", Map.of("standard", entityId, "taxonomy", taxonomyCreate.name(), "error", ie.getMessage()));
+            return effects().reply(new StandardResult.IncorrectAdd("addTaxonomy", ie.getMessage()));
+        }
+        catch (Exception e) {
+            CCFLog.error(logger, "Adding taxonomy failed", Map.of("standard", entityId, "taxonomy", taxonomyCreate.name(), "error", e.getMessage()));
+            return effects().error(e.getMessage());
+        }
+    }
+
+    public Effect<StandardResult> addTaxonomyVersion(StandardDimension.TaxonomyVersionCreate taxonomyVersionCreate) {
+        try {
+            CCFLog.info(logger, "Adding taxonomy version", Map.of("standard", entityId, "taxonomy", taxonomyVersionCreate.taxonomyName()));
+            if (currentState().status() != StandardStatus.STANDARD_INITIALIZED) {
+                CCFLog.error(logger, "Adding taxonomy version failed as standard is disabled", Map.of("standard", entityId, "taxonomy", taxonomyVersionCreate.taxonomyName()));
+                return effects().reply(new StandardResult.IncorrectAdd("addTaxonomyVersion", "failed as standard %s is disabled".formatted(taxonomyVersionCreate.taxonomyName())));
+            }
+            var event = new StandardEvent.StandardTaxonomyVersionAdded(taxonomyVersionCreate);
+            return effects()
+                    .persist(event)
+                    .thenReply(newState -> new StandardResult.Success());
+        } catch (IllegalArgumentException ie) {
+            CCFLog.error(logger, "Adding taxonomy version failed", Map.of("standard", entityId, "taxonomy", taxonomyVersionCreate.taxonomyName(), "error", ie.getMessage()));
+            return effects().reply(new StandardResult.IncorrectAdd("addTaxonomyVersion", ie.getMessage()));
+        }
+        catch (Exception e) {
+            CCFLog.error(logger, "Adding taxonomy version failed", Map.of("standard", entityId, "taxonomy", taxonomyVersionCreate.taxonomyName(), "error", e.getMessage()));
+            return effects().error(e.getMessage());
+        }
+    }
+
+    public Effect<StandardResult> addDimensionRow(StandardDimension.DimensionRowAdd rowAdd) {
+        try {
+            CCFLog.info(logger, "Adding dimension row", Map.of("standard", entityId, "dimension", rowAdd.dimensionName(), "taxonomy", rowAdd.taxonomyName(), "version", rowAdd.versionName()));
+            if (currentState().status() != StandardStatus.STANDARD_INITIALIZED) {
+                CCFLog.error(logger, "Adding dimension row failed as standard is disabled", Map.of("standard", entityId, "dimension", rowAdd.dimensionName(), "taxonomy", rowAdd.taxonomyName(), "version", rowAdd.versionName()));
+                return effects().reply(new StandardResult.IncorrectAdd("addDimensionRow", "failed as standard %s is disabled".formatted(rowAdd.dimensionName())));
+            }
+            var event = new StandardEvent.StandardDimensionRowAdded(rowAdd);
+            return effects()
+                    .persist(event)
+                    .thenReply(newState -> new StandardResult.Success());
+        } catch (IllegalArgumentException ie) {
+            CCFLog.error(logger, "Adding dimension row failed", Map.of("standard", entityId, "dimension", rowAdd.dimensionName(), "taxonomy", rowAdd.taxonomyName(), "version", rowAdd.versionName(), "error", ie.getMessage()));
+            return effects().reply(new StandardResult.IncorrectAdd("addDimensionRow", ie.getMessage()));
+        } catch (Exception e) {
+            CCFLog.error(logger, "Adding dimension row failed", Map.of("standard", entityId, "dimension", rowAdd.dimensionName(), "taxonomy", rowAdd.taxonomyName(), "version", rowAdd.versionName(), "error", e.getMessage()));
+            return effects().error(e.getMessage());
+        }
+    }
+
+    public Effect<StandardResult> addDimensionRows(StandardDimension.DimensionRowsAdd rowsAdd) {
+        try {
+            CCFLog.info(logger, "Adding dimension rows", Map.of("standard", entityId, "dimension", rowsAdd.dimensionName(), "taxonomy", rowsAdd.taxonomyName(), "version", rowsAdd.versionName()));
+            if (currentState().status() != StandardStatus.STANDARD_INITIALIZED) {
+                CCFLog.error(logger, "Adding dimension rows failed as standard is disabled", Map.of("standard", entityId, "dimension", rowsAdd.dimensionName(), "taxonomy", rowsAdd.taxonomyName(), "version", rowsAdd.versionName()));
+                return effects().reply(new StandardResult.IncorrectAdd("addDimensionRows", "failed as standard %s is disabled".formatted(rowsAdd.dimensionName())));
+            }
+            var event = new StandardEvent.StandardDimensionRowsAdded(rowsAdd);
+            return effects()
+                    .persist(event)
+                    .thenReply(newState -> new StandardResult.Success());
+        } catch (IllegalArgumentException ie) {
+            CCFLog.error(logger, "Adding dimension rows failed", Map.of("standard", entityId, "dimension", rowsAdd.dimensionName(), "taxonomy", rowsAdd.taxonomyName(), "version", rowsAdd.versionName()));
+            return effects().reply(new StandardResult.IncorrectAdd("addDimensionRows", ie.getMessage()));
+        } catch (Exception e) {
+            CCFLog.error(logger, "Adding dimension rows failed", Map.of("standard", entityId, "dimension", rowsAdd.dimensionName(), "taxonomy", rowsAdd.taxonomyName(), "version", rowsAdd.versionName()));
+            return effects().error(e.getMessage());
+        }
+    }
+
+    public Effect<StandardResult> setTaxonomyDefaultVersion(StandardDimension.TaxonomyVersionDefault  taxonomyVersionDefault) {
+        try {
+            CCFLog.info(logger, "Setting taxonomy default version", Map.of("standard", entityId, "taxonomy", taxonomyVersionDefault.taxonomyName()));
+            if (currentState().status() != StandardStatus.STANDARD_INITIALIZED) {
+                CCFLog.error(logger, "Setting taxonomy default version failed as standard is disabled", Map.of("standard", entityId, "taxonomy", taxonomyVersionDefault.taxonomyName()));
+                return effects().reply(new StandardResult.IncorrectAdd("setTaxonomyDefaultVersion", "failed as standard %s is disabled".formatted(taxonomyVersionDefault.taxonomyName())));
+            }
+            var event = new StandardEvent.StandardTaxonomyDefaultVersionSet(taxonomyVersionDefault);
+            return effects()
+                    .persist(event)
+                    .thenReply(newState -> new StandardResult.Success());
+        } catch (IllegalArgumentException ie) {
+            CCFLog.error(logger, "Setting taxonomy default version failed", Map.of("standard", entityId, "taxonomy", taxonomyVersionDefault.taxonomyName(), "error", ie.getMessage()));
+            return effects().reply(new StandardResult.IncorrectAdd("setTaxonomyDefaultVersion", ie.getMessage()));
+        } catch (Exception e) {
+            CCFLog.error(logger, "Setting taxonomy default version failed", Map.of("standard", entityId, "taxonomy", taxonomyVersionDefault.taxonomyName(), "error", e.getMessage()));
+            return effects().error(e.getMessage());
+        }
+    }
+
+    public Effect<StandardResult> publishTaxonomy(StandardDimension.TaxonomyVersionPublish taxonomyVersionPublish) {
+        try {
+            CCFLog.info(logger, "Publishing taxonomy", Map.of("standard", entityId, "taxonomy", taxonomyVersionPublish.taxonomyName()));
+            if (currentState().status() != StandardStatus.STANDARD_INITIALIZED) {
+                CCFLog.error(logger, "Publishing taxonomy failed as standard is disabled", Map.of("standard", entityId, "taxonomy", taxonomyVersionPublish.taxonomyName()));
+                return effects().reply(new StandardResult.IncorrectAdd("publishTaxonomy", "failed as standard %s is disabled".formatted(taxonomyVersionPublish.taxonomyName())));
+            }
+            var event = new StandardEvent.StandardTaxonomyPublish(taxonomyVersionPublish);
+            return effects()
+                    .persist(event)
+                    .thenReply(newState -> new StandardResult.Success());
+        } catch (IllegalArgumentException ie) {
+            CCFLog.error(logger, "Publishing taxonomy failed", Map.of("standard", entityId, "taxonomy", taxonomyVersionPublish.taxonomyName(), "error", ie.getMessage()));
+            return effects().reply(new StandardResult.IncorrectAdd("publishTaxonomy", ie.getMessage()));
+        } catch (Exception e) {
+            CCFLog.error(logger, "Publishing taxonomy failed", Map.of("standard", entityId, "taxonomy", taxonomyVersionPublish.taxonomyName(), "error", e.getMessage()));
+            return effects().error(e.getMessage());
+        }
     }
 
     @Override
@@ -107,7 +236,13 @@ public class StandardEntity extends EventSourcedEntity<Standard, StandardEvent> 
         return switch (event) {
             //<editor-fold desc="Create & Modify">
             case StandardEvent.StandardCreated evt -> currentState().onStandardCreated(evt);
-            case StandardEvent.StandardDomainAdded evt -> currentState().onStandardDomainAdded(evt);
+            case StandardEvent.StandardDomainAdded evt -> {
+                try {
+                    yield currentState().onStandardDomainAdded(evt);
+                } catch (StandardException e) {
+                    throw new RuntimeException(e);
+                }
+            }
             case StandardEvent.StandardDimensionAdded evt -> currentState().onStandardDimensionAdded(evt);
             case StandardEvent.StandardTaxonomyAdded evt -> currentState().onStandardTaxonomyAdded(evt);
             case StandardEvent.StandardTaxonomyVersionAdded evt -> currentState().onStandardTaxonomyVersionAdded(evt);
