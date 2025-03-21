@@ -6,6 +6,7 @@ import akka.javasdk.eventsourcedentity.EventSourcedEntity;
 import akka.javasdk.eventsourcedentity.EventSourcedEntityContext;
 import ccf.domain.standard.Standard;
 
+import ccf.domain.standard.StandardDomain;
 import ccf.domain.standard.StandardEvent;
 import ccf.domain.standard.StandardStatus;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
@@ -30,9 +31,9 @@ public class StandardEntity extends EventSourcedEntity<Standard, StandardEvent> 
     @JsonTypeInfo(use = JsonTypeInfo.Id.NAME)
     @JsonSubTypes({
             @JsonSubTypes.Type(value = StandardResult.Success.class, name = "Success"),
-            @JsonSubTypes.Type(value = StandardResult.IncorrectInput.class, name = "IncorrectUserId")})
+            @JsonSubTypes.Type(value = StandardResult.IncorrectAdd.class, name = "IncorrectAdd")})
     public sealed interface StandardResult {
-        record IncorrectInput(String inputType, String message) implements StandardResult {
+        record IncorrectAdd(String inputType, String message) implements StandardResult {
         }
         record Success() implements StandardResult {
         }
@@ -84,32 +85,21 @@ public class StandardEntity extends EventSourcedEntity<Standard, StandardEvent> 
             return effects().error(e.getMessage());
         }
     }
-    // HIA: 20 Mar 25
-    public Effect<StandardResult> addDomain(Company.NewUser userInfo) {
-        logger.info("Adding user to company id={} userId={}", entityId, userInfo.userId());
-        if (currentState().status() == CompanyStatus.COMPANY_DISABLED) {
-//            CCFLogger.log(logger,"add user failed as Company not initialized", Map.of("company_id", entityId));
-//            logger.info("Company id={} is not an initialized state for adding a user", entityId);
-            logger.info("Company id={} is not an initialized state for adding a user", entityId);
-            return effects().reply(new CompanyResult.IncorrectUserId("Company is not an initialized state for adding a user"));
+
+    // HIA: 20 March 2025 - working on addDomain (how to handle exceptions)
+
+    public Effect<StandardResult> addDomain(StandardDomain standardDomain) {
+        CCFLog.info(logger, "Adding domain", Map.of("standard", entityId, "domain", standardDomain.name()));
+        if (currentState().status() == StandardStatus.STANDARD_DISABLED) {
+            CCFLog.error(logger, "Adding domain failed as standard is disabled", Map.of("standard", entityId, "domain", standardDomain.name()));
+            return effects().reply(new StandardResult.IncorrectAdd("addDomain", "failed as standard %s is disabled".formatted(standardDomain.name())));
         }
 
-        if(currentState().status() == CompanyStatus.COMPANY_INITIALIZED && currentState().users().contains(userInfo.userId())) {
-            logger.info("User {} is already added to company id={}", userInfo.userId(), entityId);
-            return effects().reply(new CompanyResult.IncorrectUserId("User is already added to company"));
-        }
-
-        var event = new CompanyEvent.CompanyUserAdded(userInfo.userId());
+        var event = new StandardEvent.StandardDomainAdded(standardDomain);
 
         return effects()
                 .persist(event)
-                .thenReply(newState -> new CompanyResult.Success());
-    }
-    public Effect<Done> changePublishedPeriod(Instant publishedPeriod) {
-        var event = new CompanyEvent.CompanyPublishedPeriodChanged(publishedPeriod);
-        return effects()
-                .persist(event)
-                .thenReply(newState -> Done.getInstance());
+                .thenReply(newState -> new StandardResult.Success());
     }
 
     @Override

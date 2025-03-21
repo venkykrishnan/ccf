@@ -26,7 +26,7 @@ public record Standard(String name, String description,
     //<editor-fold desc="Create & Modify">
     public Standard onStandardCreated(StandardEvent.StandardCreated standardCreated) {
         return new Standard(standardCreated.standardCreate().name,
-                standardCreated.standardCreate().description, List.of(), List.of(), StandardStatus.STANDARD_INITIALIZED);
+                standardCreated.standardCreate().description, List.of(), List.of(), StandardStatus.STANDARD_INITIALIZED_NO_DOMAINS);
     }
 
     public Standard onStandardDomainAdded(StandardEvent.StandardDomainAdded standardDomainAdded) {
