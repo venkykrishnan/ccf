@@ -231,6 +231,129 @@ public class StandardEntity extends EventSourcedEntity<Standard, StandardEvent> 
         }
     }
 
+    public Effect<StandardResult> removeDimensionRow(StandardDimension.DimensionRowRemove dimensionRowRemove) {
+        try {
+            CCFLog.info(logger, "Removing dimension row", Map.of("standard", entityId, "dimension", dimensionRowRemove.dimensionName(), "taxonomy", dimensionRowRemove.taxonomyName(), "version", dimensionRowRemove.versionName()));
+            if (currentState().status() != StandardStatus.STANDARD_INITIALIZED) {
+                CCFLog.error(logger, "Removing dimension row failed as standard is disabled", Map.of("standard", entityId, "dimension", dimensionRowRemove.dimensionName(), "taxonomy", dimensionRowRemove.taxonomyName(), "version", dimensionRowRemove.versionName()));
+                return effects().reply(new StandardResult.IncorrectAdd("removeDimensionRow", "failed as standard %s is disabled".formatted(dimensionRowRemove.dimensionName())));
+            }
+            var event = new StandardEvent.StandardDimensionRowRemoved(dimensionRowRemove);
+            return effects()
+                    .persist(event)
+                    .thenReply(newState -> new StandardResult.Success());
+        } catch (IllegalArgumentException ie) {
+            CCFLog.error(logger, "Removing dimension row failed", Map.of("standard", entityId, "dimension", dimensionRowRemove.dimensionName(), "taxonomy", dimensionRowRemove.taxonomyName(), "version", dimensionRowRemove.versionName(), "error", ie.getMessage()));
+            return effects().reply(new StandardResult.IncorrectAdd("removeDimensionRow", ie.getMessage()));
+        } catch (Exception e) {
+            CCFLog.error(logger, "Removing dimension row failed", Map.of("standard", entityId, "dimension", dimensionRowRemove.dimensionName(), "taxonomy", dimensionRowRemove.taxonomyName(), "version", dimensionRowRemove.versionName(), "error", e.getMessage()));
+            return effects().error(e.getMessage());
+
+        }
+    }
+
+    public Effect<StandardResult> removeDimensionRows(StandardDimension.DimensionRowsRemove dimensionRowsRemove) {
+        try {
+            CCFLog.info(logger, "Removing dimension rows", Map.of("standard", entityId, "dimension", dimensionRowsRemove.dimensionName(), "taxonomy", dimensionRowsRemove.taxonomyName(), "version", dimensionRowsRemove.version().version()));
+            if (currentState().status() != StandardStatus.STANDARD_INITIALIZED) {
+                CCFLog.error(logger, "Removing dimension rows failed as standard is disabled", Map.of("standard", entityId, "dimension", dimensionRowsRemove.dimensionName(), "taxonomy", dimensionRowsRemove.taxonomyName(), "version", dimensionRowsRemove.version().version()));
+                return effects().reply(new StandardResult.IncorrectAdd("removeDimensionRows", "failed as standard %s is disabled".formatted(dimensionRowsRemove.dimensionName())));
+            }
+            var event = new StandardEvent.StandardDimensionRowsRemoved(dimensionRowsRemove);
+            return effects()
+                    .persist(event)
+                    .thenReply(newState -> new StandardResult.Success());
+        } catch (IllegalArgumentException ie) {
+            CCFLog.error(logger, "Removing dimension rows failed", Map.of("standard", entityId, "dimension", dimensionRowsRemove.dimensionName(), "taxonomy", dimensionRowsRemove.taxonomyName(), "version", dimensionRowsRemove.version().version(), "error", ie.getMessage()));
+            return effects().reply(new StandardResult.IncorrectAdd("removeDimensionRows", ie.getMessage()));
+        } catch (Exception e) {
+            CCFLog.error(logger, "Removing dimension rows failed", Map.of("standard", entityId, "dimension", dimensionRowsRemove.dimensionName(), "taxonomy", dimensionRowsRemove.taxonomyName(), "version", dimensionRowsRemove.version().version(), "error", e.getMessage()));
+            return effects().error(e.getMessage());
+        }
+    }
+
+    public Effect<StandardResult> removeTaxonomyVersion(StandardDimension.TaxonomyVersionRemove taxonomyVersionRemove) {
+        try {
+            CCFLog.info(logger, "Removing taxonomy version", Map.of("standard", entityId, "taxonomy", taxonomyVersionRemove.taxonomyName()));
+            if (currentState().status() != StandardStatus.STANDARD_INITIALIZED) {
+                CCFLog.error(logger, "Removing taxonomy version failed as standard is disabled", Map.of("standard", entityId, "taxonomy", taxonomyVersionRemove.taxonomyName()));
+                return effects().reply(new StandardResult.IncorrectAdd("removeTaxonomyVersion", "failed as standard %s is disabled".formatted(taxonomyVersionRemove.taxonomyName())));
+            }
+            var event = new StandardEvent.StandardTaxonomyVersionRemoved(taxonomyVersionRemove);
+            return effects()
+                    .persist(event)
+                    .thenReply(newState -> new StandardResult.Success());
+        } catch (IllegalArgumentException ie) {
+            CCFLog.error(logger, "Removing taxonomy version failed", Map.of("standard", entityId, "taxonomy", taxonomyVersionRemove.taxonomyName(), "error", ie.getMessage()));
+            return effects().reply(new StandardResult.IncorrectAdd("removeTaxonomyVersion", ie.getMessage()));
+        } catch (Exception e) {
+            CCFLog.error(logger, "Removing taxonomy version failed", Map.of("standard", entityId, "taxonomy", taxonomyVersionRemove.taxonomyName(), "error", e.getMessage()));
+            return effects().error(e.getMessage());
+        }
+    }
+
+    public Effect<StandardResult> removeTaxonomy(StandardDimension.TaxonomyRemove taxonomyRemove) {
+        try {
+            CCFLog.info(logger, "Removing taxonomy", Map.of("standard", entityId, "taxonomy", taxonomyRemove.taxonomyName()));
+            if (currentState().status() != StandardStatus.STANDARD_INITIALIZED) {
+                CCFLog.error(logger, "Removing taxonomy failed as standard is disabled", Map.of("standard", entityId, "taxonomy", taxonomyRemove.taxonomyName()));
+                return effects().reply(new StandardResult.IncorrectAdd("removeTaxonomy", "failed as standard %s is disabled".formatted(taxonomyRemove.taxonomyName())));
+            }
+            var event = new StandardEvent.StandardTaxonomyRemoved(taxonomyRemove);
+            return effects()
+                    .persist(event)
+                    .thenReply(newState -> new StandardResult.Success());
+        } catch (IllegalArgumentException ie) {
+            CCFLog.error(logger, "Removing taxonomy failed", Map.of("standard", entityId, "taxonomy", taxonomyRemove.taxonomyName(), "error", ie.getMessage()));
+            return effects().reply(new StandardResult.IncorrectAdd("removeTaxonomy", ie.getMessage()));
+        } catch (Exception e) {
+            CCFLog.error(logger, "Removing taxonomy failed", Map.of("standard", entityId, "taxonomy", taxonomyRemove.taxonomyName(), "error", e.getMessage()));
+            return effects().error(e.getMessage());
+        }
+    }
+
+    public Effect<StandardResult> removeDimension(StandardDimension.DimensionRemove dimensionRemove) {
+        try {
+            CCFLog.info(logger, "Removing dimension", Map.of("standard", entityId, "dimension", dimensionRemove.dimensionName()));
+            if (currentState().status() != StandardStatus.STANDARD_INITIALIZED) {
+                CCFLog.error(logger, "Removing dimension failed as standard is disabled", Map.of("standard", entityId, "dimension", dimensionRemove.dimensionName()));
+                return effects().reply(new StandardResult.IncorrectAdd("removeDimension", "failed as standard %s is disabled".formatted(dimensionRemove.dimensionName())));
+            }
+            var event = new StandardEvent.StandardDimensionRemoved(dimensionRemove);
+            return effects()
+                    .persist(event)
+                    .thenReply(newState -> new StandardResult.Success());
+        } catch (IllegalArgumentException ie) {
+            CCFLog.error(logger, "Removing dimension failed", Map.of("standard", entityId, "dimension", dimensionRemove.dimensionName(), "error", ie.getMessage()));
+            return effects().reply(new StandardResult.IncorrectAdd("removeDimension", ie.getMessage()));
+        } catch (Exception e) {
+            CCFLog.error(logger, "Removing dimension failed", Map.of("standard", entityId, "dimension", dimensionRemove.dimensionName(), "error", e.getMessage()));
+            return effects().error(e.getMessage());
+        }
+    }
+
+    public Effect<StandardResult> removeDomain(StandardDomain.DomainRemove domainRemove) {
+        try {
+            CCFLog.info(logger, "Removing domain", Map.of("standard", entityId, "domain", domainRemove.name()));
+            if (currentState().status() != StandardStatus.STANDARD_INITIALIZED) {
+                CCFLog.error(logger, "Removing domain failed as standard is disabled", Map.of("standard", entityId, "domain", domainRemove.name()));
+                return effects().reply(new StandardResult.IncorrectAdd("removeDomain", "failed as standard %s is disabled".formatted(domainRemove.name())));
+            }
+            var event = new StandardEvent.StandardDomainRemoved(domainRemove);
+            return effects()
+                    .persist(event)
+                    .thenReply(newState -> new StandardResult.Success());
+        } catch (IllegalArgumentException ie) {
+            CCFLog.error(logger, "Removing domain failed", Map.of("standard", entityId, "domain", domainRemove.name(), "error", ie.getMessage()));
+            return effects().reply(new StandardResult.IncorrectAdd("removeDomain", ie.getMessage()));
+        } catch (Exception e) {
+            CCFLog.error(logger, "Removing domain failed", Map.of("standard", entityId, "domain", domainRemove.name(), "error", e.getMessage()));
+            return effects().error(e.getMessage());
+        }   
+    }
+
+    
+
     @Override
     public Standard applyEvent(StandardEvent event) {
         return switch (event) {

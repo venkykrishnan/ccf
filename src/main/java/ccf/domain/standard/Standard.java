@@ -524,7 +524,7 @@ public record Standard(String name, String description,
         }
         var newDimensions = new ArrayList<>(List.copyOf(dimensions()));
         newDimensions.remove(dimension);
-        return new Standard(name(), description(), domains(), newDimensions,status());
+        return new Standard(name(), description(), domains(), newDimensions, StandardStatus.STANDARD_INITIALIZED);
     }
 
     public Standard onStandardDomainRemoved(StandardEvent.StandardDomainRemoved standardDomainRemoved) {
@@ -541,7 +541,10 @@ public record Standard(String name, String description,
         }
         var newDomains = new ArrayList<>(List.copyOf(domains()));
         newDomains.remove(domain);
-        return new Standard(name(), description(), newDomains, dimensions(),status());
+        if (newDomains.isEmpty()) {
+            return new Standard(name(), description(), newDomains, dimensions(), StandardStatus.STANDARD_INITIALIZED_NO_DOMAINS);
+        }
+        return new Standard(name(), description(), newDomains, dimensions(), StandardStatus.STANDARD_INITIALIZED);
     }
     //</editor-fold>
 }

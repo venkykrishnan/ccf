@@ -54,7 +54,7 @@ public sealed interface StandardEvent {
     record StandardDimensionRemoved(StandardDimension.DimensionRemove dimensionRemove) implements StandardEvent {
     }
     @TypeName("standard-domain-removed")
-    record StandardDomainRemoved(StandardDimension.DomainRemove domainRemove) implements StandardEvent {
+    record StandardDomainRemoved(StandardDomain.DomainRemove domainRemove) implements StandardEvent {
     }
     //</editor-fold>
 }
