@@ -29,11 +29,14 @@ public class StandardEntity extends EventSourcedEntity<Standard, StandardEvent> 
     @JsonSubTypes({
             @JsonSubTypes.Type(value = StandardResult.Success.class, name = "Success"),
             @JsonSubTypes.Type(value = StandardResult.IncorrectAdd.class, name = "IncorrectAdd"),
+            @JsonSubTypes.Type(value = StandardResult.IncorrectUpdate.class, name = "IncorrectUpdate"),
             @JsonSubTypes.Type(value = StandardResult.IncorrectCleanup.class, name = "IncorrectCleanup")})
     public sealed interface StandardResult {
         record IncorrectAdd(String inputType, String message) implements StandardResult {
         }
         record IncorrectCleanup(String inputType, String message) implements StandardResult {
+        }
+        record IncorrectUpdate(String inputType, String message) implements StandardResult {
         }
         record Success() implements StandardResult {
         }
@@ -207,7 +210,7 @@ public class StandardEntity extends EventSourcedEntity<Standard, StandardEvent> 
                     .thenReply(newState -> new StandardResult.Success());
         } catch (IllegalArgumentException ie) {
             CCFLog.error(logger, "Setting taxonomy default version failed", Map.of("standard", entityId, "taxonomy", taxonomyVersionDefault.taxonomyName(), "error", ie.getMessage()));
-            return effects().reply(new StandardResult.IncorrectAdd("setTaxonomyDefaultVersion", ie.getMessage()));
+            return effects().reply(new StandardResult.IncorrectUpdate("setTaxonomyDefaultVersion", ie.getMessage()));
         } catch (Exception e) {
             CCFLog.error(logger, "Setting taxonomy default version failed", Map.of("standard", entityId, "taxonomy", taxonomyVersionDefault.taxonomyName(), "error", e.getMessage()));
             return effects().error(e.getMessage());
@@ -227,7 +230,7 @@ public class StandardEntity extends EventSourcedEntity<Standard, StandardEvent> 
                     .thenReply(newState -> new StandardResult.Success());
         } catch (IllegalArgumentException ie) {
             CCFLog.error(logger, "Publishing taxonomy failed", Map.of("standard", entityId, "taxonomy", taxonomyVersionPublish.taxonomyName(), "error", ie.getMessage()));
-            return effects().reply(new StandardResult.IncorrectAdd("publishTaxonomy", ie.getMessage()));
+            return effects().reply(new StandardResult.IncorrectUpdate("publishTaxonomy", ie.getMessage()));
         } catch (Exception e) {
             CCFLog.error(logger, "Publishing taxonomy failed", Map.of("standard", entityId, "taxonomy", taxonomyVersionPublish.taxonomyName(), "error", e.getMessage()));
             return effects().error(e.getMessage());

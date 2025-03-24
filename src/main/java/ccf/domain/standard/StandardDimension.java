@@ -30,11 +30,13 @@ public record StandardDimension(String name, String description,
     }
     public record TaxonomyVersion(StandardVersion version, Boolean isPublished, List<StandardDimensionRow> rows) {
     }
+    
     public record StandardDimensionRow(String value, String description,
-                                       List<String> aliases,
-                                       List<String> keywords,
-                                       Map<String, String> hints,
-                                       String parent) {
+            List<String> aliases,
+            List<String> keywords,
+            Map<String, List<String>> dimensionSrcHints, // columns in src dimension table. key is the dimension name, value is the list of column names.   
+            String parent,
+            List<String> children) {
 
     }
 }

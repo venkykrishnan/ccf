@@ -12,15 +12,19 @@ import akka.javasdk.client.ComponentClient;
 import akka.http.javadsl.model.HttpResponse;
 import akka.javasdk.http.HttpResponses;
 import ccf.application.StandardEntity;
+import ccf.application.StandardsByFilterView;
 import ccf.domain.standard.Standard;
 import ccf.domain.standard.StandardDimension.DimensionRemove;
 import ccf.domain.standard.StandardDimension.StandardDimensionCreate;
 import ccf.domain.standard.StandardDimension.TaxonomyCreate;
 import ccf.domain.standard.StandardDimension.TaxonomyRemove;
 import ccf.domain.standard.StandardDimension.TaxonomyVersionCreate;
+import ccf.domain.standard.StandardDimension.TaxonomyVersionDefault;
+import ccf.domain.standard.StandardDimension.TaxonomyVersionPublish;
 import ccf.domain.standard.StandardDimension.TaxonomyVersionRemove;
 import ccf.domain.standard.StandardDomain;
 import ccf.domain.standard.StandardDomain.DomainRemove;
+import ccf.domain.standard.StandardRows;
 import ccf.domain.standard.StandardVersion;
 import ccf.util.CCFLog;
 import org.slf4j.Logger;
@@ -193,5 +197,60 @@ public class StandardEndpoint {
                     case StandardEntity.StandardResult.Success success -> HttpResponses.ok();
                     default -> HttpResponses.internalServerError();
                 });
-  }     
+  }
+
+  @Put("/{standardId}/dimension/{dimensionName}/taxonomy/{taxonomyName}/default")
+  public CompletionStage<HttpResponse> setTaxonomyDefaultVersion(String standardId, String dimensionName, String taxonomyName, StandardVersion standardVersion) {
+    CCFLog.debug(logger, "Setting taxonomy default version",
+                Map.of("standardId", standardId, "dimensionName", dimensionName, "taxonomyName", taxonomyName, "standardVersion", standardVersion.toString()));
+    return componentClient.forEventSourcedEntity(standardId)
+                .method(StandardEntity::setTaxonomyDefaultVersion)
+                .invokeAsync(new TaxonomyVersionDefault(dimensionName, taxonomyName, standardVersion))
+                .thenApply(setTaxonomyDefaultVersionResult ->
+                    switch (setTaxonomyDefaultVersionResult) {
+                    case StandardEntity.StandardResult.Success success -> HttpResponses.ok();
+                    case StandardEntity.StandardResult.IncorrectUpdate e -> HttpResponses.badRequest(
+                        "Action: %s, Message: %s".formatted(e.inputType(), e.message()));
+                    default -> HttpResponses.internalServerError();
+                });
+  }
+
+  @Put("/{standardId}/dimension/{dimensionName}/taxonomy/{taxonomyName}/publish")
+  public CompletionStage<HttpResponse> publishTaxonomy(String standardId, String dimensionName, String taxonomyName, StandardVersion standardVersion) {
+    CCFLog.debug(logger, "Publishing taxonomy",
+                Map.of("standardId", standardId, "dimensionName", dimensionName, "taxonomyName", taxonomyName, "standardVersion", standardVersion.toString()));
+    return componentClient.forEventSourcedEntity(standardId)
+                .method(StandardEntity::publishTaxonomy)
+                .invokeAsync(new TaxonomyVersionPublish(dimensionName, taxonomyName, standardVersion, true))
+                .thenApply(publishTaxonomyResult ->
+                    switch (publishTaxonomyResult) {
+                    case StandardEntity.StandardResult.Success success -> HttpResponses.ok();
+                    case StandardEntity.StandardResult.IncorrectUpdate e -> HttpResponses.badRequest(
+                        "Action: %s, Message: %s".formatted(e.inputType(), e.message()));
+                    default -> HttpResponses.internalServerError();
+                });
+  }
+
+  @Put("/{standardId}/dimension/{dimensionName}/taxonomy/{taxonomyName}/unpublish")
+  public CompletionStage<HttpResponse> unpublishTaxonomy(String standardId, String dimensionName, String taxonomyName, StandardVersion standardVersion) {
+    CCFLog.debug(logger, "Unpublishing taxonomy",
+                Map.of("standardId", standardId, "dimensionName", dimensionName, "taxonomyName", taxonomyName, "standardVersion", standardVersion.toString()));
+    return componentClient.forEventSourcedEntity(standardId)
+                .method(StandardEntity::publishTaxonomy)
+                .invokeAsync(new TaxonomyVersionPublish(dimensionName, taxonomyName, standardVersion, false))
+                .thenApply(publishTaxonomyResult ->
+                    switch (publishTaxonomyResult) {
+                    case StandardEntity.StandardResult.Success success -> HttpResponses.ok();
+                    case StandardEntity.StandardResult.IncorrectUpdate e -> HttpResponses.badRequest(
+                        "Action: %s, Message: %s".formatted(e.inputType(), e.message()));
+                    default -> HttpResponses.internalServerError();
+                });
+  }
+  @Get("/all")
+  public CompletionStage<StandardRows> getAllStandards() {
+    CCFLog.debug(logger, "get standards", Map.of());
+    return componentClient.forView()
+                .method(StandardsByFilterView::getAllStandards)
+                .invokeAsync();
+  } 
 }
