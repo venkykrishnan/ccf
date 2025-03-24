@@ -532,12 +532,12 @@ public record Standard(String name, String description,
         // Then check if the domain is associated with any dimensions (if it is, throw an exception)
         // Then remove the domain
         var domain = domains().stream()
-                .filter(d -> d.name().equals(standardDomainRemoved.domainRemove().domainName()))
+                .filter(d -> d.name().equals(standardDomainRemoved.domainRemove().name()))
                 .findFirst()
-                .orElseThrow(() -> new IllegalArgumentException("Domain %s does not exist.".formatted(standardDomainRemoved.domainRemove().domainName())));
+                .orElseThrow(() -> new IllegalArgumentException("Domain %s does not exist.".formatted(standardDomainRemoved.domainRemove().name())));
         if (dimensions().stream().anyMatch(d -> d.domains().contains(domain.name()))) {
             logger.info("Domain is associated with dimensions.");
-            throw new IllegalArgumentException("Domain %s is associated with dimensions.".formatted(standardDomainRemoved.domainRemove().domainName()));
+            throw new IllegalArgumentException("Domain %s is associated with dimensions.".formatted(standardDomainRemoved.domainRemove().name()));
         }
         var newDomains = new ArrayList<>(List.copyOf(domains()));
         newDomains.remove(domain);

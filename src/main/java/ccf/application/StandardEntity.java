@@ -28,9 +28,12 @@ public class StandardEntity extends EventSourcedEntity<Standard, StandardEvent> 
     @JsonTypeInfo(use = JsonTypeInfo.Id.NAME)
     @JsonSubTypes({
             @JsonSubTypes.Type(value = StandardResult.Success.class, name = "Success"),
-            @JsonSubTypes.Type(value = StandardResult.IncorrectAdd.class, name = "IncorrectAdd")})
+            @JsonSubTypes.Type(value = StandardResult.IncorrectAdd.class, name = "IncorrectAdd"),
+            @JsonSubTypes.Type(value = StandardResult.IncorrectCleanup.class, name = "IncorrectCleanup")})
     public sealed interface StandardResult {
         record IncorrectAdd(String inputType, String message) implements StandardResult {
+        }
+        record IncorrectCleanup(String inputType, String message) implements StandardResult {
         }
         record Success() implements StandardResult {
         }
@@ -45,23 +48,23 @@ public class StandardEntity extends EventSourcedEntity<Standard, StandardEvent> 
         return effects().reply(currentState());
     }
 
-    public Effect<Done> createStandard(Standard.StandardCreate standardCreate) {
+    public Effect<StandardResult> createStandard(Standard.StandardCreate standardCreate) {
         if (currentState().status() != StandardStatus.STANDARD_DISABLED) {
             CCFLog.error(logger, "Creating standard failed, already created",
                     Map.of("name", standardCreate.name()));
-            return effects().error("Company is already created");
+            return effects().reply(new StandardResult.IncorrectAdd("createStandard", "failed as standard %s is already created".formatted(standardCreate.name())));
         }
 
         try {
             var event = new StandardEvent.StandardCreated(standardCreate);
             return effects()
                     .persist(event)
-                    .thenReply(newState -> Done.getInstance());
+                    .thenReply(newState -> new StandardResult.Success());
         } catch (Exception e) {
             CCFLog.error(logger, "Creating standard failed, already created",
                     Map.of("name", standardCreate.name(),
                             "error", e.getMessage()));
-            return effects().error(e.getMessage());
+            return effects().reply(new StandardResult.IncorrectAdd("createStandard", e.getMessage()));
         }
     }
 
@@ -84,7 +87,7 @@ public class StandardEntity extends EventSourcedEntity<Standard, StandardEvent> 
         }
         catch (Exception e) {
             CCFLog.error(logger, "Adding domain failed", Map.of("standard", entityId, "domain", standardDomain.name(), "error", e.getMessage()));
-            return effects().error(e.getMessage());
+            return effects().reply(new StandardResult.IncorrectAdd("addDomain", e.getMessage()));
         }
     }
 
@@ -105,7 +108,7 @@ public class StandardEntity extends EventSourcedEntity<Standard, StandardEvent> 
         }
         catch (Exception e) {
             CCFLog.error(logger, "Adding dimension failed", Map.of("standard", entityId, "dimension", standardDimensionCreate.name(), "error", e.getMessage()));
-            return effects().error(e.getMessage());
+            return effects().reply(new StandardResult.IncorrectAdd("addDimension", e.getMessage()));
         }
     }
 
@@ -126,7 +129,7 @@ public class StandardEntity extends EventSourcedEntity<Standard, StandardEvent> 
         }
         catch (Exception e) {
             CCFLog.error(logger, "Adding taxonomy failed", Map.of("standard", entityId, "taxonomy", taxonomyCreate.name(), "error", e.getMessage()));
-            return effects().error(e.getMessage());
+            return effects().reply(new StandardResult.IncorrectAdd("addTaxonomy", e.getMessage()));
         }
     }
 
@@ -337,7 +340,7 @@ public class StandardEntity extends EventSourcedEntity<Standard, StandardEvent> 
             CCFLog.info(logger, "Removing domain", Map.of("standard", entityId, "domain", domainRemove.name()));
             if (currentState().status() != StandardStatus.STANDARD_INITIALIZED) {
                 CCFLog.error(logger, "Removing domain failed as standard is disabled", Map.of("standard", entityId, "domain", domainRemove.name()));
-                return effects().reply(new StandardResult.IncorrectAdd("removeDomain", "failed as standard %s is disabled".formatted(domainRemove.name())));
+                return effects().reply(new StandardResult.IncorrectCleanup("removeDomain", "failed as standard %s is disabled".formatted(domainRemove.name())));
             }
             var event = new StandardEvent.StandardDomainRemoved(domainRemove);
             return effects()
@@ -345,10 +348,10 @@ public class StandardEntity extends EventSourcedEntity<Standard, StandardEvent> 
                     .thenReply(newState -> new StandardResult.Success());
         } catch (IllegalArgumentException ie) {
             CCFLog.error(logger, "Removing domain failed", Map.of("standard", entityId, "domain", domainRemove.name(), "error", ie.getMessage()));
-            return effects().reply(new StandardResult.IncorrectAdd("removeDomain", ie.getMessage()));
+            return effects().reply(new StandardResult.IncorrectCleanup("removeDomain", ie.getMessage()));
         } catch (Exception e) {
             CCFLog.error(logger, "Removing domain failed", Map.of("standard", entityId, "domain", domainRemove.name(), "error", e.getMessage()));
-            return effects().error(e.getMessage());
+            return effects().reply(new StandardResult.IncorrectCleanup("removeDomain", e.getMessage()));
         }   
     }
 

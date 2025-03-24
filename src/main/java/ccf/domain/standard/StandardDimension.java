@@ -23,6 +23,7 @@ public record StandardDimension(String name, String description,
     public record TaxonomyVersionRemove(String dimensionName, String taxonomyName, StandardVersion version) {}
     public record TaxonomyRemove(String dimensionName, String taxonomyName) {}
     public record DimensionRemove(String dimensionName) {}
+    public record DomainRemove(String domainName) {}
     // The taxonomyMap is a map of a Taxonomy Name to a Taxonomy object
     public record Taxonomy(String name, String description, StandardVersion defaultVersion,
                            List<TaxonomyVersion> taxonomyVersions) {
