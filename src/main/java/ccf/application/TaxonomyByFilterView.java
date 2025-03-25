@@ -20,8 +20,8 @@ public class TaxonomyByFilterView extends View {
                     effects().ignore();
                 case StandardEvent.StandardDomainAdded domainAdded ->
                     effects().ignore();
-                case StandardEvent.StandardDimensionAdded dimensionAdded ->
-                // TODO: Add the dimension to the taxonomy - this is where I need to start
+                // HIA: 25 Mar 2025
+                case StandardEvent.StandardDimensionAdded dimensionAdded ->    
                     effects().ignore();
                 case StandardEvent.StandardTaxonomyAdded added ->
                     effects().updateRow(new TaxonomyRow(added.taxonomyCreate().name(),
@@ -30,9 +30,9 @@ public class TaxonomyByFilterView extends View {
                     added.taxonomyCreate().taxonomyVersions()));
                 case StandardEvent.StandardTaxonomyVersionAdded versionAdded ->
                     effects().ignore();
-                case StandardEvent.StandardTaxonomyVersionPublished versionPublished ->
+                case StandardEvent.StandardTaxonomyPublish versionPublished ->
                     effects().ignore();
-                case StandardEvent.StandardTaxonomyVersionDefaultSet versionDefaultSet ->
+                case StandardEvent.StandardTaxonomyDefaultVersionSet versionDefaultSet ->
                     effects().ignore();
                 case StandardEvent.StandardDimensionRowAdded rowAdded ->
                     effects().ignore();
