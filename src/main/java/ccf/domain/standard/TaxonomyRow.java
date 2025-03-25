@@ -2,8 +2,11 @@ package ccf.domain.standard;
 
 import java.util.List;
 
-import ccf.domain.standard.StandardDimension.TaxonomyVersion;
+import ccf.domain.standard.StandardDimension.StandardDimensionRow;
 
-
-public record TaxonomyRow(String name, String description, StandardVersion defaultVersion, List<TaxonomyVersion> taxonomyVersions) {
+// TaxonomyRow is a combination of a Taxonomy and a TaxonomyVersion
+public record TaxonomyRow(String name, String description, StandardVersion version, List<StandardDimensionRow> rows,
+    Boolean isPublished, Boolean isDefault,
+    String dimensionName)
+    {
 }
