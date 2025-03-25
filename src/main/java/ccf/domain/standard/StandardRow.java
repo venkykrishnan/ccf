@@ -1,8 +1,4 @@
-package ccf.domain.bank;
-
-import java.time.Instant;
-import java.util.ArrayList;
-import java.util.List;
+package ccf.domain.standard;
 
 public record StandardRow(
     String name, String description) {
