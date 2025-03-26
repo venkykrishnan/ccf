@@ -1,7 +1,5 @@
 package ccf.api;
 
-import akka.Done;
-import akka.http.javadsl.model.DateTime;
 import akka.javasdk.annotations.Acl;
 import akka.javasdk.annotations.http.Delete;
 import akka.javasdk.annotations.http.Get;

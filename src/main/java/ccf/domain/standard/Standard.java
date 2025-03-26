@@ -138,6 +138,7 @@ public record Standard(String name, String description,
     private ArrayList<StandardDimension> getStandardDimensions(StandardEvent.StandardTaxonomyVersionAdded standardTaxonomyVersionAdded, StandardDimension.Taxonomy taxonomy, StandardDimension dimension) {
         var newRows = new ArrayList<StandardDimension.StandardDimensionRow>();
         var newVersion = new StandardDimension.TaxonomyVersion(
+                standardTaxonomyVersionAdded.taxonomyVersionCreate().description(),
                 standardTaxonomyVersionAdded.taxonomyVersionCreate().standardVersion(),
                 false,
                 newRows

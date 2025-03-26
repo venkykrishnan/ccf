@@ -138,7 +138,8 @@ public class StandardEntity extends EventSourcedEntity<Standard, StandardEvent> 
 
     public Effect<StandardResult> addTaxonomyVersion(StandardDimension.TaxonomyVersionCreate taxonomyVersionCreate) {
         try {
-            CCFLog.info(logger, "Adding taxonomy version", Map.of("standard", entityId, "taxonomy", taxonomyVersionCreate.taxonomyName()));
+            CCFLog.info(logger, "Adding taxonomy version", Map.of("standard", entityId, "taxonomy", taxonomyVersionCreate.taxonomyName(), 
+            "version", taxonomyVersionCreate.standardVersion().version()));
             if (currentState().status() != StandardStatus.STANDARD_INITIALIZED) {
                 CCFLog.error(logger, "Adding taxonomy version failed as standard is disabled", Map.of("standard", entityId, "taxonomy", taxonomyVersionCreate.taxonomyName()));
                 return effects().reply(new StandardResult.IncorrectAdd("addTaxonomyVersion", "failed as standard %s is disabled".formatted(taxonomyVersionCreate.taxonomyName())));

@@ -13,7 +13,7 @@ public record StandardDimension(String name, String description,
 
     public record StandardDimensionCreate(String name, String description, List<String> domains) {}
     public record TaxonomyCreate(String dimensionName, String name, String description) {}
-    public record TaxonomyVersionCreate(String dimensionName, String taxonomyName, StandardVersion standardVersion, Boolean isDefault) {}
+    public record TaxonomyVersionCreate(String dimensionName, String taxonomyName, String description, StandardVersion standardVersion, Boolean isDefault) {}
     public record TaxonomyVersionPublish(String dimensionName, String taxonomyName, StandardVersion standardVersion, Boolean isPublished) {}
     public record TaxonomyVersionDefault(String dimensionName, String taxonomyName, StandardVersion standardVersion) {}
     public record DimensionRowAdd(String dimensionName, String taxonomyName, String versionName, StandardDimensionRow row) {}
@@ -28,7 +28,7 @@ public record StandardDimension(String name, String description,
     public record Taxonomy(String name, String description, StandardVersion defaultVersion,
                            List<TaxonomyVersion> taxonomyVersions) {
     }
-    public record TaxonomyVersion(StandardVersion version, Boolean isPublished, List<StandardDimensionRow> rows) {
+    public record TaxonomyVersion(String description, StandardVersion version, Boolean isPublished, List<StandardDimensionRow> rows) {
     }
     
     public record StandardDimensionRow(String value, String description,

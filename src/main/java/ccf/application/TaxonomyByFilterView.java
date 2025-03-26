@@ -1,13 +1,16 @@
 package ccf.application;
 
+import java.util.List;
+
 import akka.javasdk.annotations.ComponentId;
 import akka.javasdk.annotations.Consume;
 import akka.javasdk.annotations.Query;
 import akka.javasdk.view.TableUpdater;
 import akka.javasdk.view.View;
+import ccf.domain.standard.StandardDimension.StandardDimensionRow;
 import ccf.domain.standard.StandardEvent;
 import ccf.domain.standard.TaxonomyRow;
-import ccf.domain.standard.TaxonomyRows;
+import ccf.domain.standard.Taxonomies;
 
 @ComponentId("taxonomy_by_filter")
 public class TaxonomyByFilterView extends View {
@@ -20,17 +23,18 @@ public class TaxonomyByFilterView extends View {
                     effects().ignore();
                 case StandardEvent.StandardDomainAdded domainAdded ->
                     effects().ignore();
-                // HIA: 25 Mar 2025
                 case StandardEvent.StandardDimensionAdded dimensionAdded ->    
                     effects().ignore();
                 case StandardEvent.StandardTaxonomyAdded added ->
-                    effects().updateRow(new TaxonomyRow(added.taxonomyCreate().name(),
-                    added.taxonomyCreate().description(),
-                    added.taxonomyCreate().defaultVersion(),
-                    added.taxonomyCreate().taxonomyVersions()));
+                effects().ignore();
                 case StandardEvent.StandardTaxonomyVersionAdded versionAdded ->
-                    effects().ignore();
-                case StandardEvent.StandardTaxonomyPublish versionPublished ->
+                effects().updateRow(new TaxonomyRow(versionAdded.taxonomyVersionCreate().taxonomyName(),
+                versionAdded.taxonomyVersionCreate().description(),
+                versionAdded.taxonomyVersionCreate().standardVersion(),
+                List.<StandardDimensionRow>of(),
+                false, false, versionAdded.taxonomyVersionCreate().dimensionName()
+                ));
+            case StandardEvent.StandardTaxonomyPublish versionPublished ->
                     effects().ignore();
                 case StandardEvent.StandardTaxonomyDefaultVersionSet versionDefaultSet ->
                     effects().ignore();
