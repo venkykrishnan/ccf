@@ -35,7 +35,8 @@ public class TaxonomyByFilterView extends View {
                 false, false, versionAdded.taxonomyVersionCreate().dimensionName()
                 ));
             case StandardEvent.StandardTaxonomyPublish versionPublished ->
-                    effects().ignore();
+                
+                    
                 case StandardEvent.StandardTaxonomyDefaultVersionSet versionDefaultSet ->
                     effects().ignore();
                 case StandardEvent.StandardDimensionRowAdded rowAdded ->
