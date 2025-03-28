@@ -6,6 +6,7 @@ import akka.javasdk.eventsourcedentity.EventSourcedEntity;
 import akka.javasdk.eventsourcedentity.EventSourcedEntityContext;
 import ccf.domain.standard.Taxonomy;
 import ccf.domain.standard.TaxonomyEvent;
+import ccf.domain.standard.TaxonomyId;
 import ccf.domain.standard.TaxonomyStatus;
 import ccf.util.CCFLog;
 
@@ -32,8 +33,12 @@ public class TaxonomyEntity extends EventSourcedEntity<Taxonomy, TaxonomyEvent> 
     @JsonTypeInfo(use = JsonTypeInfo.Id.NAME)
     @JsonSubTypes({
             @JsonSubTypes.Type(value = TaxonomyResult.Success.class, name = "Success"),
+            @JsonSubTypes.Type(value = TaxonomyResult.CreateFailed.class, name = "CreateFailed"),
             @JsonSubTypes.Type(value = TaxonomyResult.IncorrectAdd.class, name = "IncorrectAdd")})
     public sealed interface TaxonomyResult {
+
+        record CreateFailed(String message) implements TaxonomyResult {
+        }
 
         record IncorrectAdd(String action,String message) implements TaxonomyResult {
         }
@@ -55,17 +60,16 @@ public class TaxonomyEntity extends EventSourcedEntity<Taxonomy, TaxonomyEvent> 
         if (currentState().status() == TaxonomyStatus.TAXONOMY_INITIALIZED) {
             return effects().error("Taxonomy already exists");
         }
-        // TODO: Figure out how to check if taxonomy already exists
         try {
-            CCFLog.info(logger, "Create taxonomy", Map.of("taxonomy_id", entityId, "metadata", taxonomyCreate.toString()));
-            var event = new TaxonomyEvent.TaxonomyCreated(new Taxonomy.TaxonomyCreate(entityId, 
+            CCFLog.info(logger, "Create taxonomy", Map.of("taxonomy_id", entityId, "taxonomyCreate", taxonomyCreate.toString()));
+            var event = new TaxonomyEvent.TaxonomyCreated(new Taxonomy.TaxonomyCreate(new TaxonomyId(entityId), 
             taxonomyCreate.dimensionName(), taxonomyCreate.name(), taxonomyCreate.description(), taxonomyCreate.version()));
             return effects()
                     .persist(event)
                     .thenReply(newState -> new TaxonomyResult.Success());
         } catch (Exception e) {
-            logger.info("Creating bank Invalid URL:{} ",e.getMessage());
-            return effects().error("Invalid URL");
+            CCFLog.error(logger, "Creating Taxonomy failed",Map.of("taxonomy_id", entityId, "taxonomyCreate", taxonomyCreate.toString(),"error", e.getMessage()));
+            return effects().reply(new TaxonomyResult.CreateFailed(e.getMessage()));
         }
     }
     @Override
