@@ -14,8 +14,7 @@ public record Taxonomy(String id, String name, String description, TaxonomyVersi
     private static final Logger logger = LoggerFactory.getLogger(Standard.class);
 
 
-    public record TaxonomyCreate(String id, String dimensionName, String name, String description, TaxonomyVersion version) {}
-    public record TaxonomyPublish(String id, Boolean isPublish) {}
+    public record TaxonomyCreate(String dimensionName, String name, String description, TaxonomyVersion version) {}
     public record TaxRowAdd(String id, TaxRow row) {}
     public record TaxRowRemove(String id, String rowId) {}
     public record TaxRowsAdd(String id, List<TaxRow> rows, Boolean isReplace) {}
@@ -35,15 +34,15 @@ public record Taxonomy(String id, String name, String description, TaxonomyVersi
         CCFLog.info(logger, "Taxonomy created", Map.of("taxonomy", created.taxonomyCreate().toString()));
 
         if (this.status() != TaxonomyStatus.TAXONOMY_DISABLED) {
-            throw new TaxonomyException(created.taxonomyCreate().id().toString(), "Taxonomy already exists");
+            throw new TaxonomyException(this.id, "Taxonomy already exists");
         }
-        
+
         return new Taxonomy(this.id, created.taxonomyCreate().name(), created.taxonomyCreate().description(),     
             created.taxonomyCreate().version(), created.taxonomyCreate().dimensionName(), TaxonomyStatus.TAXONOMY_INITIALIZED, List.<TaxRow>of());
     }
 
     public Taxonomy onTaxonomyRemoved() {
-        CCFLog.info(logger, "Taxonomy removed", Map.of("taxonomy", removed.taxonomyRemove().toString()));
+        CCFLog.info(logger, "Taxonomy removed", Map.of("taxonomy", this.id));
         if (this.status() == TaxonomyStatus.TAXONOMY_DISABLED || this.status() == TaxonomyStatus.TAXONOMY_PUBLISHED) {
             throw new TaxonomyException(this.id(), "Cannot remove - taxonomy is disabled or published");
         }
@@ -51,14 +50,14 @@ public record Taxonomy(String id, String name, String description, TaxonomyVersi
     }
 
     public Taxonomy onTaxonomyPublished(TaxonomyEvent.TaxonomyPublished published) {
-        CCFLog.info(logger, "Taxonomy published", Map.of("taxonomy", published.taxonomyPublish().toString()));
+        CCFLog.info(logger, "Taxonomy published", Map.of("taxonomy", this.id, "isPublished", published.isPublish().toString()));
         if (this.status() == TaxonomyStatus.TAXONOMY_DISABLED) {
             throw new TaxonomyException(this.id(), "Cannot publish - taxonomy is disabled");
         }
-        if (this.status() == TaxonomyStatus.TAXONOMY_PUBLISHED && published.taxonomyPublish().isPublish()) {
+        if (this.status() == TaxonomyStatus.TAXONOMY_PUBLISHED && published.isPublish()) {
             throw new TaxonomyException(this.id(), "Taxonomy already published");
         }
-        if (this.status() == TaxonomyStatus.TAXONOMY_PUBLISHED && !published.taxonomyPublish().isPublish()) {
+        if (this.status() == TaxonomyStatus.TAXONOMY_PUBLISHED && !published.isPublish()) {
             return new Taxonomy(this.id(), this.name(), this.description(), this.version(), this.dimension(), TaxonomyStatus.TAXONOMY_INITIALIZED, List.<TaxRow>of());
         }
         return new Taxonomy(this.id (), this.name(), this.description(), this.version(), this.dimension(), TaxonomyStatus.TAXONOMY_PUBLISHED, this.rows());

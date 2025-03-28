@@ -16,7 +16,7 @@ public sealed interface TaxonomyEvent {
     record TaxonomyRemoved() implements TaxonomyEvent {
     }
     @TypeName("taxonomy-published")
-    record TaxonomyPublished(TaxonomyPublish taxonomyPublish) implements TaxonomyEvent {
+    record TaxonomyPublished(Boolean isPublish) implements TaxonomyEvent {
     }
     @TypeName("taxonomy-taxrow-added")
     record TaxonomyTaxRowAdded(TaxRowAdd taxRowAdd) implements TaxonomyEvent {

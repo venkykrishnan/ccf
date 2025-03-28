@@ -55,8 +55,9 @@ public class TaxonomyEndpoint {
                 });
     }
 
-  public CompletionStage<HttpResponse> removeTaxonomy(String taxonomyId) {
-    CCFLog.debug(logger, "Removing taxonomy",
+    @Delete("/{taxonomyId}")
+    public CompletionStage<HttpResponse> removeTaxonomy(String taxonomyId) {
+        CCFLog.debug(logger, "Removing taxonomy",
                 Map.of("taxonomyId", taxonomyId));
     return componentClient.forEventSourcedEntity(taxonomyId)
                 .method(TaxonomyEntity::removeTaxonomy)
@@ -68,6 +69,21 @@ public class TaxonomyEndpoint {
                         "Message: %s".formatted(e.message()));  
                     default -> HttpResponses.internalServerError();
                 });
-  }
+    }
 
+    @Put("/{taxonomyId}/publish")
+    public CompletionStage<HttpResponse> publishTaxonomy(String taxonomyId) {
+        CCFLog.debug(logger, "Publishing taxonomy",
+                Map.of("taxonomyId", taxonomyId));
+        return componentClient.forEventSourcedEntity(taxonomyId)
+                .method(TaxonomyEntity::publishTaxonomy)
+                .invokeAsync(true)
+                .thenApply(publishTaxonomyResult ->
+                    switch (publishTaxonomyResult) {
+                    case TaxonomyEntity.TaxonomyResult.Success success -> HttpResponses.ok();
+                    case TaxonomyEntity.TaxonomyResult.PublishFailed e -> HttpResponses.badRequest(
+                        "Message: %s".formatted(e.message()));
+                    default -> HttpResponses.internalServerError();
+                });
+    }
 }

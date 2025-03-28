@@ -100,9 +100,9 @@ public class TaxonomyEntity extends EventSourcedEntity<Taxonomy, TaxonomyEvent> 
         }
     }
 
-    public Effect<TaxonomyResult> publishTaxonomy(Taxonomy.TaxonomyPublish taxonomyPublish) {
+    public Effect<TaxonomyResult> publishTaxonomy(Boolean taxonomyPublish) {
         try {
-            CCFLog.info(logger, "Publish taxonomy", Map.of("taxonomy_id", entityId, "taxonomyPublish", taxonomyPublish.toString()));
+            CCFLog.info(logger, "Publish taxonomy", Map.of("taxonomy_id", entityId, "taxonomyPublish", taxonomyPublish));
             var event = new TaxonomyEvent.TaxonomyPublished(taxonomyPublish);
             return effects().persist(event).thenReply(newState -> new TaxonomyResult.Success(entityId));
         } catch (Exception e) {
