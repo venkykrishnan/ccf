@@ -1,13 +1,10 @@
 package ccf.domain.standard;
 import akka.javasdk.annotations.TypeName;
 import ccf.domain.standard.Taxonomy.TaxRowAdd;
-import ccf.domain.standard.Taxonomy.TaxRowRemove;
 import ccf.domain.standard.Taxonomy.TaxRowUpdate;
 import ccf.domain.standard.Taxonomy.TaxRowsAdd;
 import ccf.domain.standard.Taxonomy.TaxRowsRemove;
 import ccf.domain.standard.Taxonomy.TaxonomyCreate;
-import ccf.domain.standard.Taxonomy.TaxonomyPublish;
-import ccf.domain.standard.Taxonomy.TaxonomyRemove;
 public sealed interface TaxonomyEvent {
     @TypeName("taxonomy-created")
     record TaxonomyCreated(TaxonomyCreate taxonomyCreate) implements TaxonomyEvent {
@@ -22,7 +19,7 @@ public sealed interface TaxonomyEvent {
     record TaxonomyTaxRowAdded(TaxRowAdd taxRowAdd) implements TaxonomyEvent {
     }
     @TypeName("taxonomy-taxrow-removed")
-    record TaxonomyTaxRowRemoved(TaxRowRemove taxRowRemove) implements TaxonomyEvent {
+    record TaxonomyTaxRowRemoved(String rowId) implements TaxonomyEvent {
     }
     @TypeName("taxonomy-taxrows-added")
     record TaxonomyTaxRowsAdded(TaxRowsAdd taxRowsAdd) implements TaxonomyEvent {

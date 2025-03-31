@@ -102,7 +102,7 @@ public class TaxonomyEntity extends EventSourcedEntity<Taxonomy, TaxonomyEvent> 
 
     public Effect<TaxonomyResult> publishTaxonomy(Boolean taxonomyPublish) {
         try {
-            CCFLog.info(logger, "Publish taxonomy", Map.of("taxonomy_id", entityId, "taxonomyPublish", taxonomyPublish));
+            CCFLog.info(logger, "Publish taxonomy", Map.of("taxonomy_id", entityId, "taxonomyPublish", taxonomyPublish.toString()));
             var event = new TaxonomyEvent.TaxonomyPublished(taxonomyPublish);
             return effects().persist(event).thenReply(newState -> new TaxonomyResult.Success(entityId));
         } catch (Exception e) {
@@ -124,14 +124,13 @@ public class TaxonomyEntity extends EventSourcedEntity<Taxonomy, TaxonomyEvent> 
         }
     }
 
-    public Effect<TaxonomyResult> removeTaxRow(Taxonomy.TaxRowRemove taxRowRemove) {
+    public Effect<TaxonomyResult> removeTaxRow(String rowId) {
         try {
-            CCFLog.info(logger, "Remove tax row", Map.of("taxonomy_id", entityId, "taxRowRemove", taxRowRemove.toString()));
-            var event = new TaxonomyEvent.TaxonomyTaxRowRemoved(taxRowRemove);
+            CCFLog.info(logger, "Remove tax row", Map.of("taxonomy_id", entityId, "rowId", rowId));
+            var event = new TaxonomyEvent.TaxonomyTaxRowRemoved(rowId);
             return effects().persist(event).thenReply(newState -> new TaxonomyResult.Success(entityId));
         } catch (Exception e) {
-            CCFLog.error(logger, "Removing Taxonomy Tax Row failed", Map.of("taxonomy_id", entityId, "taxRowRemove",
-                    taxRowRemove.toString(), "error", e.getMessage()));
+            CCFLog.error(logger, "Removing Taxonomy Tax Row failed", Map.of("taxonomy_id", entityId, "rowId", rowId, "error", e.getMessage()));
             return effects().reply(new TaxonomyResult.IncorrectRemove("removeTaxRow", e.getMessage()));
         }
     }
@@ -146,7 +145,19 @@ public class TaxonomyEntity extends EventSourcedEntity<Taxonomy, TaxonomyEvent> 
                     taxRowsAdd.toString(), "error", e.getMessage()));
             return effects().reply(new TaxonomyResult.IncorrectAdd("addTaxRows", e.getMessage()));
         }
-    }   
+    }
+
+    public Effect<TaxonomyResult> removeTaxRows(Taxonomy.TaxRowsRemove taxRowsRemove) {
+        try {
+            CCFLog.info(logger, "Remove tax rows", Map.of("taxonomy_id", entityId, "taxRowsRemove", taxRowsRemove.toString()));
+            var event = new TaxonomyEvent.TaxonomyTaxRowsRemoved(taxRowsRemove);
+            return effects().persist(event).thenReply(newState -> new TaxonomyResult.Success(entityId));
+        } catch (Exception e) {
+            CCFLog.error(logger, "Removing Taxonomy Tax Rows failed", Map.of("taxonomy_id", entityId, "taxRowsRemove",
+                    taxRowsRemove.toString(), "error", e.getMessage()));
+            return effects().reply(new TaxonomyResult.IncorrectRemove("removeTaxRows", e.getMessage()));
+        }
+    }
 
     public Effect<TaxonomyResult> updateTaxRow(Taxonomy.TaxRowUpdate taxRowUpdate) {
         try {
@@ -168,6 +179,7 @@ public class TaxonomyEntity extends EventSourcedEntity<Taxonomy, TaxonomyEvent> 
             case TaxonomyEvent.TaxonomyPublished evt -> currentState().onTaxonomyPublished(evt);
             case TaxonomyEvent.TaxonomyTaxRowAdded evt -> currentState().onTaxonomyTaxRowAdded(evt);
             case TaxonomyEvent.TaxonomyTaxRowsAdded evt -> currentState().onTaxonomyTaxRowsAdded(evt);
+            case TaxonomyEvent.TaxonomyTaxRowRemoved evt -> currentState().onTaxonomyTaxRowRemoved(evt);
             case TaxonomyEvent.TaxonomyTaxRowsRemoved evt -> currentState().onTaxonomyTaxRowsRemoved(evt);
             case TaxonomyEvent.TaxonomyTaxRowUpdated evt -> currentState().onTaxonomyTaxRowUpdated(evt);
             default -> currentState();
