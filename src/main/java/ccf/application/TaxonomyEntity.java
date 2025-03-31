@@ -5,7 +5,6 @@ import akka.javasdk.eventsourcedentity.EventSourcedEntity;
 import akka.javasdk.eventsourcedentity.EventSourcedEntityContext;
 import ccf.domain.standard.Taxonomy;
 import ccf.domain.standard.TaxonomyEvent;
-import ccf.domain.standard.TaxonomyId;
 import ccf.domain.standard.TaxonomyStatus;
 import ccf.domain.standard.Taxonomy.TaxonomyCreate;
 import ccf.util.CCFLog;

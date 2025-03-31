@@ -16,10 +16,8 @@ import ccf.domain.standard.TaxonomyRows;
 import ccf.util.CCFLog;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 import java.util.Map;
-import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionStage;
 
 @Acl(allow = @Acl.Matcher(principal = Acl.Principal.INTERNET))
@@ -166,12 +164,12 @@ public class TaxonomyEndpoint {
                 });
     }
     @Put("/{taxonomyId}/taxrow/{rowId}")
-    public CompletionStage<HttpResponse> updateTaxRow(String taxonomyId, Taxonomy.TaxRowUpdate taxRowUpdate) {
+    public CompletionStage<HttpResponse> updateTaxRow(String taxonomyId, String rowId, Taxonomy.TaxRowUpdate taxRowUpdate) {
         CCFLog.debug(logger, "Updating tax row",
-                Map.of("taxonomyId", taxonomyId, "taxRowUpdate", taxRowUpdate.toString()));
+                Map.of("taxonomyId", taxonomyId, "rowId", rowId, "taxRowUpdate", taxRowUpdate.toString()));
         return componentClient.forEventSourcedEntity(taxonomyId)
                 .method(TaxonomyEntity::updateTaxRow)
-                .invokeAsync(taxRowUpdate)
+                .invokeAsync(rowId, taxRowUpdate)
                 .thenApply(updateTaxRowResult ->
                     switch (updateTaxRowResult) {
                     case TaxonomyEntity.TaxonomyResult.Success success -> HttpResponses.ok();

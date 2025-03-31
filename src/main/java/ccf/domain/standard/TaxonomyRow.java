@@ -8,15 +8,20 @@ import ccf.domain.standard.Taxonomy.TaxRowUpdate;
 import ccf.domain.standard.Taxonomy.TaxRowsAdd;
 import ccf.domain.standard.Taxonomy.TaxRowsRemove;
 
-// TaxonomyRow is a combination of a Taxonomy and a TaxonomyVersion
-public record TaxonomyRow(String name, String description, TaxonomyVersion version, String dimension, List<Nodes> rows,
+// TaxonomyRow represents a Taxonomy with its nodes stored in a Nodes record
+public record TaxonomyRow(String name, String description, TaxonomyVersion version, String dimension, List<Node> rows,
                 Boolean isPublished) {
 
-        public record Nodes(String id, String value, String description, List<String> aliases, List<String> keywords,
+        public record Node(String id, String value, String description, List<String> aliases, List<String> keywords,
                         Map<String, List<String>> dimensionSrcHints, // columns in src dimension table. key is the
                                                                      // dimension name,
                                                                      // value is the list of column names.
                         String parent) {
+        }
+        public record Nodes(List<Node> rows) {
+        }
+
+        public record TaxonomyByDimensionAndName(String dimension, String name) {
         }
 
         public TaxonomyRow onTaxonomyPublished(Boolean isPublished) {
@@ -25,8 +30,8 @@ public record TaxonomyRow(String name, String description, TaxonomyVersion versi
         }
 
         public TaxonomyRow onTaxonomyTaxRowAdded(TaxRowAdd taxRowAdd) {
-                var newRows = new java.util.ArrayList<>(this.rows());
-                newRows.add(new Nodes(taxRowAdd.row().rowId(), taxRowAdd.row().value(), taxRowAdd.row().description(), taxRowAdd.row().aliases(), taxRowAdd.row().keywords(),
+                var newRows = new java.util.ArrayList<Node>(this.rows());
+                newRows.add(new Node(taxRowAdd.row().rowId(), taxRowAdd.row().value(), taxRowAdd.row().description(), taxRowAdd.row().aliases(), taxRowAdd.row().keywords(),
                                 taxRowAdd.row().dimensionSrcHints(), taxRowAdd.row().parent()));
                 return new TaxonomyRow(name, description, version, dimension, newRows,
                                 isPublished);
@@ -37,12 +42,12 @@ public record TaxonomyRow(String name, String description, TaxonomyVersion versi
                 if (taxRowsAdd.isReplace()) {
                     newRows.clear();
                     taxRowsAdd.rows().stream()
-                        .map(row -> new Nodes(row.rowId(), row.value(), row.description(), row.aliases(), row.keywords(),
+                        .map(row -> new Node(row.rowId(), row.value(), row.description(), row.aliases(), row.keywords(),
                                 row.dimensionSrcHints(), row.parent()))
                         .forEach(newRows::add);
                 } else {
                     taxRowsAdd.rows().stream()
-                        .map(row -> new Nodes(row.rowId(), row.value(), row.description(), row.aliases(), row.keywords(),
+                        .map(row -> new Node(row.rowId(), row.value(), row.description(), row.aliases(), row.keywords(),
                                 row.dimensionSrcHints(), row.parent()))
                         .forEach(newRows::add);
                 }
@@ -59,7 +64,7 @@ public record TaxonomyRow(String name, String description, TaxonomyVersion versi
         public TaxonomyRow onTaxonomyTaxRowsRemoved(TaxRowsRemove taxRowsRemove) {
                 var newRows = new java.util.ArrayList<>(this.rows());
                 newRows.removeAll(taxRowsRemove.rowIds().stream()
-                        .map(id -> new Nodes(id, "", "", List.of(), List.of(), Map.of(), ""))
+                        .map(id -> new Node(id, "", "", List.of(), List.of(), Map.of(), ""))
                         .toList());
                 return new TaxonomyRow(name, description, version, dimension, newRows,
                                 isPublished);   
@@ -71,7 +76,7 @@ public record TaxonomyRow(String name, String description, TaxonomyVersion versi
                         .filter(r -> r.id().equals(taxRowUpdate.rowId()))
                         .findFirst()
                         .orElseThrow(() -> new TaxonomyException(this.name(), "Tax row with ID '" + taxRowUpdate.rowId() + "' not found"));
-                newRows.set(newRows.indexOf(row), new Nodes(row.id(), taxRowUpdate.row().value(), taxRowUpdate.row().description(), taxRowUpdate.row().aliases(), taxRowUpdate.row().keywords(),
+                newRows.set(newRows.indexOf(row), new Node(row.id(), taxRowUpdate.row().value(), taxRowUpdate.row().description(), taxRowUpdate.row().aliases(), taxRowUpdate.row().keywords(),
                                 taxRowUpdate.row().dimensionSrcHints(), taxRowUpdate.row().parent()));
                 return new TaxonomyRow(name, description, version, dimension, newRows,
                                 isPublished);

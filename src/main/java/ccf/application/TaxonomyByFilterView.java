@@ -7,10 +7,10 @@ import akka.javasdk.annotations.Consume;
 import akka.javasdk.annotations.Query;
 import akka.javasdk.view.TableUpdater;
 import akka.javasdk.view.View;
-import ccf.domain.standard.NodeRow;
-import ccf.domain.standard.NodeRows;
 import ccf.domain.standard.TaxonomyEvent;
 import ccf.domain.standard.TaxonomyRow;
+import ccf.domain.standard.TaxonomyRow.Nodes;
+import ccf.domain.standard.TaxonomyRow.TaxonomyByDimensionAndName;
 import ccf.domain.standard.TaxonomyRows;
 
 @ComponentId("taxonomy_by_filter")
@@ -23,7 +23,7 @@ public class TaxonomyByFilterView extends View {
                 case TaxonomyEvent.TaxonomyCreated created -> effects().updateRow(
                         new TaxonomyRow(created.taxonomyCreate().name(), created.taxonomyCreate().description(),
                                 created.taxonomyCreate().version(),
-                                created.taxonomyCreate().dimensionName(), List.<TaxonomyRow.Nodes>of(), false));
+                                created.taxonomyCreate().dimensionName(), List.<TaxonomyRow.Node>of(), false));
                 case TaxonomyEvent.TaxonomyRemoved removed -> effects().deleteRow();
                 case TaxonomyEvent.TaxonomyPublished published ->
                     effects().updateRow(rowState().onTaxonomyPublished(published.isPublish()));
@@ -48,24 +48,18 @@ public class TaxonomyByFilterView extends View {
         return queryResult();
     }
 
-    @Query("SELECT * AS taxonomy FROM taxonomy_by_filter WHERE taxonomy.dimensionName = :dimensionName AND taxonomy.name = :name")
-    public QueryEffect<TaxonomyRows> getTaxonomyByDimensionAndName(String dimensionName, String name) {
+    @Query("SELECT * AS taxonomy FROM taxonomy_by_filter WHERE taxonomy.dimensionName = :dimensionAndName.dimension AND taxonomy.name = :dimensionAndName.name")
+    public QueryEffect<TaxonomyRows> getTaxonomyByDimensionAndName(TaxonomyByDimensionAndName dimensionAndName) {
         return queryResult();
     }
     
-    @Query("SELECT * AS taxonomy FROM taxonomy_by_filter WHERE taxonomy.published = true AND taxonomy.dimensionName = :dimensionName AND taxonomy.name = :name")
-    public QueryEffect<TaxonomyRows> getPublishedTaxonomyByDimensionAndName(String dimensionName, String name) {
+    @Query("SELECT * AS taxonomy FROM taxonomy_by_filter WHERE taxonomy.published = true AND taxonomy.dimensionName = :dimensionAndName.dimension AND taxonomy.name = :dimensionAndName.name")
+    public QueryEffect<TaxonomyRows> getPublishedTaxonomyByDimensionAndName(TaxonomyByDimensionAndName dimensionAndName) {
         return queryResult();
     }
 
-    private NodeRows buildNodeRows(TaxonomyRow taxonomyRow) {
-        return new NodeRows(taxonomyRow.rows().stream()
-                .map(node -> new NodeRow(node.value(), node.description(), node.aliases(), node.keywords(), node.dimensionSrcHints(), node.parent(), null))
-                .toList());
-    }
-
-    @Query("SELECT * AS nodeRows FROM taxonomy_by_filter WHERE taxonomy.name = :taxonomyId")
-    public QueryEffect<NodeRows> getNodesByTaxonomyId(String taxonomyId) {
+    @Query("SELECT rows AS nodeRows FROM taxonomy_by_filter WHERE taxonomy.name = :taxonomyId")
+    public QueryEffect<Nodes> getNodesByTaxonomyId(String taxonomyId) {
         return queryResult();
     }
 

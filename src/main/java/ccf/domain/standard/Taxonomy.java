@@ -11,7 +11,7 @@ import ccf.util.CCFLog;
 public record Taxonomy(String id, String name, String description, TaxonomyVersion version, String dimension,
         TaxonomyStatus status, List<TaxRow> rows) {
 
-    private static final Logger logger = LoggerFactory.getLogger(Standard.class);
+    private static final Logger logger = LoggerFactory.getLogger(Taxonomy.class);
 
     public record TaxonomyCreate(String dimensionName, String name, String description, TaxonomyVersion version) {
     }
