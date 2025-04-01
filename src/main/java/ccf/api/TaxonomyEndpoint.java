@@ -12,7 +12,7 @@ import akka.javasdk.http.HttpResponses;
 import ccf.application.TaxonomyByFilterView;
 import ccf.application.TaxonomyEntity;
 import ccf.domain.standard.Taxonomy;
-import ccf.domain.standard.TaxonomyRows;
+import ccf.domain.standard.Taxonomys;
 import ccf.util.CCFLog;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -169,7 +169,7 @@ public class TaxonomyEndpoint {
                 Map.of("taxonomyId", taxonomyId, "rowId", rowId, "taxRowUpdate", taxRowUpdate.toString()));
         return componentClient.forEventSourcedEntity(taxonomyId)
                 .method(TaxonomyEntity::updateTaxRow)
-                .invokeAsync(rowId, taxRowUpdate)
+                .invokeAsync(taxRowUpdate)
                 .thenApply(updateTaxRowResult ->
                     switch (updateTaxRowResult) {
                     case TaxonomyEntity.TaxonomyResult.Success success -> HttpResponses.ok();
@@ -179,7 +179,7 @@ public class TaxonomyEndpoint {
                 });
     }
     @Get("/all")
-    public CompletionStage<TaxonomyRows> getAllTaxonomies() {
+    public CompletionStage<Taxonomys> getAllTaxonomies() {
         CCFLog.debug(logger, "get all taxonomies", Map.of());
         return componentClient.forView()
                 .method(TaxonomyByFilterView::getAllTaxonomies)

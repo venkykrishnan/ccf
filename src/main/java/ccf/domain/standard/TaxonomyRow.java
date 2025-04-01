@@ -13,7 +13,7 @@ public record TaxonomyRow(String name, String description, TaxonomyVersion versi
                 Boolean isPublished) {
 
         public record Node(String id, String value, String description, List<String> aliases, List<String> keywords,
-                        Map<String, List<String>> dimensionSrcHints, // columns in src dimension table. key is the
+                        List<KeyValue> dimensionSrcHints, // columns in src dimension table. key is the
                                                                      // dimension name,
                                                                      // value is the list of column names.
                         String parent) {
@@ -22,6 +22,14 @@ public record TaxonomyRow(String name, String description, TaxonomyVersion versi
         }
 
         public record TaxonomyByDimensionAndName(String dimension, String name) {
+        }
+        public record KeyValue(String first, String second) {
+        }
+        private List<KeyValue> flattenDimensionSrcHints(Map<String, List<String>> dimensionSrcHints) {
+                return dimensionSrcHints.entrySet().stream()
+                        .flatMap(entry -> entry.getValue().stream()
+                                .map(value -> new KeyValue(entry.getKey(), value)))
+                        .toList();
         }
 
         public TaxonomyRow onTaxonomyPublished(Boolean isPublished) {
@@ -32,7 +40,7 @@ public record TaxonomyRow(String name, String description, TaxonomyVersion versi
         public TaxonomyRow onTaxonomyTaxRowAdded(TaxRowAdd taxRowAdd) {
                 var newRows = new java.util.ArrayList<Node>(this.rows());
                 newRows.add(new Node(taxRowAdd.row().rowId(), taxRowAdd.row().value(), taxRowAdd.row().description(), taxRowAdd.row().aliases(), taxRowAdd.row().keywords(),
-                                taxRowAdd.row().dimensionSrcHints(), taxRowAdd.row().parent()));
+                                flattenDimensionSrcHints(taxRowAdd.row().dimensionSrcHints()), taxRowAdd.row().parent()));
                 return new TaxonomyRow(name, description, version, dimension, newRows,
                                 isPublished);
         }
@@ -43,12 +51,12 @@ public record TaxonomyRow(String name, String description, TaxonomyVersion versi
                     newRows.clear();
                     taxRowsAdd.rows().stream()
                         .map(row -> new Node(row.rowId(), row.value(), row.description(), row.aliases(), row.keywords(),
-                                row.dimensionSrcHints(), row.parent()))
+                                flattenDimensionSrcHints(row.dimensionSrcHints()), row.parent()))
                         .forEach(newRows::add);
                 } else {
                     taxRowsAdd.rows().stream()
                         .map(row -> new Node(row.rowId(), row.value(), row.description(), row.aliases(), row.keywords(),
-                                row.dimensionSrcHints(), row.parent()))
+                                flattenDimensionSrcHints(row.dimensionSrcHints()), row.parent()))
                         .forEach(newRows::add);
                 }
                 return new TaxonomyRow(name, description, version, dimension, newRows,
@@ -64,7 +72,7 @@ public record TaxonomyRow(String name, String description, TaxonomyVersion versi
         public TaxonomyRow onTaxonomyTaxRowsRemoved(TaxRowsRemove taxRowsRemove) {
                 var newRows = new java.util.ArrayList<>(this.rows());
                 newRows.removeAll(taxRowsRemove.rowIds().stream()
-                        .map(id -> new Node(id, "", "", List.of(), List.of(), Map.of(), ""))
+                        .map(id -> new Node(id, "", "", List.of(), List.of(), List.of(), ""))
                         .toList());
                 return new TaxonomyRow(name, description, version, dimension, newRows,
                                 isPublished);   
@@ -77,7 +85,7 @@ public record TaxonomyRow(String name, String description, TaxonomyVersion versi
                         .findFirst()
                         .orElseThrow(() -> new TaxonomyException(this.name(), "Tax row with ID '" + taxRowUpdate.rowId() + "' not found"));
                 newRows.set(newRows.indexOf(row), new Node(row.id(), taxRowUpdate.row().value(), taxRowUpdate.row().description(), taxRowUpdate.row().aliases(), taxRowUpdate.row().keywords(),
-                                taxRowUpdate.row().dimensionSrcHints(), taxRowUpdate.row().parent()));
+                                flattenDimensionSrcHints(taxRowUpdate.row().dimensionSrcHints()), taxRowUpdate.row().parent()));
                 return new TaxonomyRow(name, description, version, dimension, newRows,
                                 isPublished);
         }

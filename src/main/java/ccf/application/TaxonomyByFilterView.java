@@ -11,7 +11,7 @@ import ccf.domain.standard.TaxonomyEvent;
 import ccf.domain.standard.TaxonomyRow;
 import ccf.domain.standard.TaxonomyRow.Nodes;
 import ccf.domain.standard.TaxonomyRow.TaxonomyByDimensionAndName;
-import ccf.domain.standard.TaxonomyRows;
+import ccf.domain.standard.Taxonomys;
 
 @ComponentId("taxonomy_by_filter")
 public class TaxonomyByFilterView extends View {
@@ -38,30 +38,30 @@ public class TaxonomyByFilterView extends View {
         }
     }
 
-    @Query("SELECT * AS taxonomy FROM taxonomy_by_filter")
-    public QueryEffect<TaxonomyRows> getAllTaxonomies() {
+    @Query("SELECT * AS taxonomies FROM taxonomy_by_filter")
+    public QueryEffect<Taxonomys> getAllTaxonomies() {
         return queryResult();
     }
 
-    @Query("SELECT * AS taxonomy FROM taxonomy_by_filter WHERE taxonomy.dimensionName = :dimensionName")
-    public QueryEffect<TaxonomyRows> getTaxonomiesByDimension(String dimensionName) {
-        return queryResult();
-    }
+    // @Query("SELECT * AS taxonomy FROM taxonomy_by_filter WHERE taxonomy.dimensionName = :dimensionName")
+    // public QueryEffect<TaxonomyRows> getTaxonomiesByDimension(String dimensionName) {
+    //     return queryResult();
+    // }
 
-    @Query("SELECT * AS taxonomy FROM taxonomy_by_filter WHERE taxonomy.dimensionName = :dimensionAndName.dimension AND taxonomy.name = :dimensionAndName.name")
-    public QueryEffect<TaxonomyRows> getTaxonomyByDimensionAndName(TaxonomyByDimensionAndName dimensionAndName) {
-        return queryResult();
-    }
+    // @Query("SELECT * AS taxonomy FROM taxonomy_by_filter WHERE taxonomy.dimensionName = :dimensionAndName.dimension AND taxonomy.name = :dimensionAndName.name")
+    // public QueryEffect<TaxonomyRows> getTaxonomyByDimensionAndName(TaxonomyByDimensionAndName dimensionAndName) {
+    //     return queryResult();
+    // }
     
-    @Query("SELECT * AS taxonomy FROM taxonomy_by_filter WHERE taxonomy.published = true AND taxonomy.dimensionName = :dimensionAndName.dimension AND taxonomy.name = :dimensionAndName.name")
-    public QueryEffect<TaxonomyRows> getPublishedTaxonomyByDimensionAndName(TaxonomyByDimensionAndName dimensionAndName) {
-        return queryResult();
-    }
+    // @Query("SELECT * AS taxonomy FROM taxonomy_by_filter WHERE taxonomy.published = true AND taxonomy.dimensionName = :dimensionAndName.dimension AND taxonomy.name = :dimensionAndName.name")
+    // public QueryEffect<TaxonomyRows> getPublishedTaxonomyByDimensionAndName(TaxonomyByDimensionAndName dimensionAndName) {
+    //     return queryResult();
+    // }
 
-    @Query("SELECT rows AS nodeRows FROM taxonomy_by_filter WHERE taxonomy.name = :taxonomyId")
-    public QueryEffect<Nodes> getNodesByTaxonomyId(String taxonomyId) {
-        return queryResult();
-    }
+    // @Query("SELECT rows AS nodeRows FROM taxonomy_by_filter WHERE taxonomy.name = :taxonomyId")
+    // public QueryEffect<Nodes> getNodesByTaxonomyId(String taxonomyId) {
+    //     return queryResult();
+    // }
 
 
 }
