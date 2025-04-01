@@ -12,8 +12,7 @@
             "projectName": "taxonomy-service",
             "cwd": "${workspaceFolder}",
             "vmArgs": [],
-            "env": {},
-            "console": "integratedTerminal"
+            "env": {}
         },
         {
             "type": "java",

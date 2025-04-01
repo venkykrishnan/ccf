@@ -185,4 +185,11 @@ public class TaxonomyEndpoint {
                 .method(TaxonomyByFilterView::getAllTaxonomies)
                 .invokeAsync();
     }
+    @Get("/dimension/{dimensionName}")    
+    public CompletionStage<Taxonomys> getTaxonomiesByDimension(String dimensionName) {
+        CCFLog.debug(logger, "get taxonomies by dimension", Map.of("dimensionName", dimensionName));
+        return componentClient.forView()
+                .method(TaxonomyByFilterView::getTaxonomiesByDimension)
+                .invokeAsync(dimensionName);
+    }
 }

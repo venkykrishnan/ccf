@@ -43,10 +43,10 @@ public class TaxonomyByFilterView extends View {
         return queryResult();
     }
 
-    // @Query("SELECT * AS taxonomy FROM taxonomy_by_filter WHERE taxonomy.dimensionName = :dimensionName")
-    // public QueryEffect<TaxonomyRows> getTaxonomiesByDimension(String dimensionName) {
-    //     return queryResult();
-    // }
+    @Query("SELECT * AS taxonomies FROM taxonomy_by_filter WHERE dimension = :dimensionName")
+    public QueryEffect<Taxonomys> getTaxonomiesByDimension(String dimensionName) {
+        return queryResult();
+    }
 
     // @Query("SELECT * AS taxonomy FROM taxonomy_by_filter WHERE taxonomy.dimensionName = :dimensionAndName.dimension AND taxonomy.name = :dimensionAndName.name")
     // public QueryEffect<TaxonomyRows> getTaxonomyByDimensionAndName(TaxonomyByDimensionAndName dimensionAndName) {
