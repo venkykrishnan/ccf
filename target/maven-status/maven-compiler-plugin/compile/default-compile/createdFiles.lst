@@ -82,6 +82,7 @@ ccf/api/TaxonomyEndpoint.class
 ccf/application/UserEntity$UserResult$Success.class
 ccf/util/serializer/CustomInstantDeserializer.class
 ccf/util/serializer/AkkaLocalDateTimeModule.class
+ccf/domain/standard/Taxonomys.class
 ccf/domain/bank/Bank$BankCreateInfo.class
 ccf/util/period/FiscalAsOf.class
 ccf/domain/user/User$UserCreateInfo.class
@@ -114,6 +115,7 @@ ccf/domain/standard/Taxonomy$TaxRowUpdate.class
 ccf/domain/CompanyMinMaxStartYear.class
 ccf/domain/standard/TaxonomyEvent$TaxonomyPublished.class
 ccf/util/period/FiscalYears.class
+ccf/domain/standard/TaxonomyRow$KeyValue.class
 ccf/util/serializer/JsonLocalDateTimeParser.class
 ccf/application/CompanyEntity$CompanyPeriodResult$IncorrectPeriodOp.class
 ccf/util/serializer/AkkaDateTimeModule.class

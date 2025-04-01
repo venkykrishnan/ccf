@@ -9,7 +9,6 @@
             "name": "Run with Maven",
             "request": "launch",
             "preLaunchTask": "mvn-compile",
-            "mainClass": "ccf.CompanyRegistrySetup",
             "projectName": "taxonomy-service",
             "cwd": "${workspaceFolder}",
             "vmArgs": [],
