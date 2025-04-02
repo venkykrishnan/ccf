@@ -14,8 +14,8 @@ public class TaxonomyClientDemo {
 
             // Create a new taxonomy
             String taxonomyId = "tax-001"; // You can make this dynamic or read from args
-            String createResponse = client.createTaxonomy(taxonomyId, jsonPath);
-            System.out.println("Create Response: " + createResponse);
+            // String createResponse = client.createTaxonomy(taxonomyId, jsonPath);
+            // System.out.println("Create Response: " + createResponse);
 
             // Get the created taxonomy
             String getResponse = client.getTaxonomy(taxonomyId);

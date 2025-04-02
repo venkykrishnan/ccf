@@ -32,6 +32,7 @@ public class TaxonomyEntity extends EventSourcedEntity<Taxonomy, TaxonomyEvent> 
     @JsonTypeInfo(use = JsonTypeInfo.Id.NAME)
     @JsonSubTypes({
             @JsonSubTypes.Type(value = TaxonomyResult.Success.class, name = "Success"),
+            @JsonSubTypes.Type(value = TaxonomyResult.GetFailed.class, name = "GetFailed"),
             @JsonSubTypes.Type(value = TaxonomyResult.CreateFailed.class, name = "CreateFailed"),
             @JsonSubTypes.Type(value = TaxonomyResult.RemoveFailed.class, name = "RemoveFailed"),
             @JsonSubTypes.Type(value = TaxonomyResult.IncorrectAdd.class, name = "IncorrectAdd"),
@@ -41,6 +42,9 @@ public class TaxonomyEntity extends EventSourcedEntity<Taxonomy, TaxonomyEvent> 
     public sealed interface TaxonomyResult {
 
         record CreateFailed(String message) implements TaxonomyResult {
+        }
+
+        record GetFailed(String message) implements TaxonomyResult {
         }
 
         record IncorrectAdd(String action,String message) implements TaxonomyResult {
@@ -67,8 +71,22 @@ public class TaxonomyEntity extends EventSourcedEntity<Taxonomy, TaxonomyEvent> 
         return new Taxonomy(entityId, null, null, null, null, TaxonomyStatus.TAXONOMY_DISABLED, List.of());
     }
 
-    public ReadOnlyEffect<Taxonomy> getTaxonomy() {
-        return effects().reply(currentState());
+    public ReadOnlyEffect<TaxonomyResult> getTaxonomy() {
+        try {
+            CCFLog.info(logger, "getTaxonomy",
+                    Map.of("taxonomy_id", entityId, "status", currentState().status().toString()));
+            if (currentState().status() == TaxonomyStatus.TAXONOMY_DISABLED) {
+                CCFLog.debug(logger, "Taxonomy is disabled", Map.of("taxonomy_id", entityId));
+                return effects().reply(new TaxonomyResult.GetFailed("Taxonomy %s doesnt exist".formatted(entityId)));
+            }
+            CCFLog.debug(logger, "Taxonomy is enabled", Map.of("taxonomy_id", entityId));
+            return effects().reply(new TaxonomyResult.Success(entityId));
+        } catch (Exception e) {
+            CCFLog.error(logger, "getTaxonomy failed", Map.of("taxonomy_id", entityId, "error", e.getMessage()));
+            return effects().reply(new TaxonomyResult.GetFailed(e.getMessage()));
+        }
+
+        // return effects().reply(currentState());
     }
 
     public Effect<TaxonomyResult> createTaxonomy(TaxonomyCreate taxonomyCreate) {

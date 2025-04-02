@@ -1,6 +1,6 @@
 {
   "dimensionName": "account",
-  "name": "CIQ Account",
+  "name": "CIQ AccountRoot",
   "description": "CIQ Account taxonomy",
   "version": "1.0"
 }

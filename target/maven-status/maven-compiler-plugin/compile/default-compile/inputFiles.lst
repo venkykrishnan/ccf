@@ -12,6 +12,8 @@
 /Users/vkrishnan/Projects/JavaProjects/ccf/src/main/java/ccf/application/TaxonomyEntity.java
 /Users/vkrishnan/Projects/JavaProjects/ccf/src/main/java/ccf/application/UserEntity.java
 /Users/vkrishnan/Projects/JavaProjects/ccf/src/main/java/ccf/application/UsersByFilterView.java
+/Users/vkrishnan/Projects/JavaProjects/ccf/src/main/java/ccf/client/TaxonomyClient.java
+/Users/vkrishnan/Projects/JavaProjects/ccf/src/main/java/ccf/client/TaxonomyClientDemo.java
 /Users/vkrishnan/Projects/JavaProjects/ccf/src/main/java/ccf/domain/Companies.java
 /Users/vkrishnan/Projects/JavaProjects/ccf/src/main/java/ccf/domain/Company.java
 /Users/vkrishnan/Projects/JavaProjects/ccf/src/main/java/ccf/domain/CompanyEvent.java

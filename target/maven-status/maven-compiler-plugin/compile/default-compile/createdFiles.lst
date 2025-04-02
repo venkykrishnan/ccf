@@ -28,6 +28,7 @@ ccf/domain/standard/TaxonomyEvent$TaxonomyTaxRowAdded.class
 ccf/application/UserEntity$UserResult.class
 ccf/domain/bank/BankEvent$BankCreated.class
 ccf/domain/bank/BankStatus.class
+ccf/client/TaxonomyClientDemo.class
 ccf/util/serializer/CustomInstantParseException.class
 ccf/domain/CompanyEvent.class
 ccf/util/serializer/CustomLocalDateTimeModule.class
@@ -40,6 +41,7 @@ ccf/domain/user/User$UserInput.class
 ccf/domain/user/User.class
 ccf/domain/user/UserRole.class
 ccf/application/TaxonomyEntity.class
+ccf/client/TaxonomyClient.class
 ccf/domain/standard/TaxonomyVersion.class
 ccf/application/BankEntity$BankResult$IncorrectUserId.class
 ccf/util/serializer/AkkaDateTimeDeserializer.class
