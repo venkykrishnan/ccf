@@ -53,6 +53,7 @@ public record Taxonomy(String id, String name, String description, TaxonomyVersi
         CCFLog.info(logger, "Taxonomy created", Map.of("taxonomy", created.taxonomyCreate().toString()));
 
         if (this.status() != TaxonomyStatus.TAXONOMY_DISABLED) {
+            CCFLog.error(logger, "Taxonomy already exists", Map.of("taxonomy", this.toString()));
             throw new TaxonomyException(this.id, "Taxonomy already exists");
         }
 

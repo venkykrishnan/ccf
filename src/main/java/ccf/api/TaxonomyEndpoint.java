@@ -40,7 +40,7 @@ public class TaxonomyEndpoint {
                 .invokeAsync()
                 .thenApply(taxonomyResult -> {
                     return switch (taxonomyResult) {
-                        case TaxonomyEntity.TaxonomyResult.Success success -> HttpResponses.ok(success);
+                        case TaxonomyEntity.TaxonomyResult.GetSuccess success -> HttpResponses.ok(success.taxonomy());
                         case TaxonomyEntity.TaxonomyResult.GetFailed e -> HttpResponses.badRequest(
                                 "Message: %s".formatted(e.message()));
                         default -> HttpResponses.internalServerError();

@@ -9,6 +9,15 @@
                 "kind": "build",
                 "isDefault": true
             }
+        },
+        {
+            "label": "mvn-debug",
+            "type": "shell",
+            "command": "mvn compile exec:java",
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
         }
     ]
 } 

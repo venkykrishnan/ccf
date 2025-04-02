@@ -32,6 +32,7 @@ public class TaxonomyEntity extends EventSourcedEntity<Taxonomy, TaxonomyEvent> 
     @JsonTypeInfo(use = JsonTypeInfo.Id.NAME)
     @JsonSubTypes({
             @JsonSubTypes.Type(value = TaxonomyResult.Success.class, name = "Success"),
+            @JsonSubTypes.Type(value = TaxonomyResult.GetSuccess.class, name = "GetSuccess"),
             @JsonSubTypes.Type(value = TaxonomyResult.GetFailed.class, name = "GetFailed"),
             @JsonSubTypes.Type(value = TaxonomyResult.CreateFailed.class, name = "CreateFailed"),
             @JsonSubTypes.Type(value = TaxonomyResult.RemoveFailed.class, name = "RemoveFailed"),
@@ -54,6 +55,9 @@ public class TaxonomyEntity extends EventSourcedEntity<Taxonomy, TaxonomyEvent> 
         }
 
         record Success(String id) implements TaxonomyResult {
+        }
+
+        record GetSuccess(Taxonomy taxonomy) implements TaxonomyResult {
         }
 
         record PublishFailed(String message) implements TaxonomyResult {
@@ -79,8 +83,9 @@ public class TaxonomyEntity extends EventSourcedEntity<Taxonomy, TaxonomyEvent> 
                 CCFLog.debug(logger, "Taxonomy is disabled", Map.of("taxonomy_id", entityId));
                 return effects().reply(new TaxonomyResult.GetFailed("Taxonomy %s doesnt exist".formatted(entityId)));
             }
-            CCFLog.debug(logger, "Taxonomy is enabled", Map.of("taxonomy_id", entityId));
-            return effects().reply(new TaxonomyResult.Success(entityId));
+            CCFLog.debug(logger, "Taxonomy is enabled", Map.of("taxonomy_id", entityId, "taxonomy", currentState().toString()));
+
+            return effects().reply(new TaxonomyResult.GetSuccess(currentState()));
         } catch (Exception e) {
             CCFLog.error(logger, "getTaxonomy failed", Map.of("taxonomy_id", entityId, "error", e.getMessage()));
             return effects().reply(new TaxonomyResult.GetFailed(e.getMessage()));

@@ -1,0 +1,2 @@
+curl -i -XGET -H "Content-Type: application/json" localhost:9000/taxonomy/tax-101
+curl -i -XPOST -H "Content-Type: application/json" localhost:9000/taxonomy/tax-101 -d '{"dimensionName":"account", "name":"ciq Account", "description": "test123", "version": "1.0"}'

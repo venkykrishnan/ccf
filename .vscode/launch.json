@@ -6,11 +6,17 @@
     "configurations": [
         {
             "type": "java",
-            "name": "TaxonomyClientDemo",
+            "name": "Debug with Maven",
             "request": "launch",
-            "mainClass": "ccf.client.TaxonomyClientDemo",
-            "projectName": "ccf"
-        },
+            "preLaunchTask": "mvn-compile",
+            "mainClass": "ccf.CompanyRegistrySetup",
+            "projectName": "taxonomy-service",
+            "env": {
+                "MAVEN_OPTS": "-agentlib:jdwp=transport=dt_socket,server=y,suspend=y,address=*:5005"
+            },
+            "cwd": "${workspaceFolder}",
+            "console": "integratedTerminal"
+        },       
         {
             "type": "java",
             "name": "Run with Maven",
@@ -47,6 +53,13 @@
             "request": "launch",
             "mainClass": "ccf.util.period.FiscalYears",
             "projectName": "ccf"
+        },
+        {
+            "type": "java",
+            "name": "Attach to Maven",
+            "request": "attach",
+            "hostName": "localhost",
+            "port": 5005
         }
     ],
     "compounds": [],
