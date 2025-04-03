@@ -58,7 +58,7 @@ public class TaxonomyEndpoint {
                 .thenApply(createTaxonomyResult -> switch (createTaxonomyResult) {
                     case TaxonomyEntity.TaxonomyResult.Success success -> HttpResponses.ok();
                     case TaxonomyEntity.TaxonomyResult.CreateFailed e -> HttpResponses.badRequest(
-                            "Message: %s".formatted(e.message()));
+                            "Message VK: %s".formatted(e.message()));
                     default -> HttpResponses.internalServerError();
                 });
     }

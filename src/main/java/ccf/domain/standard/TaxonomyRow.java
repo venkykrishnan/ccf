@@ -14,13 +14,12 @@ import ccf.domain.standard.Taxonomy.TaxRowsRemove;
 // TaxonomyRow represents a Taxonomy with its nodes stored in a Nodes record
 public record TaxonomyRow(String name, String description, TaxonomyVersion version, String dimension, List<Node> rows,
                 Boolean isPublished) {
-
         public record Node(String id, String value, String description, List<String> aliases, List<String> keywords,
-                        List<KeyValue> dimensionSrcHints, // columns in src dimension table. key is the
-                                                                     // dimension name,
-                                                                     // value is the list of column names.
+                        List<String> dimensionSrcHints, // columns in src dimension table. key is the dimension name,
+                                                       // value is the list of column names.
                         String parent) {
         }
+
         public record Nodes(List<Node> rows) {
         }
 
@@ -30,6 +29,14 @@ public record TaxonomyRow(String name, String description, TaxonomyVersion versi
         // with String fields that Jackson can serialize/deserialize automatically
         public record KeyValue(String key, String value) {
         }
+
+        private List<String> convertDimensionSrcHintsToStrings(Map<String, List<String>> dimensionSrcHints) {
+                return dimensionSrcHints.entrySet().stream()
+                        .flatMap(entry -> entry.getValue().stream()
+                                .map(value -> entry.getKey() + ": " + value))
+                        .toList();
+        }
+        
         private List<KeyValue> flattenDimensionSrcHints(Map<String, List<String>> dimensionSrcHints) {
                 return dimensionSrcHints.entrySet().stream()
                         .flatMap(entry -> entry.getValue().stream()
@@ -45,7 +52,7 @@ public record TaxonomyRow(String name, String description, TaxonomyVersion versi
         public TaxonomyRow onTaxonomyTaxRowAdded(TaxRowAdd taxRowAdd) {
                 var newRows = new java.util.ArrayList<Node>(this.rows());
                 newRows.add(new Node(taxRowAdd.row().rowId(), taxRowAdd.row().value(), taxRowAdd.row().description(), taxRowAdd.row().aliases(), taxRowAdd.row().keywords(),
-                                flattenDimensionSrcHints(taxRowAdd.row().dimensionSrcHints()), taxRowAdd.row().parent()));
+                                convertDimensionSrcHintsToStrings(taxRowAdd.row().dimensionSrcHints()), taxRowAdd.row().parent()));
                 return new TaxonomyRow(name, description, version, dimension, newRows,
                                 isPublished);
         }
@@ -56,12 +63,12 @@ public record TaxonomyRow(String name, String description, TaxonomyVersion versi
                     newRows.clear();
                     taxRowsAdd.rows().stream()
                         .map(row -> new Node(row.rowId(), row.value(), row.description(), row.aliases(), row.keywords(),
-                                flattenDimensionSrcHints(row.dimensionSrcHints()), row.parent()))
+                                convertDimensionSrcHintsToStrings(row.dimensionSrcHints()), row.parent()))
                         .forEach(newRows::add);
                 } else {
                     taxRowsAdd.rows().stream()
                         .map(row -> new Node(row.rowId(), row.value(), row.description(), row.aliases(), row.keywords(),
-                                flattenDimensionSrcHints(row.dimensionSrcHints()), row.parent()))
+                                convertDimensionSrcHintsToStrings(row.dimensionSrcHints()), row.parent()))
                         .forEach(newRows::add);
                 }
                 return new TaxonomyRow(name, description, version, dimension, newRows,
@@ -90,7 +97,7 @@ public record TaxonomyRow(String name, String description, TaxonomyVersion versi
                         .findFirst()
                         .orElseThrow(() -> new TaxonomyException(this.name(), "Tax row with ID '" + taxRowUpdate.rowId() + "' not found"));
                 newRows.set(newRows.indexOf(row), new Node(row.id(), taxRowUpdate.row().value(), taxRowUpdate.row().description(), taxRowUpdate.row().aliases(), taxRowUpdate.row().keywords(),
-                                flattenDimensionSrcHints(taxRowUpdate.row().dimensionSrcHints()), taxRowUpdate.row().parent()));
+                                        convertDimensionSrcHintsToStrings(taxRowUpdate.row().dimensionSrcHints()), taxRowUpdate.row().parent()));
                 return new TaxonomyRow(name, description, version, dimension, newRows,
                                 isPublished);
         }
