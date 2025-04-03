@@ -74,6 +74,7 @@ ccf/application/TaxonomyByFilterView$TaxonomyByFilter.class
 ccf/application/UsersByFilterView.class
 ccf/application/CompaniesByUserView$CompaniesByUser.class
 ccf/application/TaxonomyEntity$TaxonomyResult$IncorrectRemove.class
+ccf/application/TaxonomyEntity$TaxonomyResult$GetSuccess.class
 ccf/application/TaxonomyEntity$TaxonomyResult$Success.class
 ccf/domain/user/UserStatus.class
 ccf/application/UserEntity$UserResult$Failure.class

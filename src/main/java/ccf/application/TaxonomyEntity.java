@@ -90,8 +90,6 @@ public class TaxonomyEntity extends EventSourcedEntity<Taxonomy, TaxonomyEvent> 
             CCFLog.error(logger, "getTaxonomy failed", Map.of("taxonomy_id", entityId, "error", e.getMessage()));
             return effects().reply(new TaxonomyResult.GetFailed(e.getMessage()));
         }
-
-        // return effects().reply(currentState());
     }
 
     public Effect<TaxonomyResult> createTaxonomy(TaxonomyCreate taxonomyCreate) {

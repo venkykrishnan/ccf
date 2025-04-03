@@ -3,6 +3,9 @@ package ccf.domain.standard;
 import java.util.List;
 import java.util.Map;
 
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+
 import ccf.domain.standard.Taxonomy.TaxRowAdd;
 import ccf.domain.standard.Taxonomy.TaxRowUpdate;
 import ccf.domain.standard.Taxonomy.TaxRowsAdd;
@@ -23,7 +26,9 @@ public record TaxonomyRow(String name, String description, TaxonomyVersion versi
 
         public record TaxonomyByDimensionAndName(String dimension, String name) {
         }
-        public record KeyValue(String first, String second) {
+        // No need for @JsonTypeInfo and @JsonSubTypes here since KeyValue is a simple record
+        // with String fields that Jackson can serialize/deserialize automatically
+        public record KeyValue(String key, String value) {
         }
         private List<KeyValue> flattenDimensionSrcHints(Map<String, List<String>> dimensionSrcHints) {
                 return dimensionSrcHints.entrySet().stream()
