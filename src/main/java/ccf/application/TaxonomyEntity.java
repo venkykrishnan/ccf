@@ -239,12 +239,24 @@ public class TaxonomyEntity extends EventSourcedEntity<Taxonomy, TaxonomyEvent> 
         }
     }
 
-    // TODO: HIA 3 Apr 2025
     public Effect<TaxonomyResult> addTaxRows(Taxonomy.TaxRowsAdd taxRowsAdd) {
         try {
             CCFLog.info(logger, "Add tax rows", Map.of("taxonomy_id", entityId, "taxRowsAdd", taxRowsAdd.toString()));
-            var event = new TaxonomyEvent.TaxonomyTaxRowsAdded(taxRowsAdd);
-            return effects().persist(event).thenReply(newState -> new TaxonomyResult.Success(entityId));
+            switch (currentState().status()) {
+                case TaxonomyStatus.TAXONOMY_EMPTY:
+                case TaxonomyStatus.TAXONOMY_DISABLED:
+                case TaxonomyStatus.TAXONOMY_PUBLISHED:
+                    CCFLog.debug(logger, "Taxonomy rows cannot be added", Map.of("taxonomy_id", entityId)); 
+                    return effects().reply(new TaxonomyResult.IncorrectAdd("addTaxRows", "Taxonomy %s rows cannot be added, is in %s state".formatted(entityId, currentState().status().toString())));
+                default:
+                    if(!taxRowsAdd.isReplace()) {
+                        for (Taxonomy.TaxRow row : taxRowsAdd.rows()) {
+                            validateTaxonomyRowForMod("addRow", row.rowId(), row.value(), row.parent(), true);
+                        }
+                    }
+                    var event = new TaxonomyEvent.TaxonomyTaxRowsAdded(taxRowsAdd);
+                    return effects().persist(event).thenReply(newState -> new TaxonomyResult.Success(entityId));
+            }
         } catch (Exception e) {
             CCFLog.error(logger, "Adding Taxonomy Tax Rows failed", Map.of("taxonomy_id", entityId, "taxRowsAdd",
                     taxRowsAdd.toString(), "error", e.getMessage()));
@@ -255,8 +267,19 @@ public class TaxonomyEntity extends EventSourcedEntity<Taxonomy, TaxonomyEvent> 
     public Effect<TaxonomyResult> removeTaxRows(Taxonomy.TaxRowsRemove taxRowsRemove) {
         try {
             CCFLog.info(logger, "Remove tax rows", Map.of("taxonomy_id", entityId, "taxRowsRemove", taxRowsRemove.toString()));
-            var event = new TaxonomyEvent.TaxonomyTaxRowsRemoved(taxRowsRemove);
-            return effects().persist(event).thenReply(newState -> new TaxonomyResult.Success(entityId));
+            switch (currentState().status()) {
+                case TaxonomyStatus.TAXONOMY_EMPTY:
+                case TaxonomyStatus.TAXONOMY_DISABLED:
+                case TaxonomyStatus.TAXONOMY_PUBLISHED:
+                    CCFLog.debug(logger, "Taxonomy rows cannot be removed", Map.of("taxonomy_id", entityId));
+                    return effects().reply(new TaxonomyResult.IncorrectRemove("removeTaxRows", "Taxonomy %s rows cannot be removed, is in %s state".formatted(entityId, currentState().status().toString())));
+                default:   
+                    for (String rowId : taxRowsRemove.rowIds()) {
+                        validateTaxonomyRowForMod("removeRow", rowId, null, null, false);
+                    }
+                    var event = new TaxonomyEvent.TaxonomyTaxRowsRemoved(taxRowsRemove);
+                    return effects().persist(event).thenReply(newState -> new TaxonomyResult.Success(entityId));
+            }
         } catch (Exception e) {
             CCFLog.error(logger, "Removing Taxonomy Tax Rows failed", Map.of("taxonomy_id", entityId, "taxRowsRemove",
                     taxRowsRemove.toString(), "error", e.getMessage()));
@@ -267,8 +290,17 @@ public class TaxonomyEntity extends EventSourcedEntity<Taxonomy, TaxonomyEvent> 
     public Effect<TaxonomyResult> updateTaxRow(Taxonomy.TaxRowUpdate taxRowUpdate) {
         try {
             CCFLog.info(logger, "Update tax row", Map.of("taxonomy_id", entityId, "taxRowUpdate", taxRowUpdate.toString()));
-            var event = new TaxonomyEvent.TaxonomyTaxRowUpdated(taxRowUpdate);
-            return effects().persist(event).thenReply(newState -> new TaxonomyResult.Success(entityId));
+            switch (currentState().status()) {
+                case TaxonomyStatus.TAXONOMY_EMPTY:
+                case TaxonomyStatus.TAXONOMY_DISABLED:
+                case TaxonomyStatus.TAXONOMY_PUBLISHED:
+                    CCFLog.debug(logger, "Taxonomy row cannot be updated", Map.of("taxonomy_id", entityId));
+                    return effects().reply(new TaxonomyResult.IncorrectUpate("Taxonomy %s row cannot be updated, is in %s state".formatted(entityId, currentState().status().toString())));
+                default:
+                    validateTaxonomyRowForMod("updateRow", taxRowUpdate.rowId(), taxRowUpdate.row().value(), taxRowUpdate.row().parent(), false);
+                    var event = new TaxonomyEvent.TaxonomyTaxRowUpdated(taxRowUpdate);
+                    return effects().persist(event).thenReply(newState -> new TaxonomyResult.Success(entityId));
+            }
         } catch (Exception e) {
             CCFLog.error(logger, "Updating Taxonomy Tax Row failed", Map.of("taxonomy_id", entityId, "taxRowUpdate",
                     taxRowUpdate.toString(), "error", e.getMessage()));

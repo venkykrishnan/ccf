@@ -91,11 +91,6 @@ public record Taxonomy(String id, String name, String description, TaxonomyVersi
                         .findFirst()
                         .orElseThrow(() -> new TaxonomyException(this.id(), "Tax row with ID '" + id + "' not found")))
                 .toList();
-
-        if (rows.stream().anyMatch(
-                r -> r.parent() != null && rowsToRemove.stream().anyMatch(t -> t.rowId().equals(r.parent())))) {
-            throw new TaxonomyException(this.id(), "Cannot remove tax row - it is a parent of other rows");
-        }
         rows.removeAll(rowsToRemove);
         return rows;
     }
@@ -106,64 +101,21 @@ public record Taxonomy(String id, String name, String description, TaxonomyVersi
                 newRows);
     }
 
-    private void validForAddUpdate(String rowId, String value, String parent, Boolean checkDuplicates) {
-        if (checkDuplicates) {
-            if (rows.stream().anyMatch(row -> row.rowId().equals(rowId))) {
-                throw new TaxonomyException(this.id(), "Tax row with ID '" + rowId + "' already exists");
-            }
-            if (rows.stream().anyMatch(row -> row.value().equals(value))) {
-                throw new TaxonomyException(this.id(), "Tax row with value '" + value + "' already exists");
-            }
-        }
-        if (parent != null &&
-                rows.stream().noneMatch(r -> r.rowId().equals(parent))) {
-            throw new TaxonomyException(this.id(), "Parent row with ID '" + parent + "' does not exist");
-        }
-    }
-
     public Taxonomy onTaxonomyTaxRowsAdded(TaxonomyEvent.TaxonomyTaxRowsAdded added) {
         CCFLog.info(logger, "Taxonomy tax rows added", Map.of("taxonomy", added.taxRowsAdd().toString()));
-        if (this.status() == TaxonomyStatus.TAXONOMY_DISABLED) {
-            throw new TaxonomyException(this.id(), "Cannot add tax rows - taxonomy is disabled");
-        }
-        if (this.status() == TaxonomyStatus.TAXONOMY_PUBLISHED) {
-            throw new TaxonomyException(this.id(), "Cannot add tax rows - taxonomy is published");
-        }
         var rows = this.rows();
         if (added.taxRowsAdd().isReplace()) {
             rows.clear();
             rows.addAll(added.taxRowsAdd().rows());
         } else {
-            for (TaxRow newRow : added.taxRowsAdd().rows()) {
-                if (rows.stream().anyMatch(row -> row.rowId().equals(newRow.rowId()))) {
-                    throw new TaxonomyException(this.id(), "Tax row with ID '" + newRow.rowId() + "' already exists");
-                }
-                if (rows.stream().anyMatch(row -> row.value().equals(newRow.value()))) {
-                    throw new TaxonomyException(this.id(),
-                            "Tax row with value '" + newRow.value() + "' already exists");
-                }
-                validForAddUpdate(newRow.rowId(), newRow.value(), newRow.parent(), true);
-            }
             rows.addAll(added.taxRowsAdd().rows());
         }
         return new Taxonomy(this.id(), this.name(), this.description(), this.version(), this.dimension(), this.status(),
                 rows);
     }
 
-
-    private void validateTaxonomyStatusForRemove(String action) {
-        if (this.status() == TaxonomyStatus.TAXONOMY_DISABLED) {
-            throw new TaxonomyException(this.id(), "Cannot " + action + " - taxonomy is disabled");
-        }
-        if (this.status() == TaxonomyStatus.TAXONOMY_PUBLISHED) {
-            throw new TaxonomyException(this.id(), "Cannot " + action + " - taxonomy is published");
-        }
-    }
-
-
     public Taxonomy onTaxonomyTaxRowsRemoved(TaxonomyEvent.TaxonomyTaxRowsRemoved removed) {
         CCFLog.info(logger, "Taxonomy tax rows removed", Map.of("taxonomy", removed.taxRowsRemove().toString()));
-        validateTaxonomyStatusForRemove("remove tax rows");
         List<TaxRow> newRows = removeTaxonomyRows(removed.taxRowsRemove().rowIds());
         return new Taxonomy(this.id(), this.name(), this.description(), this.version(), this.dimension(), this.status(),
                 newRows);
@@ -172,14 +124,6 @@ public record Taxonomy(String id, String name, String description, TaxonomyVersi
     public Taxonomy onTaxonomyTaxRowUpdated(TaxonomyEvent.TaxonomyTaxRowUpdated updated) {
         CCFLog.info(logger, "Taxonomy tax row updated", Map.of("taxonomy", updated.taxRowUpdate().toString()));
         var rows = this.rows();
-        if (this.status() == TaxonomyStatus.TAXONOMY_DISABLED) {
-            throw new TaxonomyException(this.id(), "Cannot update tax row - taxonomy is disabled");
-        }
-        if (this.status() == TaxonomyStatus.TAXONOMY_PUBLISHED) {
-            throw new TaxonomyException(this.id(), "Cannot update tax row - taxonomy is published");
-        }
-        validForAddUpdate(updated.taxRowUpdate().rowId(), updated.taxRowUpdate().row.value(),
-                updated.taxRowUpdate().row.parent(), false);
         TaxRow row = rows.stream()
                 .filter(r -> r.rowId().equals(updated.taxRowUpdate().rowId()))
                 .findFirst()
