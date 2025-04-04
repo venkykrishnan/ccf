@@ -1,0 +1,32 @@
+# Taxonomy Creation JSON
+{
+    "dimensionName": "account",
+    "name": "CSV Based Taxonomy",
+    "description": "Taxonomy created from CSV file",
+    "version": "1.0"
+}
+
+# Taxonomy Rows JSON
+{
+    "rows": [
+        {
+            "rowId": "26fc510a-39ec-444c-b39f-a8b6134fea59",
+            "value": "Profit and Loss",
+            "description": "This is the Profit and Loss account",
+            "aliases": [],
+            "keywords": [],
+            "dimensionSrcHints": {},
+            "parent": null
+        },
+        {
+            "rowId": "897631ab-9521-4913-bba7-e3da3d2b13e3",
+            "value": "Income",
+            "description": "This is the Income account",
+            "aliases": [],
+            "keywords": [],
+            "dimensionSrcHints": {},
+            "parent": "26fc510a-39ec-444c-b39f-a8b6134fea59"
+        }
+    ],
+    "isReplace": true
+}

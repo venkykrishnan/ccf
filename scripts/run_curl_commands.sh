@@ -3,7 +3,7 @@
 # Configuration
 DEFAULT_COMMANDS_FILE="scripts/taxBasicCurlCmds.txt"
 DELAY_SECONDS=1
-LOG_FILE="curl_commands.log"
+LOG_FILE="logs/curl_commands.log"
 
 # Colors for output
 RED='\033[0;31m'
