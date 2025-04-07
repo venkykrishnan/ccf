@@ -170,7 +170,7 @@ public class TaxonomyEntity extends EventSourcedEntity<Taxonomy, TaxonomyEvent> 
                     CCFLog.debug(logger, "Taxonomy row cannot be added", Map.of("taxonomy_id", entityId));
                     return effects().reply(new TaxonomyResult.IncorrectAdd("addTaxRow", "Taxonomy %s row cannot be added, is in %s state".formatted(entityId, currentState().status().toString())));
                 default:
-                    validateTaxonomyRowForMod("addRow", taxRowAdd.row().rowId(), taxRowAdd.row().value(), taxRowAdd.row().parent(), true);
+                    validateTaxonomyRowForMod("addRow", taxRowAdd.taxRow().rowId(), taxRowAdd.taxRow().value(), taxRowAdd.taxRow().parent(), true);
                     var event = new TaxonomyEvent.TaxonomyTaxRowAdded(taxRowAdd);
                     return effects().persist(event).thenReply(newState -> new TaxonomyResult.Success(entityId));
             }
@@ -250,7 +250,7 @@ public class TaxonomyEntity extends EventSourcedEntity<Taxonomy, TaxonomyEvent> 
                     return effects().reply(new TaxonomyResult.IncorrectAdd("addTaxRows", "Taxonomy %s rows cannot be added, is in %s state".formatted(entityId, currentState().status().toString())));
                 default:
                     if(!taxRowsAdd.isReplace()) {
-                        for (Taxonomy.TaxRow row : taxRowsAdd.rows()) {
+                        for (Taxonomy.TaxRow row : taxRowsAdd.taxRows()) {
                             validateTaxonomyRowForMod("addRow", row.rowId(), row.value(), row.parent(), true);
                         }
                     }

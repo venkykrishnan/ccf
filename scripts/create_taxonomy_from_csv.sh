@@ -12,6 +12,7 @@ ROWS_FILE="$LOGS_DIR/taxonomy_rows_$TIMESTAMP.json"
 DRY_RUN=""
 DIMENSION_NAME="account"
 DEBUG_MODE=false
+BATCH_SIZE=20                 # default batch size
 
 # Colors for output
 RED='\033[0;31m'
@@ -29,6 +30,7 @@ show_usage() {
     echo "                          commands  - Show curl commands that would be executed (default)"
     echo "                          rows      - Show taxonomy rows that would be created"
     echo "  --dimension NAME      Specify the dimension name (default: account)"
+    echo "  --batch-size SIZE     Specify the batch size for adding rows (default: 20)"
     echo "  --debug              Enable detailed debug output"
     echo "  -h, --help           Show this help message"
 }
@@ -78,6 +80,16 @@ while [[ $# -gt 0 ]]; do
                 exit 1
             fi
             ;;
+        --batch-size)
+            if [[ "$2" =~ ^[0-9]+$ ]]; then
+                BATCH_SIZE="$2"
+                echo "Setting batch size to: $2"
+                shift 2
+            else
+                echo -e "${RED}Error: --batch-size requires a positive integer${NC}"
+                exit 1
+            fi
+            ;;
         -h|--help)
             show_usage
             exit 0
@@ -107,6 +119,7 @@ debug_echo "CSV_FILE: $CSV_FILE"
 debug_echo "TAXONOMY_ID: $TAXONOMY_ID"
 debug_echo "DRY_RUN: $DRY_RUN"
 debug_echo "DIMENSION_NAME: $DIMENSION_NAME"
+debug_echo "BATCH_SIZE: $BATCH_SIZE"
 
 # Create logs directory if it doesn't exist
 mkdir -p "$LOGS_DIR"
@@ -155,6 +168,8 @@ duplicate_count=0
 
 # Track existing values to prevent duplicates - using temp file for compatibility
 EXISTING_VALUES_FILE=$(mktemp)
+# Track value paths for descriptions
+VALUE_PATHS_FILE=$(mktemp)
 
 # Debug: Show CSV content with line numbers for troubleshooting
 debug_echo "CSV file content with line numbers:"
@@ -198,6 +213,7 @@ while IFS= read -r line || [[ -n "$line" ]]; do
     
     # Process each level
     current_parent=""
+    current_path=""
     for level_var in level1 level2 level3 level4 level5 level6; do
         # Get the value of the variable
         level="${!level_var}"
@@ -212,11 +228,23 @@ while IFS= read -r line || [[ -n "$line" ]]; do
             continue
         fi
         
-        # Check if this value already exists by looking for it in the temp file
-        existing_id=$(grep "^${level}=" "$EXISTING_VALUES_FILE" | cut -d= -f2)
+        # Create a unique key for this value within its parent hierarchy
+        # Format: parentId:value
+        value_key="${current_parent:-root}:${level}"
+        debug_echo "Value key: $value_key"
+        
+        # Build the path for description
+        if [ -z "$current_path" ]; then
+            current_path="$level"
+        else
+            current_path="$current_path->$level"
+        fi
+        
+        # Check if this value already exists under the same parent
+        existing_id=$(grep "^${value_key}=" "$EXISTING_VALUES_FILE" | cut -d= -f2)
         
         if [ -z "$existing_id" ]; then
-            # New value, create it
+            # New value under this parent, create it
             ((row_count++))
             
             # Generate UUID for this row
@@ -224,14 +252,16 @@ while IFS= read -r line || [[ -n "$line" ]]; do
             debug_echo "Creating row with ID: $row_id"
             
             # Store the row_id for this value in the temp file
-            echo "${level}=${row_id}" >> "$EXISTING_VALUES_FILE"
+            echo "${value_key}=${row_id}" >> "$EXISTING_VALUES_FILE"
+            # Store the path for this row_id
+            echo "${row_id}=${current_path}" >> "$VALUE_PATHS_FILE"
             
             # Create row JSON
             row_json=$(cat <<EOF
 {
     "rowId": "$row_id",
     "value": "${level//\"/}",
-    "description": "This is the ${level//\"/} $DIMENSION_NAME",
+    "description": "This is the $current_path $DIMENSION_NAME",
     "aliases": [],
     "keywords": [],
     "dimensionSrcHints": {},
@@ -248,12 +278,14 @@ EOF
                 rows_json+=",$row_json"
             fi
             
-            debug_echo "Added new row for value: '$level'"
+            debug_echo "Added new row for value: '$level' under parent: '$current_parent' with path: '$current_path'"
         else
-            # Value already exists, use its ID
+            # Value already exists under this parent, use its ID
             row_id="$existing_id"
+            # Get the existing path for this row_id
+            current_path=$(grep "^${row_id}=" "$VALUE_PATHS_FILE" | cut -d= -f2)
             ((duplicate_count++))
-            debug_echo "Using existing row ID: $row_id for value: '$level' (duplicate #$duplicate_count)"
+            debug_echo "Using existing row ID: $row_id for value: '$level' under parent: '$current_parent' with path: '$current_path' (duplicate #$duplicate_count)"
         fi
         
         # Update current parent for next level
@@ -266,8 +298,9 @@ EOF
     debug_echo ""
 done < "$CSV_FILE"
 
-# Clean up temp file
+# Clean up temp files
 rm -f "$EXISTING_VALUES_FILE"
+rm -f "$VALUE_PATHS_FILE"
 
 # Move to new line after progress updates
 echo
@@ -285,35 +318,71 @@ fi
 
 rows_json+="]"
 
-# Create the add rows request JSON
-ADD_ROWS_JSON=$(cat <<EOF
+# Function to create batch JSON
+create_batch_json() {
+    local start=$1
+    local end=$2
+    local is_replace=$3
+    local batch_rows=$(echo "$rows_json" | jq -c ".[$start:$end]")
+    
+    cat <<EOF
 {
-    "rows": $rows_json,
-    "isReplace": true
+    "rows": $batch_rows,
+    "isReplace": $is_replace
 }
 EOF
-)
+}
 
-# Create the add rows curl command
-ADD_ROWS_COMMAND="curl -X POST \"$BASE_URL/taxonomy/$TAXONOMY_ID/rows\" \\
+# Calculate number of batches
+total_rows=$(echo "$rows_json" | jq 'length')
+num_batches=$(( (total_rows + BATCH_SIZE - 1) / BATCH_SIZE ))
+
+echo -e "${YELLOW}Processing $total_rows rows in $num_batches batches of size $BATCH_SIZE${NC}" | tee -a "$LOG_FILE"
+
+# Create the add rows curl commands for each batch
+ADD_ROWS_COMMANDS=()
+for ((i=0; i<num_batches; i++)); do
+    start=$((i * BATCH_SIZE))
+    end=$((start + BATCH_SIZE))
+    is_replace=$([ $i -eq 0 ] && echo "true" || echo "false")
+    
+    batch_json=$(create_batch_json $start $end $is_replace)
+    batch_command="curl -X POST \"$BASE_URL/taxonomy/$TAXONOMY_ID/taxrows\" \\
     -H \"Content-Type: application/json\" \\
-    -d '$ADD_ROWS_JSON'"
+    -d '$batch_json'"
+    
+    ADD_ROWS_COMMANDS+=("$batch_command")
+    debug_echo "Created batch $((i+1))/$num_batches (rows $start to $((end-1)), isReplace=$is_replace)"
+done
 
 case "$DRY_RUN" in
     "commands")
         echo "# Create Taxonomy" > "$CURL_COMMANDS_FILE"
         echo "$CREATE_COMMAND" >> "$CURL_COMMANDS_FILE"
         echo >> "$CURL_COMMANDS_FILE"
-        echo "# Add Taxonomy Rows" >> "$CURL_COMMANDS_FILE"
-        echo "$ADD_ROWS_COMMAND" >> "$CURL_COMMANDS_FILE"
+        echo "# Add Taxonomy Rows in Batches" >> "$CURL_COMMANDS_FILE"
+        for ((i=0; i<${#ADD_ROWS_COMMANDS[@]}; i++)); do
+            echo "# Batch $((i+1))/${#ADD_ROWS_COMMANDS[@]}" >> "$CURL_COMMANDS_FILE"
+            echo "${ADD_ROWS_COMMANDS[$i]}" >> "$CURL_COMMANDS_FILE"
+            echo >> "$CURL_COMMANDS_FILE"
+        done
         echo -e "${GREEN}Curl commands have been written to: $CURL_COMMANDS_FILE${NC}"
         ;;
     "rows")
         echo "# Taxonomy Creation JSON" > "$ROWS_FILE"
         echo "$TAXONOMY_CREATE_JSON" >> "$ROWS_FILE"
         echo >> "$ROWS_FILE"
-        echo "# Taxonomy Rows JSON" >> "$ROWS_FILE"
-        echo "$ADD_ROWS_JSON" | python3 -m json.tool >> "$ROWS_FILE"
+        echo "# Taxonomy Rows JSON (in $num_batches batches)" >> "$ROWS_FILE"
+        for ((i=0; i<num_batches; i++)); do
+            start=$((i * BATCH_SIZE))
+            end=$((start + BATCH_SIZE))
+            is_replace=$([ $i -eq 0 ] && echo "true" || echo "false")
+            
+            batch_json=$(create_batch_json $start $end $is_replace)
+            echo "# Batch $((i+1))/$num_batches" >> "$ROWS_FILE"
+            echo "$batch_json" | python3 -m json.tool >> "$ROWS_FILE"
+            echo >> "$ROWS_FILE"
+        done
         echo -e "${GREEN}Row data has been written to: $ROWS_FILE${NC}"
         ;;
     "")
@@ -326,13 +395,16 @@ case "$DRY_RUN" in
             echo "Create Response: $CREATE_RESPONSE" >> "$LOG_FILE"
         fi
         
-        echo -e "${YELLOW}Adding rows to taxonomy...${NC}" | tee -a "$LOG_FILE"
-        ADD_ROWS_RESPONSE=$(eval "$ADD_ROWS_COMMAND")
-        if [ "$DEBUG_MODE" = true ]; then
-            echo "Add Rows Response: $ADD_ROWS_RESPONSE" | tee -a "$LOG_FILE"
-        else
-            echo "Add Rows Response: $ADD_ROWS_RESPONSE" >> "$LOG_FILE"
-        fi
+        echo -e "${YELLOW}Adding rows to taxonomy in $num_batches batches...${NC}" | tee -a "$LOG_FILE"
+        for ((i=0; i<${#ADD_ROWS_COMMANDS[@]}; i++)); do
+            echo -e "${YELLOW}Processing batch $((i+1))/${#ADD_ROWS_COMMANDS[@]}...${NC}" | tee -a "$LOG_FILE"
+            BATCH_RESPONSE=$(eval "${ADD_ROWS_COMMANDS[$i]}")
+            if [ "$DEBUG_MODE" = true ]; then
+                echo "Batch $((i+1)) Response: $BATCH_RESPONSE" | tee -a "$LOG_FILE"
+            else
+                echo "Batch $((i+1)) Response: $BATCH_RESPONSE" >> "$LOG_FILE"
+            fi
+        done
         ;;
 esac
 

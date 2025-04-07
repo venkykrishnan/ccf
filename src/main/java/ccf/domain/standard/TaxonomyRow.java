@@ -3,8 +3,6 @@ package ccf.domain.standard;
 import java.util.List;
 import java.util.Map;
 
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
 import ccf.domain.standard.Taxonomy.TaxRowAdd;
 import ccf.domain.standard.Taxonomy.TaxRowUpdate;
@@ -15,8 +13,7 @@ import ccf.domain.standard.Taxonomy.TaxRowsRemove;
 public record TaxonomyRow(String name, String description, TaxonomyVersion version, String dimension, List<Node> rows,
                 Boolean isPublished) {
         public record Node(String id, String value, String description, List<String> aliases, List<String> keywords,
-                        List<String> dimensionSrcHints, // columns in src dimension table. key is the dimension name,
-                                                       // value is the list of column names.
+                        List<String> dimensionSrcHints, // columns in src dimension table. key is the dimension name,                               // value is the list of column names.
                         String parent) {
         }
 
