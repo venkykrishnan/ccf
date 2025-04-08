@@ -11,7 +11,7 @@ import ccf.domain.standard.Taxonomy.TaxRowsAdd;
 import ccf.domain.standard.Taxonomy.TaxRowsRemove;
 
 // TaxonomyRow represents a Taxonomy with its nodes stored in a Nodes record
-public record TaxonomyRow(String name, String description, TaxonomyVersion version, String dimension, List<TRRow> trRows,
+public record TaxonomyRow(String name, String description, TaxonomyVersion version, List<TRRow> trRows,
                 Boolean isPublished) {
         public record TRRow(String id, String value, String description, List<String> aliases, List<String> keywords,
                         List<String> dimensionSrcHints, // columns in src dimension table. key is the dimension name,                               // value is the list of column names.
@@ -35,13 +35,6 @@ public record TaxonomyRow(String name, String description, TaxonomyVersion versi
                         .toList();
         }
         
-        private List<KeyValue> flattenDimensionSrcHints(Map<String, List<String>> dimensionSrcHints) {
-                return dimensionSrcHints.entrySet().stream()
-                        .flatMap(entry -> entry.getValue().stream()
-                                .map(value -> new KeyValue(entry.getKey(), value)))
-                        .toList();
-        }
-
         private void addRowAndUpdateParent(Taxonomy.TaxRow taxRow) {
             // Create new row with empty children list
             TRRow newRow = new TRRow(
@@ -218,14 +211,12 @@ public record TaxonomyRow(String name, String description, TaxonomyVersion versi
         }
 
         public TaxonomyRow onTaxonomyPublished(Boolean isPublished) {
-                return new TaxonomyRow(this.name, this.description, this.version, this.dimension, this.trRows,
-                                isPublished);
+                return new TaxonomyRow(this.name, this.description, this.version, this.trRows, isPublished);
         }
 
         public TaxonomyRow onTaxonomyTaxRowAdded(TaxRowAdd taxRowAdd) {
                 addRowAndUpdateParent(taxRowAdd.taxRow());
-                return new TaxonomyRow(name, description, version, dimension, trRows,
-                                isPublished);
+                return new TaxonomyRow(name, description, version, trRows, isPublished);
         }
 
         public TaxonomyRow onTaxonomyTaxRowsAdded(TaxRowsAdd taxRowsAdd) {
@@ -234,25 +225,21 @@ public record TaxonomyRow(String name, String description, TaxonomyVersion versi
                     rows.clear();
                 }
                 taxRowsAdd.taxRows().forEach(this::addRowAndUpdateParent);
-                return new TaxonomyRow(name, description, version, dimension, rows,
-                                isPublished);
+                return new TaxonomyRow(name, description, version, rows, isPublished);
         }
 
         public TaxonomyRow onTaxonomyTaxRowRemoved(String rowId) {
                 removeRowAndUpdateParent(rowId);
-                return new TaxonomyRow(name, description, version, dimension, trRows,
-                                isPublished);
+                return new TaxonomyRow(name, description, version, trRows, isPublished);
         }
         public TaxonomyRow onTaxonomyTaxRowsRemoved(TaxRowsRemove taxRowsRemove) {
                 var rows = this.trRows();
                 taxRowsRemove.rowIds().forEach(this::removeRowAndUpdateParent);
-                return new TaxonomyRow(name, description, version, dimension, rows,
-                                isPublished);   
+                return new TaxonomyRow(name, description, version, rows, isPublished);   
         }
         
         public TaxonomyRow onTaxonomyTaxRowUpdated(TaxRowUpdate taxRowUpdate) {
                 updateRowAndUpdateParent(taxRowUpdate);
-                return new TaxonomyRow(name, description, version, dimension, trRows,
-                                isPublished);
+                return new TaxonomyRow(name, description, version, trRows, isPublished);
         }
 }

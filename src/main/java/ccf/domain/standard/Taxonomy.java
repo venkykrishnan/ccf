@@ -9,12 +9,12 @@ import org.slf4j.LoggerFactory;
 
 import ccf.util.CCFLog;
 
-public record Taxonomy(String id, String name, String description, TaxonomyVersion version, String dimension,
+public record Taxonomy(String id, String name, String description, TaxonomyVersion version,
         TaxonomyStatus status, List<Row> rows) {
 
     private static final Logger logger = LoggerFactory.getLogger(Taxonomy.class);
 
-    public record TaxonomyCreate(String dimensionName, String name, String description, TaxonomyVersion version) {
+    public record TaxonomyCreate(String name, String description, TaxonomyVersion version) {
     }
 
     public record TaxRowAdd(TaxRow taxRow) {
@@ -52,23 +52,22 @@ public record Taxonomy(String id, String name, String description, TaxonomyVersi
         CCFLog.info(logger, "Taxonomy created", Map.of("taxonomy", created.taxonomyCreate().toString()));
 
         return new Taxonomy(this.id, created.taxonomyCreate().name(), created.taxonomyCreate().description(),
-                created.taxonomyCreate().version(), created.taxonomyCreate().dimensionName(),
-                TaxonomyStatus.TAXONOMY_INITIALIZED, List.<Row>of());
+                created.taxonomyCreate().version(), TaxonomyStatus.TAXONOMY_INITIALIZED, List.<Row>of());
     }
 
     public Taxonomy onTaxonomyRemoved(TaxonomyEvent.TaxonomyRemoved removed) {
         CCFLog.info(logger, "Taxonomy removed", Map.of("taxonomy", this.id));
-        return new Taxonomy(this.id(), null, null, null, null, TaxonomyStatus.TAXONOMY_EMPTY, List.of());
+        return new Taxonomy(this.id(), null, null, null, TaxonomyStatus.TAXONOMY_EMPTY, List.of());
     }
 
     public Taxonomy onTaxonomyPublished(TaxonomyEvent.TaxonomyPublished published) {
         CCFLog.info(logger, "Taxonomy published",
                 Map.of("taxonomy", this.id, "isPublished", published.isPublish().toString()));
         if (!published.isPublish()) {
-            return new Taxonomy(this.id(), this.name(), this.description(), this.version(), this.dimension(),
+            return new Taxonomy(this.id(), this.name(), this.description(), this.version(),
                     TaxonomyStatus.TAXONOMY_INITIALIZED, this.rows());
         } else {
-            return new Taxonomy(this.id(), this.name(), this.description(), this.version(), this.dimension(),
+            return new Taxonomy(this.id(), this.name(), this.description(), this.version(),
                     TaxonomyStatus.TAXONOMY_PUBLISHED, this.rows());
         }
     }
@@ -122,7 +121,7 @@ public record Taxonomy(String id, String name, String description, TaxonomyVersi
     public Taxonomy onTaxonomyTaxRowAdded(TaxonomyEvent.TaxonomyTaxRowAdded added) {
         CCFLog.info(logger, "Taxonomy tax row added", Map.of("taxonomy", added.taxRowAdd().toString()));
         addRowAndUpdateParent(added.taxRowAdd().taxRow());
-        return new Taxonomy(this.id(), this.name(), this.description(), this.version(), this.dimension(), this.status(),
+        return new Taxonomy(this.id(), this.name(), this.description(), this.version(), this.status(),
                 rows);
     }
     private void removeRowAndUpdateParent(String rowId) {
@@ -174,8 +173,7 @@ public record Taxonomy(String id, String name, String description, TaxonomyVersi
     public Taxonomy onTaxonomyTaxRowRemoved(TaxonomyEvent.TaxonomyTaxRowRemoved removed) {
         CCFLog.info(logger, "Taxonomy tax row removed", Map.of("taxonomy", removed.rowId()));
         removeRowAndUpdateParent(removed.rowId());
-        return new Taxonomy(this.id(), this.name(), this.description(), this.version(), this.dimension(), this.status(),
-                this.rows());
+        return new Taxonomy(this.id(), this.name(), this.description(), this.version(), this.status(), this.rows());
     }
        
     public Taxonomy onTaxonomyTaxRowsAdded(TaxonomyEvent.TaxonomyTaxRowsAdded added) {
@@ -185,14 +183,13 @@ public record Taxonomy(String id, String name, String description, TaxonomyVersi
             rows.clear();
         }
         added.taxRowsAdd().taxRows().forEach(this::addRowAndUpdateParent);
-        return new Taxonomy(this.id(), this.name(), this.description(), this.version(), this.dimension(), this.status(),
-                rows);
+        return new Taxonomy(this.id(), this.name(), this.description(), this.version(), this.status(), rows);
     }
 
     public Taxonomy onTaxonomyTaxRowsRemoved(TaxonomyEvent.TaxonomyTaxRowsRemoved removed) {
         CCFLog.info(logger, "Taxonomy tax rows removed", Map.of("taxonomy", removed.taxRowsRemove().toString()));
         removed.taxRowsRemove().rowIds().forEach(this::removeRowAndUpdateParent);
-        return new Taxonomy(this.id(), this.name(), this.description(), this.version(), this.dimension(), this.status(),
+        return new Taxonomy(this.id(), this.name(), this.description(), this.version(), this.status(),
                 rows);
     }
     private void updateRowAndUpdateParent(TaxRowUpdate taxRowUpdate) {
@@ -280,7 +277,6 @@ public record Taxonomy(String id, String name, String description, TaxonomyVersi
     public Taxonomy onTaxonomyTaxRowUpdated(TaxonomyEvent.TaxonomyTaxRowUpdated updated) {
         CCFLog.info(logger, "Taxonomy tax row updated", Map.of("taxonomy", updated.taxRowUpdate().toString()));
         updateRowAndUpdateParent(updated.taxRowUpdate());
-        return new Taxonomy(this.id(), this.name(), this.description(), this.version(), this.dimension(), this.status(),
-                this.rows());
+        return new Taxonomy(this.id(), this.name(), this.description(), this.version(), this.status(), this.rows());
     }
 }

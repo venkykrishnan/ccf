@@ -73,7 +73,7 @@ public class TaxonomyEntity extends EventSourcedEntity<Taxonomy, TaxonomyEvent> 
 
     @Override
     public Taxonomy emptyState() {
-        return new Taxonomy(entityId, null, null, null, null, TaxonomyStatus.TAXONOMY_EMPTY, List.of());
+        return new Taxonomy(entityId, null, null, null, TaxonomyStatus.TAXONOMY_EMPTY, List.of());
     }
 
 

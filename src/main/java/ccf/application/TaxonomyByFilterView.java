@@ -27,8 +27,7 @@ public class TaxonomyByFilterView extends View {
                 case TaxonomyEvent.TaxonomyCreated created -> {
                     CCFLog.info(logger, "Taxonomy created in view", Map.of("taxonomy", created.taxonomyCreate().toString()));
                     var taxonomy = new TaxonomyRow(created.taxonomyCreate().name(), created.taxonomyCreate().description(), 
-                            created.taxonomyCreate().version(),
-                            created.taxonomyCreate().dimensionName(), List.<TaxonomyRow.TRRow>of(), false);
+                            created.taxonomyCreate().version(), List.<TaxonomyRow.TRRow>of(), false);
                     CCFLog.info(logger, "Taxonomy created in view - post new TaxonomyRow", Map.of("taxonomy", taxonomy.toString()));
                     yield effects().updateRow(taxonomy);
                 }
@@ -54,15 +53,12 @@ public class TaxonomyByFilterView extends View {
         return queryResult();
     }
 
-    @Query("SELECT * AS taxonomies FROM taxonomy_by_filter WHERE dimension = :dimensionName")
-    public QueryEffect<Taxonomys> getTaxonomiesByDimension(String dimensionName) {
-        return queryResult();
-    }
-
-    // @Query("SELECT * AS taxonomy FROM taxonomy_by_filter WHERE taxonomy.dimensionName = :dimensionAndName.dimension AND taxonomy.name = :dimensionAndName.name")
-    // public QueryEffect<TaxonomyRows> getTaxonomyByDimensionAndName(TaxonomyByDimensionAndName dimensionAndName) {
+    // Note: This compiled & didnt cause runtime error, but i never used/tested it.
+    // @Query("SELECT * AS taxonomies FROM taxonomy_by_filter WHERE dimension = :dimensionName")
+    // public QueryEffect<Taxonomys> getTaxonomiesByDimension(String dimensionName) {
     //     return queryResult();
     // }
+
     
     // @Query("SELECT * AS taxonomy FROM taxonomy_by_filter WHERE taxonomy.published = true AND taxonomy.dimensionName = :dimensionAndName.dimension AND taxonomy.name = :dimensionAndName.name")
     // public QueryEffect<TaxonomyRows> getPublishedTaxonomyByDimensionAndName(TaxonomyByDimensionAndName dimensionAndName) {
