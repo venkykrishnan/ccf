@@ -28,7 +28,7 @@ public class TaxonomyByFilterView extends View {
                     CCFLog.info(logger, "Taxonomy created in view", Map.of("taxonomy", created.taxonomyCreate().toString()));
                     var taxonomy = new TaxonomyRow(created.taxonomyCreate().name(), created.taxonomyCreate().description(), 
                             created.taxonomyCreate().version(),
-                            created.taxonomyCreate().dimensionName(), List.<TaxonomyRow.Node>of(), false);
+                            created.taxonomyCreate().dimensionName(), List.<TaxonomyRow.TRRow>of(), false);
                     CCFLog.info(logger, "Taxonomy created in view - post new TaxonomyRow", Map.of("taxonomy", taxonomy.toString()));
                     yield effects().updateRow(taxonomy);
                 }
