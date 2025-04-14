@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Configuration
-CSV_FILE="data/Taxonomy1.csv"  # default value
+CSV_FILE="data/1Taxonomy.csv"  # default value
 TAXONOMY_ID="tax-001"         # default value
 BASE_URL="http://localhost:9000"
 LOGS_DIR="logs"
@@ -10,7 +10,6 @@ LOG_FILE="$LOGS_DIR/taxonomy_creation_$TIMESTAMP.log"
 CURL_COMMANDS_FILE="$LOGS_DIR/curl_commands_$TIMESTAMP.txt"
 ROWS_FILE="$LOGS_DIR/taxonomy_rows_$TIMESTAMP.json"
 DRY_RUN=""
-DIMENSION_NAME="account"
 DEBUG_MODE=false
 BATCH_SIZE=20                 # default batch size
 
@@ -19,6 +18,20 @@ RED='\033[0;31m'
 GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
 NC='\033[0m' # No Color
+
+# Function to strip color codes
+strip_colors() {
+    sed -r "s/\x1B\[([0-9]{1,3}(;[0-9]{1,3})*)?[mGK]//g"
+}
+
+# Function to log output with color stripping
+log_output() {
+    local message="$1"
+    # Print to terminal with colors
+    echo -e "$message"
+    # Strip colors and write to log file
+    echo -e "$message" | strip_colors >> "$LOG_FILE"
+}
 
 # Function to show usage
 show_usage() {
@@ -29,7 +42,6 @@ show_usage() {
     echo "                        MODE can be:"
     echo "                          commands  - Show curl commands that would be executed (default)"
     echo "                          rows      - Show taxonomy rows that would be created"
-    echo "  --dimension NAME      Specify the dimension name (default: account)"
     echo "  --batch-size SIZE     Specify the batch size for adding rows (default: 20)"
     echo "  --debug              Enable detailed debug output"
     echo "  -h, --help           Show this help message"
@@ -38,9 +50,8 @@ show_usage() {
 # Function for debug output
 debug_echo() {
     if [ "$DEBUG_MODE" = true ]; then
-        echo "$@" | tee -a "$LOG_FILE"
+        log_output "$@"
     fi
-    # If debug mode is false, don't output anything
 }
 
 # Debug: Print all arguments
@@ -67,16 +78,6 @@ while [[ $# -gt 0 ]]; do
                 shift 2
             else
                 echo -e "${RED}Error: --dry-run mode must be 'commands' or 'rows'${NC}"
-                exit 1
-            fi
-            ;;
-        --dimension)
-            if [ -n "$2" ]; then
-                DIMENSION_NAME="$2"
-                echo "Setting dimension to: $2"
-                shift 2
-            else
-                echo -e "${RED}Error: --dimension requires a name${NC}"
                 exit 1
             fi
             ;;
@@ -118,7 +119,6 @@ debug_echo "Final values:"
 debug_echo "CSV_FILE: $CSV_FILE"
 debug_echo "TAXONOMY_ID: $TAXONOMY_ID"
 debug_echo "DRY_RUN: $DRY_RUN"
-debug_echo "DIMENSION_NAME: $DIMENSION_NAME"
 debug_echo "BATCH_SIZE: $BATCH_SIZE"
 
 # Create logs directory if it doesn't exist
@@ -130,16 +130,14 @@ if [ ! -f "$CSV_FILE" ]; then
     exit 1
 fi
 
-echo "=== Starting Taxonomy Creation from CSV $(date) ===" | tee "$LOG_FILE"
-echo "Dimension Name: $DIMENSION_NAME" | tee -a "$LOG_FILE"
+echo "=== Starting Taxonomy Creation from CSV $(date) ===" | tee >(strip_colors >> "$LOG_FILE")
 if [ -n "$DRY_RUN" ]; then
-    echo "DRY RUN MODE ($DRY_RUN) - No commands will be executed" | tee -a "$LOG_FILE"
+    log_output "DRY RUN MODE ($DRY_RUN) - No commands will be executed"
 fi
 
 # Create the taxonomy creation curl command
 TAXONOMY_CREATE_JSON=$(cat <<EOF
 {
-    "dimensionName": "$DIMENSION_NAME",
     "name": "CSV Based Taxonomy",
     "description": "Taxonomy created from CSV file",
     "version": "1.0"
@@ -157,7 +155,7 @@ generate_uuid() {
 }
 
 # Process CSV and create rows JSON
-echo -e "${YELLOW}Processing CSV file and creating taxonomy rows...${NC}" | tee -a "$LOG_FILE"
+log_output "${YELLOW}Processing CSV file and creating taxonomy rows...${NC}"
 
 # Initialize variables
 rows_json="["
@@ -174,12 +172,12 @@ VALUE_PATHS_FILE=$(mktemp)
 # Debug: Show CSV content with line numbers for troubleshooting
 debug_echo "CSV file content with line numbers:"
 if [ "$DEBUG_MODE" = true ]; then
-    nl -ba "$CSV_FILE" | tee -a "$LOG_FILE"
+    nl -ba "$CSV_FILE" | strip_colors >> "$LOG_FILE"
 fi
 debug_echo "---"
 
 # Process the CSV file
-echo "Processing rows..." | tee -a "$LOG_FILE"
+log_output "Processing rows..."
 
 # First line is header
 HEADER=$(head -n 1 "$CSV_FILE")
@@ -261,7 +259,7 @@ while IFS= read -r line || [[ -n "$line" ]]; do
 {
     "rowId": "$row_id",
     "value": "${level//\"/}",
-    "description": "This is the $current_path $DIMENSION_NAME",
+    "description": "This is the $current_path",
     "aliases": [],
     "keywords": [],
     "dimensionSrcHints": {},
@@ -293,7 +291,7 @@ EOF
         debug_echo "Updated parent to: $current_parent"
         
         # Print progress
-        echo -ne "\rProcessing CSV line $csv_line_count - Created $row_count taxonomy rows (skipped $duplicate_count duplicates)" | tee -a "$LOG_FILE"
+        log_output "Processing CSV line $csv_line_count - Created $row_count taxonomy rows (skipped $duplicate_count duplicates)"
     done
     debug_echo ""
 done < "$CSV_FILE"
@@ -304,16 +302,16 @@ rm -f "$VALUE_PATHS_FILE"
 
 # Move to new line after progress updates
 echo
-echo -e "${GREEN}Completed processing: $row_count total taxonomy rows created from $((csv_line_count-1)) CSV lines (skipped $duplicate_count duplicates)${NC}" | tee -a "$LOG_FILE"
+log_output "${GREEN}Completed processing: $row_count total taxonomy rows created from $((csv_line_count-1)) CSV lines (skipped $duplicate_count duplicates)${NC}"
 
 # Write debug summary info
 if [ "$DEBUG_MODE" = true ]; then
-    echo -e "\n${YELLOW}Debug Summary:${NC}" | tee -a "$LOG_FILE"
-    echo "CSV file: $CSV_FILE" | tee -a "$LOG_FILE"
-    echo "Total data rows: $((csv_line_count-1))" | tee -a "$LOG_FILE"
-    echo "Total taxonomy rows created: $row_count" | tee -a "$LOG_FILE"
-    echo "Duplicate values skipped: $duplicate_count" | tee -a "$LOG_FILE"
-    echo "Average hierarchy depth per row: $(awk "BEGIN {print $row_count/($csv_line_count-1)}")" | tee -a "$LOG_FILE"
+    log_output "\n${YELLOW}Debug Summary:${NC}"
+    log_output "CSV file: $CSV_FILE"
+    log_output "Total data rows: $((csv_line_count-1))"
+    log_output "Total taxonomy rows created: $row_count"
+    log_output "Duplicate values skipped: $duplicate_count"
+    log_output "Average hierarchy depth per row: $(awk "BEGIN {print $row_count/($csv_line_count-1)}")"
 fi
 
 rows_json+="]"
@@ -337,7 +335,7 @@ EOF
 total_rows=$(echo "$rows_json" | jq 'length')
 num_batches=$(( (total_rows + BATCH_SIZE - 1) / BATCH_SIZE ))
 
-echo -e "${YELLOW}Processing $total_rows rows in $num_batches batches of size $BATCH_SIZE${NC}" | tee -a "$LOG_FILE"
+log_output "${YELLOW}Processing $total_rows rows in $num_batches batches of size $BATCH_SIZE${NC}"
 
 # Create the add rows curl commands for each batch
 ADD_ROWS_COMMANDS=()
@@ -366,7 +364,7 @@ case "$DRY_RUN" in
             echo "${ADD_ROWS_COMMANDS[$i]}" >> "$CURL_COMMANDS_FILE"
             echo >> "$CURL_COMMANDS_FILE"
         done
-        echo -e "${GREEN}Curl commands have been written to: $CURL_COMMANDS_FILE${NC}"
+        log_output "${GREEN}Curl commands have been written to: $CURL_COMMANDS_FILE${NC}"
         ;;
     "rows")
         echo "# Taxonomy Creation JSON" > "$ROWS_FILE"
@@ -383,24 +381,24 @@ case "$DRY_RUN" in
             echo "$batch_json" | python3 -m json.tool >> "$ROWS_FILE"
             echo >> "$ROWS_FILE"
         done
-        echo -e "${GREEN}Row data has been written to: $ROWS_FILE${NC}"
+        log_output "${GREEN}Row data has been written to: $ROWS_FILE${NC}"
         ;;
     "")
         # Execute commands
-        echo -e "${YELLOW}Creating taxonomy with ID: $TAXONOMY_ID${NC}" | tee -a "$LOG_FILE"
+        log_output "${YELLOW}Creating taxonomy with ID: $TAXONOMY_ID${NC}"
         CREATE_RESPONSE=$(eval "$CREATE_COMMAND")
         if [ "$DEBUG_MODE" = true ]; then
-            echo "Create Response: $CREATE_RESPONSE" | tee -a "$LOG_FILE"
+            log_output "Create Response: $CREATE_RESPONSE"
         else
             echo "Create Response: $CREATE_RESPONSE" >> "$LOG_FILE"
         fi
         
-        echo -e "${YELLOW}Adding rows to taxonomy in $num_batches batches...${NC}" | tee -a "$LOG_FILE"
+        log_output "${YELLOW}Adding rows to taxonomy in $num_batches batches...${NC}"
         for ((i=0; i<${#ADD_ROWS_COMMANDS[@]}; i++)); do
-            echo -e "${YELLOW}Processing batch $((i+1))/${#ADD_ROWS_COMMANDS[@]}...${NC}" | tee -a "$LOG_FILE"
+            log_output "${YELLOW}Processing batch $((i+1))/${#ADD_ROWS_COMMANDS[@]}...${NC}"
             BATCH_RESPONSE=$(eval "${ADD_ROWS_COMMANDS[$i]}")
             if [ "$DEBUG_MODE" = true ]; then
-                echo "Batch $((i+1)) Response: $BATCH_RESPONSE" | tee -a "$LOG_FILE"
+                log_output "Batch $((i+1)) Response: $BATCH_RESPONSE"
             else
                 echo "Batch $((i+1)) Response: $BATCH_RESPONSE" >> "$LOG_FILE"
             fi
@@ -408,8 +406,8 @@ case "$DRY_RUN" in
         ;;
 esac
 
-echo -e "${GREEN}Completed processing CSV file${NC}" | tee -a "$LOG_FILE"
-echo "Log file: $LOG_FILE"
+log_output "${GREEN}Completed processing CSV file${NC}"
+log_output "Log file: $LOG_FILE"
 if [ -n "$DRY_RUN" ]; then
-    echo "Output file: $([ "$DRY_RUN" = "commands" ] && echo "$CURL_COMMANDS_FILE" || echo "$ROWS_FILE")"
+    log_output "Output file: $([ "$DRY_RUN" = "commands" ] && echo "$CURL_COMMANDS_FILE" || echo "$ROWS_FILE")"
 fi 

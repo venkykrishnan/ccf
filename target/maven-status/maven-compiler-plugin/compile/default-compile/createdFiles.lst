@@ -21,7 +21,6 @@ ccf/domain/bank/BankInstanceType.class
 ccf/application/CompanyEntity$CompanyPeriodResult$PeriodInstant.class
 ccf/domain/bank/BankEvent$BankUserAdded.class
 ccf/util/period/FiscalOperators.class
-ccf/domain/standard/Taxonomy$TaxRowWithChildren.class
 ccf/api/BankEndpoint.class
 ccf/application/CompaniesByFilterView$CompaniesByFilter.class
 ccf/domain/standard/TaxonomyEvent$TaxonomyTaxRowAdded.class
@@ -65,8 +64,11 @@ ccf/domain/Company$CompanyMetadata.class
 ccf/domain/user/UserRow.class
 ccf/domain/standard/Taxonomy$TaxRowsRemove.class
 ccf/domain/standard/Taxonomy$TaxRow.class
+ccf/domain/standard/Taxonomy$Row.class
 ccf/application/CompaniesByFilterView.class
+ccf/domain/standard/TaxonomyRow$TRRow.class
 ccf/util/serializer/CustomInstantModule.class
+ccf/application/TaxonomyEntity$1.class
 ccf/util/serializer/CustomObjectMapperConfig.class
 ccf/domain/standard/TaxonomyEvent$TaxonomyTaxRowRemoved.class
 ccf/domain/CompanyEvent$CompanyPublishedPeriodChanged.class
@@ -92,11 +94,9 @@ ccf/api/UserEndpoint.class
 ccf/domain/user/UserEvent$UserCreated.class
 ccf/util/serializer/CustomInstantSerializer.class
 ccf/util/period/FiscalYearUtils$1.class
-ccf/domain/standard/TaxonomyRow$Nodes.class
 ccf/domain/standard/TaxonomyException.class
 META-INF/akka-javasdk-components.conf
 ccf/domain/user/UserEvent.class
-ccf/domain/standard/TaxonomyRow$Node.class
 ccf/domain/standard/Taxonomy$TaxRowUpdate$Updates.class
 ccf/application/BanksByFilterView.class
 ccf/domain/Companies.class
@@ -115,6 +115,7 @@ ccf/util/serializer/CustomLocalDateTimeSerializer.class
 ccf/domain/standard/TaxonomyStatus.class
 ccf/domain/standard/Taxonomy$TaxRowUpdate.class
 ccf/domain/CompanyMinMaxStartYear.class
+ccf/domain/standard/TaxonomyRow$TRRows.class
 ccf/domain/standard/TaxonomyEvent$TaxonomyPublished.class
 ccf/util/period/FiscalYears.class
 ccf/domain/standard/TaxonomyRow$KeyValue.class

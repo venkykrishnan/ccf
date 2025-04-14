@@ -1,0 +1,7 @@
+# Taxonomy Creation JSON
+{
+    "name": "CSV Based Taxonomy",
+    "description": "Taxonomy created from CSV file",
+    "version": "1.0"
+}
+

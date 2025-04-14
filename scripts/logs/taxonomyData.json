@@ -1,0 +1,2040 @@
+{
+    "rows": [
+        {
+            "rowId": "95649005-2607-4ed8-9ed8-659dce8a7f72",
+            "value": "Profit and Loss",
+            "description": "This is the Profit and Loss",
+            "aliases": [],
+            "keywords": [],
+            "dimensionSrcHints": {},
+            "parent": null
+        },
+        {
+            "rowId": "0a81cded-196a-48a1-b187-2d34ba840247",
+            "value": "Income",
+            "description": "This is the Profit and Loss->Income",
+            "aliases": [],
+            "keywords": [],
+            "dimensionSrcHints": {},
+            "parent": "95649005-2607-4ed8-9ed8-659dce8a7f72"
+        },
+        {
+            "rowId": "6fccee28-de88-47c2-b4cc-268b29afe275",
+            "value": "Revenue",
+            "description": "This is the Profit and Loss->Income->Revenue",
+            "aliases": [],
+            "keywords": [],
+            "dimensionSrcHints": {},
+            "parent": "0a81cded-196a-48a1-b187-2d34ba840247"
+        },
+        {
+            "rowId": "cf902d35-a707-4ef4-9f8a-8e7cdfc636e5",
+            "value": "InStore",
+            "description": "This is the Profit and Loss->Income->Revenue->InStore",
+            "aliases": [],
+            "keywords": [],
+            "dimensionSrcHints": {},
+            "parent": "6fccee28-de88-47c2-b4cc-268b29afe275"
+        },
+        {
+            "rowId": "73104b80-ab3e-4c1e-bfa3-de3a4c23ef62",
+            "value": "NonProfit",
+            "description": "This is the Profit and Loss->Income->Revenue->NonProfit",
+            "aliases": [],
+            "keywords": [],
+            "dimensionSrcHints": {},
+            "parent": "6fccee28-de88-47c2-b4cc-268b29afe275"
+        },
+        {
+            "rowId": "95e1421a-f1d6-4007-b7c2-10e478ce7bec",
+            "value": "Partnerships",
+            "description": "This is the Profit and Loss->Income->Revenue->Partnerships",
+            "aliases": [],
+            "keywords": [],
+            "dimensionSrcHints": {},
+            "parent": "6fccee28-de88-47c2-b4cc-268b29afe275"
+        },
+        {
+            "rowId": "800c793e-bf43-462a-9a89-badae905b960",
+            "value": "ProfessionalServices",
+            "description": "This is the Profit and Loss->Income->Revenue->ProfessionalServices",
+            "aliases": [],
+            "keywords": [],
+            "dimensionSrcHints": {},
+            "parent": "6fccee28-de88-47c2-b4cc-268b29afe275"
+        },
+        {
+            "rowId": "45cd5883-2e23-4272-91a8-36eb1429629b",
+            "value": "Reimbursements",
+            "description": "This is the Profit and Loss->Income->Revenue->Reimbursements",
+            "aliases": [],
+            "keywords": [],
+            "dimensionSrcHints": {},
+            "parent": "6fccee28-de88-47c2-b4cc-268b29afe275"
+        },
+        {
+            "rowId": "bcb4517c-c8dd-46b2-89ff-c0a557677d0d",
+            "value": "RentalIncome",
+            "description": "This is the Profit and Loss->Income->Revenue->RentalIncome",
+            "aliases": [],
+            "keywords": [],
+            "dimensionSrcHints": {},
+            "parent": "6fccee28-de88-47c2-b4cc-268b29afe275"
+        },
+        {
+            "rowId": "04bdb976-cac1-4895-9f7a-1d43fa211a47",
+            "value": "Subscriptions",
+            "description": "This is the Profit and Loss->Income->Revenue->Subscriptions",
+            "aliases": [],
+            "keywords": [],
+            "dimensionSrcHints": {},
+            "parent": "6fccee28-de88-47c2-b4cc-268b29afe275"
+        },
+        {
+            "rowId": "aa1a8481-7339-441e-bd23-af52efc549ed",
+            "value": "Other Income",
+            "description": "This is the Profit and Loss->Other Income",
+            "aliases": [],
+            "keywords": [],
+            "dimensionSrcHints": {},
+            "parent": "95649005-2607-4ed8-9ed8-659dce8a7f72"
+        },
+        {
+            "rowId": "c9e78ba6-27f7-4ae2-9a21-feda90f831a4",
+            "value": "AssetDisposals",
+            "description": "This is the Profit and Loss->Other Income->AssetDisposals",
+            "aliases": [],
+            "keywords": [],
+            "dimensionSrcHints": {},
+            "parent": "aa1a8481-7339-441e-bd23-af52efc549ed"
+        },
+        {
+            "rowId": "8f731366-56ff-4090-abad-d4d79877716b",
+            "value": "CashBackRewards",
+            "description": "This is the Profit and Loss->Other Income->CashBackRewards",
+            "aliases": [],
+            "keywords": [],
+            "dimensionSrcHints": {},
+            "parent": "aa1a8481-7339-441e-bd23-af52efc549ed"
+        },
+        {
+            "rowId": "9c48e324-cc23-4aba-85a7-aae4c1b1f088",
+            "value": "Dividends",
+            "description": "This is the Profit and Loss->Other Income->Dividends",
+            "aliases": [],
+            "keywords": [],
+            "dimensionSrcHints": {},
+            "parent": "aa1a8481-7339-441e-bd23-af52efc549ed"
+        },
+        {
+            "rowId": "ecb17b1b-3e8c-4cec-901b-73bf464d6b38",
+            "value": "Grants",
+            "description": "This is the Profit and Loss->Other Income->Grants",
+            "aliases": [],
+            "keywords": [],
+            "dimensionSrcHints": {},
+            "parent": "aa1a8481-7339-441e-bd23-af52efc549ed"
+        },
+        {
+            "rowId": "8dfe2e5a-0313-422e-94c5-538aaaaca59f",
+            "value": "ExtraordinaryItems",
+            "description": "This is the Profit and Loss->Other Income->ExtraordinaryItems",
+            "aliases": [],
+            "keywords": [],
+            "dimensionSrcHints": {},
+            "parent": "aa1a8481-7339-441e-bd23-af52efc549ed"
+        },
+        {
+            "rowId": "8b4a28d1-d4ef-475f-b71b-af3684a247a8",
+            "value": "FxGain",
+            "description": "This is the Profit and Loss->Other Income->FxGain",
+            "aliases": [],
+            "keywords": [],
+            "dimensionSrcHints": {},
+            "parent": "aa1a8481-7339-441e-bd23-af52efc549ed"
+        },
+        {
+            "rowId": "eceeb418-0f12-475c-9034-2accb25e2cb2",
+            "value": "Interest",
+            "description": "This is the Profit and Loss->Other Income->Interest",
+            "aliases": [],
+            "keywords": [],
+            "dimensionSrcHints": {},
+            "parent": "aa1a8481-7339-441e-bd23-af52efc549ed"
+        },
+        {
+            "rowId": "699d2d91-77aa-4eb2-af0f-e77f3787627f",
+            "value": "TaxesRefundsCredits",
+            "description": "This is the Profit and Loss->Other Income->TaxesRefundsCredits",
+            "aliases": [],
+            "keywords": [],
+            "dimensionSrcHints": {},
+            "parent": "aa1a8481-7339-441e-bd23-af52efc549ed"
+        },
+        {
+            "rowId": "25ba8905-c516-4c57-852f-171476255ccf",
+            "value": "Unrealized Gain",
+            "description": "This is the Profit and Loss->Other Income->Unrealized Gain",
+            "aliases": [],
+            "keywords": [],
+            "dimensionSrcHints": {},
+            "parent": "aa1a8481-7339-441e-bd23-af52efc549ed"
+        },
+        {
+            "rowId": "4608fc95-86d9-4aca-9615-81dae99cb0c4",
+            "value": "Expense",
+            "description": "This is the Profit and Loss->Expense",
+            "aliases": [],
+            "keywords": [],
+            "dimensionSrcHints": {},
+            "parent": "95649005-2607-4ed8-9ed8-659dce8a7f72"
+        },
+        {
+            "rowId": "99f282c3-d291-4493-945c-8cdd19f58cff",
+            "value": "CostOfSales",
+            "description": "This is the Profit and Loss->Expense->CostOfSales",
+            "aliases": [],
+            "keywords": [],
+            "dimensionSrcHints": {},
+            "parent": "4608fc95-86d9-4aca-9615-81dae99cb0c4"
+        },
+        {
+            "rowId": "1fdd2c31-310d-4ed7-a1d2-6dcf62efda5a",
+            "value": "FulfillmentLogistics",
+            "description": "This is the Profit and Loss->Expense->CostOfSales->FulfillmentLogistics",
+            "aliases": [],
+            "keywords": [],
+            "dimensionSrcHints": {},
+            "parent": "99f282c3-d291-4493-945c-8cdd19f58cff"
+        },
+        {
+            "rowId": "ffd6a6b7-2d22-41ea-a0b7-6f7c2cbd984d",
+            "value": "Infrastructure",
+            "description": "This is the Profit and Loss->Expense->CostOfSales->Infrastructure",
+            "aliases": [],
+            "keywords": [],
+            "dimensionSrcHints": {},
+            "parent": "99f282c3-d291-4493-945c-8cdd19f58cff"
+        },
+        {
+            "rowId": "558eb398-678e-4efe-aa79-8e583580d080",
+            "value": "Hosting Services",
+            "description": "This is the Profit and Loss->Expense->CostOfSales->Infrastructure->Hosting Services",
+            "aliases": [],
+            "keywords": [],
+            "dimensionSrcHints": {},
+            "parent": "ffd6a6b7-2d22-41ea-a0b7-6f7c2cbd984d"
+        },
+        {
+            "rowId": "53a68c06-e394-4d95-8039-93270b963e86",
+            "value": "Inventory",
+            "description": "This is the Profit and Loss->Expense->CostOfSales->Inventory",
+            "aliases": [],
+            "keywords": [],
+            "dimensionSrcHints": {},
+            "parent": "99f282c3-d291-4493-945c-8cdd19f58cff"
+        },
+        {
+            "rowId": "829b10e3-7719-45f8-b9b4-77355a280ce2",
+            "value": "ManufacturingProcess",
+            "description": "This is the Profit and Loss->Expense->CostOfSales->ManufacturingProcess",
+            "aliases": [],
+            "keywords": [],
+            "dimensionSrcHints": {},
+            "parent": "99f282c3-d291-4493-945c-8cdd19f58cff"
+        },
+        {
+            "rowId": "3c1037ac-d82d-44b9-9e0e-8cf803e59631",
+            "value": "Marketing",
+            "description": "This is the Profit and Loss->Expense->CostOfSales->Marketing",
+            "aliases": [],
+            "keywords": [],
+            "dimensionSrcHints": {},
+            "parent": "99f282c3-d291-4493-945c-8cdd19f58cff"
+        },
+        {
+            "rowId": "90df7dee-d3d4-4bba-b4cb-3ff622e644e0",
+            "value": "MerchantFees",
+            "description": "This is the Profit and Loss->Expense->CostOfSales->MerchantFees",
+            "aliases": [],
+            "keywords": [],
+            "dimensionSrcHints": {},
+            "parent": "99f282c3-d291-4493-945c-8cdd19f58cff"
+        },
+        {
+            "rowId": "d3e8c638-0163-46a1-8403-6fd89ccf0204",
+            "value": "Personnel",
+            "description": "This is the Profit and Loss->Expense->CostOfSales->Personnel",
+            "aliases": [],
+            "keywords": [],
+            "dimensionSrcHints": {},
+            "parent": "99f282c3-d291-4493-945c-8cdd19f58cff"
+        },
+        {
+            "rowId": "1df5abff-cae5-42a5-89dd-5dd858adafa8",
+            "value": "Commissons",
+            "description": "This is the Profit and Loss->Expense->CostOfSales->Personnel->Commissons",
+            "aliases": [],
+            "keywords": [],
+            "dimensionSrcHints": {},
+            "parent": "d3e8c638-0163-46a1-8403-6fd89ccf0204"
+        },
+        {
+            "rowId": "dbaedf73-03a1-48ec-a559-713a3ec910f4",
+            "value": "Bonus",
+            "description": "This is the Profit and Loss->Expense->CostOfSales->Personnel->Bonus",
+            "aliases": [],
+            "keywords": [],
+            "dimensionSrcHints": {},
+            "parent": "d3e8c638-0163-46a1-8403-6fd89ccf0204"
+        },
+        {
+            "rowId": "6e97c790-c12a-4c9c-a602-26293220b932",
+            "value": "Retention Bonus",
+            "description": "This is the Profit and Loss->Expense->CostOfSales->Personnel->Bonus->Retention Bonus",
+            "aliases": [],
+            "keywords": [],
+            "dimensionSrcHints": {},
+            "parent": "dbaedf73-03a1-48ec-a559-713a3ec910f4"
+        },
+        {
+            "rowId": "b2bd5851-e7d7-4a6a-9fda-90f99930144c",
+            "value": "Salary",
+            "description": "This is the Profit and Loss->Expense->CostOfSales->Personnel->Salary",
+            "aliases": [],
+            "keywords": [],
+            "dimensionSrcHints": {},
+            "parent": "d3e8c638-0163-46a1-8403-6fd89ccf0204"
+        },
+        {
+            "rowId": "2e489123-4cf1-415a-a861-0574e1bb2972",
+            "value": "ProfessionalServices",
+            "description": "This is the Profit and Loss->Expense->CostOfSales->ProfessionalServices",
+            "aliases": [],
+            "keywords": [],
+            "dimensionSrcHints": {},
+            "parent": "99f282c3-d291-4493-945c-8cdd19f58cff"
+        },
+        {
+            "rowId": "ab6d92f7-0986-4b38-b15d-726fa2a7e1c2",
+            "value": "Royalties",
+            "description": "This is the Profit and Loss->Expense->CostOfSales->Royalties",
+            "aliases": [],
+            "keywords": [],
+            "dimensionSrcHints": {},
+            "parent": "99f282c3-d291-4493-945c-8cdd19f58cff"
+        },
+        {
+            "rowId": "44ba3cc4-fe93-4493-82e2-f689622d9988",
+            "value": "SoftwareData",
+            "description": "This is the Profit and Loss->Expense->CostOfSales->SoftwareData",
+            "aliases": [],
+            "keywords": [],
+            "dimensionSrcHints": {},
+            "parent": "99f282c3-d291-4493-945c-8cdd19f58cff"
+        },
+        {
+            "rowId": "3e6268a2-e27f-4548-ac87-b24316a213e7",
+            "value": "Operating",
+            "description": "This is the Profit and Loss->Expense->Operating",
+            "aliases": [],
+            "keywords": [],
+            "dimensionSrcHints": {},
+            "parent": "4608fc95-86d9-4aca-9615-81dae99cb0c4"
+        },
+        {
+            "rowId": "af41e3d8-e6ff-4c3a-b5e7-774d1648d18f",
+            "value": "BankCharges",
+            "description": "This is the Profit and Loss->Expense->Operating->BankCharges",
+            "aliases": [],
+            "keywords": [],
+            "dimensionSrcHints": {},
+            "parent": "3e6268a2-e27f-4548-ac87-b24316a213e7"
+        },
+        {
+            "rowId": "a5be8674-9e7f-4ec2-8cfa-22903d0c5fbe",
+            "value": "Infrastructure",
+            "description": "This is the Profit and Loss->Expense->Operating->Infrastructure",
+            "aliases": [],
+            "keywords": [],
+            "dimensionSrcHints": {},
+            "parent": "3e6268a2-e27f-4548-ac87-b24316a213e7"
+        },
+        {
+            "rowId": "ecc90687-b45b-47a3-93ed-a760653227f7",
+            "value": "Hosting",
+            "description": "This is the Profit and Loss->Expense->Operating->Infrastructure->Hosting",
+            "aliases": [],
+            "keywords": [],
+            "dimensionSrcHints": {},
+            "parent": "a5be8674-9e7f-4ec2-8cfa-22903d0c5fbe"
+        },
+        {
+            "rowId": "685c37bf-fead-4547-b449-23253d7b19f5",
+            "value": "Leases",
+            "description": "This is the Profit and Loss->Expense->Operating->Leases",
+            "aliases": [],
+            "keywords": [],
+            "dimensionSrcHints": {},
+            "parent": "3e6268a2-e27f-4548-ac87-b24316a213e7"
+        },
+        {
+            "rowId": "2ebbf5d6-b7d1-4d60-ba55-b34fbd589fbf",
+            "value": "BuildingRentLeases",
+            "description": "This is the Profit and Loss->Expense->Operating->Leases->BuildingRentLeases",
+            "aliases": [],
+            "keywords": [],
+            "dimensionSrcHints": {},
+            "parent": "685c37bf-fead-4547-b449-23253d7b19f5"
+        },
+        {
+            "rowId": "8e9ec041-4ba5-4921-b452-9ab8ae5eac6f",
+            "value": "EquipmentRentLeases",
+            "description": "This is the Profit and Loss->Expense->Operating->Leases->EquipmentRentLeases",
+            "aliases": [],
+            "keywords": [],
+            "dimensionSrcHints": {},
+            "parent": "685c37bf-fead-4547-b449-23253d7b19f5"
+        },
+        {
+            "rowId": "92b57e31-4c2d-4ad2-8869-9559d0282afa",
+            "value": "Marketing",
+            "description": "This is the Profit and Loss->Expense->Operating->Marketing",
+            "aliases": [],
+            "keywords": [],
+            "dimensionSrcHints": {},
+            "parent": "3e6268a2-e27f-4548-ac87-b24316a213e7"
+        },
+        {
+            "rowId": "75a01f67-0c6e-4090-b48c-9d179a447fb0",
+            "value": "Direct",
+            "description": "This is the Profit and Loss->Expense->Operating->Marketing->Direct",
+            "aliases": [],
+            "keywords": [],
+            "dimensionSrcHints": {},
+            "parent": "92b57e31-4c2d-4ad2-8869-9559d0282afa"
+        },
+        {
+            "rowId": "d94a31cb-9498-44ae-a423-9ad75b4ee9bd",
+            "value": "NonCash",
+            "description": "This is the Profit and Loss->Expense->Operating->NonCash",
+            "aliases": [],
+            "keywords": [],
+            "dimensionSrcHints": {},
+            "parent": "3e6268a2-e27f-4548-ac87-b24316a213e7"
+        },
+        {
+            "rowId": "8692b106-85e4-43ac-9d86-ef7b867d06be",
+            "value": "Amortization",
+            "description": "This is the Profit and Loss->Expense->Operating->NonCash->Amortization",
+            "aliases": [],
+            "keywords": [],
+            "dimensionSrcHints": {},
+            "parent": "d94a31cb-9498-44ae-a423-9ad75b4ee9bd"
+        },
+        {
+            "rowId": "1b8acb73-c168-4236-8294-d1d8e1268e3a",
+            "value": "Depletion",
+            "description": "This is the Profit and Loss->Expense->Operating->NonCash->Depletion",
+            "aliases": [],
+            "keywords": [],
+            "dimensionSrcHints": {},
+            "parent": "d94a31cb-9498-44ae-a423-9ad75b4ee9bd"
+        },
+        {
+            "rowId": "5b7c40a2-2611-4e3c-8607-8ec2a24f0765",
+            "value": "Depreciation",
+            "description": "This is the Profit and Loss->Expense->Operating->NonCash->Depreciation",
+            "aliases": [],
+            "keywords": [],
+            "dimensionSrcHints": {},
+            "parent": "d94a31cb-9498-44ae-a423-9ad75b4ee9bd"
+        },
+        {
+            "rowId": "fe53444a-12a2-44c6-ad0d-05f95fb8148a",
+            "value": "EmployeeStockCompensation",
+            "description": "This is the Profit and Loss->Expense->Operating->NonCash->EmployeeStockCompensation",
+            "aliases": [],
+            "keywords": [],
+            "dimensionSrcHints": {},
+            "parent": "d94a31cb-9498-44ae-a423-9ad75b4ee9bd"
+        },
+        {
+            "rowId": "e4802f26-7fda-4e4d-b0b2-b495f8c90e33",
+            "value": "RevaluationImpairment",
+            "description": "This is the Profit and Loss->Expense->Operating->NonCash->RevaluationImpairment",
+            "aliases": [],
+            "keywords": [],
+            "dimensionSrcHints": {},
+            "parent": "d94a31cb-9498-44ae-a423-9ad75b4ee9bd"
+        },
+        {
+            "rowId": "72062255-3463-489a-8138-8f363a3b42f7",
+            "value": "Personnel",
+            "description": "This is the Profit and Loss->Expense->Operating->Personnel",
+            "aliases": [],
+            "keywords": [],
+            "dimensionSrcHints": {},
+            "parent": "3e6268a2-e27f-4548-ac87-b24316a213e7"
+        },
+        {
+            "rowId": "f7c9dee3-74b2-446b-a9b3-7672757b8787",
+            "value": "Consultants",
+            "description": "This is the Profit and Loss->Expense->Operating->Personnel->Consultants",
+            "aliases": [],
+            "keywords": [],
+            "dimensionSrcHints": {},
+            "parent": "72062255-3463-489a-8138-8f363a3b42f7"
+        },
+        {
+            "rowId": "90b3eac4-33ef-47ad-8c8d-e79f6edbcc0e",
+            "value": "Contractors",
+            "description": "This is the Profit and Loss->Expense->Operating->Personnel->Contractors",
+            "aliases": [],
+            "keywords": [],
+            "dimensionSrcHints": {},
+            "parent": "72062255-3463-489a-8138-8f363a3b42f7"
+        },
+        {
+            "rowId": "84556377-31c7-4441-ade2-2e78bcd68c17",
+            "value": "DirectorsCompensation",
+            "description": "This is the Profit and Loss->Expense->Operating->Personnel->DirectorsCompensation",
+            "aliases": [],
+            "keywords": [],
+            "dimensionSrcHints": {},
+            "parent": "72062255-3463-489a-8138-8f363a3b42f7"
+        },
+        {
+            "rowId": "60b6ae59-db77-4e31-9662-f527d6b1039f",
+            "value": "EmployeeBenefits",
+            "description": "This is the Profit and Loss->Expense->Operating->Personnel->EmployeeBenefits",
+            "aliases": [],
+            "keywords": [],
+            "dimensionSrcHints": {},
+            "parent": "72062255-3463-489a-8138-8f363a3b42f7"
+        },
+        {
+            "rowId": "fd7edf41-0c61-4218-aa66-63df32c0011b",
+            "value": "EmployeeTaxes",
+            "description": "This is the Profit and Loss->Expense->Operating->Personnel->EmployeeTaxes",
+            "aliases": [],
+            "keywords": [],
+            "dimensionSrcHints": {},
+            "parent": "72062255-3463-489a-8138-8f363a3b42f7"
+        },
+        {
+            "rowId": "0cc816c2-7f89-4148-9826-1ad7cb5af065",
+            "value": "EmployeeWages",
+            "description": "This is the Profit and Loss->Expense->Operating->Personnel->EmployeeWages",
+            "aliases": [],
+            "keywords": [],
+            "dimensionSrcHints": {},
+            "parent": "72062255-3463-489a-8138-8f363a3b42f7"
+        },
+        {
+            "rowId": "2a5f12ea-9ccc-4036-add0-99af2d1ad04a",
+            "value": "Pensions",
+            "description": "This is the Profit and Loss->Expense->Operating->Personnel->Pensions",
+            "aliases": [],
+            "keywords": [],
+            "dimensionSrcHints": {},
+            "parent": "72062255-3463-489a-8138-8f363a3b42f7"
+        },
+        {
+            "rowId": "dd0eaa99-8e16-420a-a2c5-d69f13fabd8f",
+            "value": "Sponsor Fee",
+            "description": "This is the Profit and Loss->Expense->Operating->Sponsor Fee",
+            "aliases": [],
+            "keywords": [],
+            "dimensionSrcHints": {},
+            "parent": "3e6268a2-e27f-4548-ac87-b24316a213e7"
+        },
+        {
+            "rowId": "eaf8d6c5-eff4-4901-b409-2314e421a59f",
+            "value": "Property",
+            "description": "This is the Profit and Loss->Expense->Operating->Property",
+            "aliases": [],
+            "keywords": [],
+            "dimensionSrcHints": {},
+            "parent": "3e6268a2-e27f-4548-ac87-b24316a213e7"
+        },
+        {
+            "rowId": "c1614ddd-4400-4ca7-8190-cb3872c58ab5",
+            "value": "ResearchDevelopment",
+            "description": "This is the Profit and Loss->Expense->Operating->ResearchDevelopment",
+            "aliases": [],
+            "keywords": [],
+            "dimensionSrcHints": {},
+            "parent": "3e6268a2-e27f-4548-ac87-b24316a213e7"
+        },
+        {
+            "rowId": "a3995c8a-80ac-45d3-ae89-37dd68da81f3",
+            "value": "SalesGeneralAdministrative",
+            "description": "This is the Profit and Loss->Expense->Operating->SalesGeneralAdministrative",
+            "aliases": [],
+            "keywords": [],
+            "dimensionSrcHints": {},
+            "parent": "3e6268a2-e27f-4548-ac87-b24316a213e7"
+        },
+        {
+            "rowId": "1c60c73a-1716-446b-bb90-affa38db7c09",
+            "value": "Automobiles",
+            "description": "This is the Profit and Loss->Expense->Operating->SalesGeneralAdministrative->Automobiles",
+            "aliases": [],
+            "keywords": [],
+            "dimensionSrcHints": {},
+            "parent": "a3995c8a-80ac-45d3-ae89-37dd68da81f3"
+        },
+        {
+            "rowId": "f277b461-9749-4176-a9e8-4b4f707409aa",
+            "value": "BadDebtDoubtfulAccounts",
+            "description": "This is the Profit and Loss->Expense->Operating->SalesGeneralAdministrative->BadDebtDoubtfulAccounts",
+            "aliases": [],
+            "keywords": [],
+            "dimensionSrcHints": {},
+            "parent": "a3995c8a-80ac-45d3-ae89-37dd68da81f3"
+        },
+        {
+            "rowId": "f6bb18aa-16c7-4ed2-8093-0ab7421d4e0d",
+            "value": "Chargebacks",
+            "description": "This is the Profit and Loss->Expense->Operating->SalesGeneralAdministrative->Chargebacks",
+            "aliases": [],
+            "keywords": [],
+            "dimensionSrcHints": {},
+            "parent": "a3995c8a-80ac-45d3-ae89-37dd68da81f3"
+        },
+        {
+            "rowId": "8dcbe959-223d-442b-91ec-c0c77f55351f",
+            "value": "ClientEntertainment",
+            "description": "This is the Profit and Loss->Expense->Operating->SalesGeneralAdministrative->ClientEntertainment",
+            "aliases": [],
+            "keywords": [],
+            "dimensionSrcHints": {},
+            "parent": "a3995c8a-80ac-45d3-ae89-37dd68da81f3"
+        },
+        {
+            "rowId": "4c8f416b-a4d7-4031-a65d-a03d4f4e55e8",
+            "value": "CommissionsExpense",
+            "description": "This is the Profit and Loss->Expense->Operating->SalesGeneralAdministrative->CommissionsExpense",
+            "aliases": [],
+            "keywords": [],
+            "dimensionSrcHints": {},
+            "parent": "a3995c8a-80ac-45d3-ae89-37dd68da81f3"
+        },
+        {
+            "rowId": "57138757-04e4-4b87-a0eb-9a82ae7845b0",
+            "value": "Distribution",
+            "description": "This is the Profit and Loss->Expense->Operating->SalesGeneralAdministrative->Distribution",
+            "aliases": [],
+            "keywords": [],
+            "dimensionSrcHints": {},
+            "parent": "a3995c8a-80ac-45d3-ae89-37dd68da81f3"
+        },
+        {
+            "rowId": "759ac381-5852-44f1-bdd8-95b52616db19",
+            "value": "Insurance",
+            "description": "This is the Profit and Loss->Expense->Operating->SalesGeneralAdministrative->Insurance",
+            "aliases": [],
+            "keywords": [],
+            "dimensionSrcHints": {},
+            "parent": "a3995c8a-80ac-45d3-ae89-37dd68da81f3"
+        },
+        {
+            "rowId": "8428bd6c-d267-46ff-8368-c44bf1636b8b",
+            "value": "PaymentProcessingFees",
+            "description": "This is the Profit and Loss->Expense->Operating->SalesGeneralAdministrative->PaymentProcessingFees",
+            "aliases": [],
+            "keywords": [],
+            "dimensionSrcHints": {},
+            "parent": "a3995c8a-80ac-45d3-ae89-37dd68da81f3"
+        },
+        {
+            "rowId": "2cb506e8-d02c-45ec-a6c1-858b1f53e5d6",
+            "value": "SoftwareData",
+            "description": "This is the Profit and Loss->Expense->Operating->SoftwareData",
+            "aliases": [],
+            "keywords": [],
+            "dimensionSrcHints": {},
+            "parent": "3e6268a2-e27f-4548-ac87-b24316a213e7"
+        },
+        {
+            "rowId": "325de53b-4378-45eb-9117-65b0f6e2036f",
+            "value": "Travel",
+            "description": "This is the Profit and Loss->Expense->Operating->Travel",
+            "aliases": [],
+            "keywords": [],
+            "dimensionSrcHints": {},
+            "parent": "3e6268a2-e27f-4548-ac87-b24316a213e7"
+        },
+        {
+            "rowId": "76991c30-d179-4cb8-b652-cc45a2299488",
+            "value": "Utilities",
+            "description": "This is the Profit and Loss->Expense->Operating->Utilities",
+            "aliases": [],
+            "keywords": [],
+            "dimensionSrcHints": {},
+            "parent": "3e6268a2-e27f-4548-ac87-b24316a213e7"
+        },
+        {
+            "rowId": "183a5f4d-da58-463b-981f-72dd806ff4ea",
+            "value": "NonOperating",
+            "description": "This is the Profit and Loss->Expense->NonOperating",
+            "aliases": [],
+            "keywords": [],
+            "dimensionSrcHints": {},
+            "parent": "4608fc95-86d9-4aca-9615-81dae99cb0c4"
+        },
+        {
+            "rowId": "f03b1085-f91d-40b1-836c-9ccac3827ee4",
+            "value": "Dividends",
+            "description": "This is the Profit and Loss->Expense->NonOperating->Dividends",
+            "aliases": [],
+            "keywords": [],
+            "dimensionSrcHints": {},
+            "parent": "183a5f4d-da58-463b-981f-72dd806ff4ea"
+        },
+        {
+            "rowId": "fc4e740b-0954-4431-961b-d24e5e62c05b",
+            "value": "Donations",
+            "description": "This is the Profit and Loss->Expense->NonOperating->Donations",
+            "aliases": [],
+            "keywords": [],
+            "dimensionSrcHints": {},
+            "parent": "183a5f4d-da58-463b-981f-72dd806ff4ea"
+        },
+        {
+            "rowId": "442effde-e06a-40c3-96a8-939de382d69e",
+            "value": "LegalSettlements",
+            "description": "This is the Profit and Loss->Expense->NonOperating->LegalSettlements",
+            "aliases": [],
+            "keywords": [],
+            "dimensionSrcHints": {},
+            "parent": "183a5f4d-da58-463b-981f-72dd806ff4ea"
+        },
+        {
+            "rowId": "75fccada-ee19-46d1-a335-a94e75d8d3dd",
+            "value": "FxLoss",
+            "description": "This is the Profit and Loss->Expense->NonOperating->FxLoss",
+            "aliases": [],
+            "keywords": [],
+            "dimensionSrcHints": {},
+            "parent": "183a5f4d-da58-463b-981f-72dd806ff4ea"
+        },
+        {
+            "rowId": "86593037-a887-4dec-a615-005353f95ee7",
+            "value": "Interest",
+            "description": "This is the Profit and Loss->Expense->NonOperating->Interest",
+            "aliases": [],
+            "keywords": [],
+            "dimensionSrcHints": {},
+            "parent": "183a5f4d-da58-463b-981f-72dd806ff4ea"
+        },
+        {
+            "rowId": "2cebbef2-6fbd-4a48-9bf7-5b9b91f25691",
+            "value": "CreditCardInterestPaid",
+            "description": "This is the Profit and Loss->Expense->NonOperating->Interest->CreditCardInterestPaid",
+            "aliases": [],
+            "keywords": [],
+            "dimensionSrcHints": {},
+            "parent": "86593037-a887-4dec-a615-005353f95ee7"
+        },
+        {
+            "rowId": "338dfabe-e0a5-4034-a644-e5240c6f87d4",
+            "value": "LoanInterestPaid",
+            "description": "This is the Profit and Loss->Expense->NonOperating->Interest->LoanInterestPaid",
+            "aliases": [],
+            "keywords": [],
+            "dimensionSrcHints": {},
+            "parent": "86593037-a887-4dec-a615-005353f95ee7"
+        },
+        {
+            "rowId": "1d296b0a-bd75-44d1-9831-c9aed2778a27",
+            "value": "Penalties",
+            "description": "This is the Profit and Loss->Expense->NonOperating->Penalties",
+            "aliases": [],
+            "keywords": [],
+            "dimensionSrcHints": {},
+            "parent": "183a5f4d-da58-463b-981f-72dd806ff4ea"
+        },
+        {
+            "rowId": "37de50c0-0126-4b35-96e2-cf8d7b1ae263",
+            "value": "Restructuring",
+            "description": "This is the Profit and Loss->Expense->NonOperating->Restructuring",
+            "aliases": [],
+            "keywords": [],
+            "dimensionSrcHints": {},
+            "parent": "183a5f4d-da58-463b-981f-72dd806ff4ea"
+        },
+        {
+            "rowId": "5c9b52f8-238c-439b-8c18-c8d431d1c3f5",
+            "value": "Taxes",
+            "description": "This is the Profit and Loss->Expense->NonOperating->Taxes",
+            "aliases": [],
+            "keywords": [],
+            "dimensionSrcHints": {},
+            "parent": "183a5f4d-da58-463b-981f-72dd806ff4ea"
+        },
+        {
+            "rowId": "d9821cfb-d931-4ed6-9a27-e84c39c99cda",
+            "value": "CorporationTaxes",
+            "description": "This is the Profit and Loss->Expense->NonOperating->Taxes->CorporationTaxes",
+            "aliases": [],
+            "keywords": [],
+            "dimensionSrcHints": {},
+            "parent": "5c9b52f8-238c-439b-8c18-c8d431d1c3f5"
+        },
+        {
+            "rowId": "c9b40934-999a-45e6-ad91-0853f3076360",
+            "value": "IncomeTaxes",
+            "description": "This is the Profit and Loss->Expense->NonOperating->Taxes->IncomeTaxes",
+            "aliases": [],
+            "keywords": [],
+            "dimensionSrcHints": {},
+            "parent": "5c9b52f8-238c-439b-8c18-c8d431d1c3f5"
+        },
+        {
+            "rowId": "da091b39-6cde-49b1-bbe6-c133e764dae9",
+            "value": "SalesTaxes",
+            "description": "This is the Profit and Loss->Expense->NonOperating->Taxes->SalesTaxes",
+            "aliases": [],
+            "keywords": [],
+            "dimensionSrcHints": {},
+            "parent": "5c9b52f8-238c-439b-8c18-c8d431d1c3f5"
+        },
+        {
+            "rowId": "cae6fb8e-dd41-4b90-9d47-a4e52a775b02",
+            "value": "ValueAddedTaxes",
+            "description": "This is the Profit and Loss->Expense->NonOperating->Taxes->ValueAddedTaxes",
+            "aliases": [],
+            "keywords": [],
+            "dimensionSrcHints": {},
+            "parent": "5c9b52f8-238c-439b-8c18-c8d431d1c3f5"
+        },
+        {
+            "rowId": "019af416-dcfe-40ce-8084-76d30f8a7606",
+            "value": "Direct",
+            "description": "This is the Profit and Loss->Expense->CostOfSales->Marketing->Direct",
+            "aliases": [],
+            "keywords": [],
+            "dimensionSrcHints": {},
+            "parent": "3c1037ac-d82d-44b9-9e0e-8cf803e59631"
+        },
+        {
+            "rowId": "c28364e7-279d-4bb1-9dba-a75eca834c1d",
+            "value": "Indirect",
+            "description": "This is the Profit and Loss->Expense->CostOfSales->Marketing->Indirect",
+            "aliases": [],
+            "keywords": [],
+            "dimensionSrcHints": {},
+            "parent": "3c1037ac-d82d-44b9-9e0e-8cf803e59631"
+        },
+        {
+            "rowId": "f7981346-318a-435c-94c8-c2e1378d29a7",
+            "value": "ProfessionalServices",
+            "description": "This is the Profit and Loss->Expense->Operating->SalesGeneralAdministrative->ProfessionalServices",
+            "aliases": [],
+            "keywords": [],
+            "dimensionSrcHints": {},
+            "parent": "a3995c8a-80ac-45d3-ae89-37dd68da81f3"
+        },
+        {
+            "rowId": "581e190c-dace-46ce-984e-8c38ef3f5752",
+            "value": "Infrastructure",
+            "description": "This is the Profit and Loss->Expense->CostOfSales->Infrastructure->Infrastructure",
+            "aliases": [],
+            "keywords": [],
+            "dimensionSrcHints": {},
+            "parent": "ffd6a6b7-2d22-41ea-a0b7-6f7c2cbd984d"
+        },
+        {
+            "rowId": "9f5fa54d-bc2c-40ea-b4e0-ca76950b8bfb",
+            "value": "Balance Sheet",
+            "description": "This is the Balance Sheet",
+            "aliases": [],
+            "keywords": [],
+            "dimensionSrcHints": {},
+            "parent": null
+        },
+        {
+            "rowId": "c1da615a-fefc-4551-8161-7a54487aa4b4",
+            "value": "Asset",
+            "description": "This is the Balance Sheet->Asset",
+            "aliases": [],
+            "keywords": [],
+            "dimensionSrcHints": {},
+            "parent": "9f5fa54d-bc2c-40ea-b4e0-ca76950b8bfb"
+        },
+        {
+            "rowId": "31a1c8ff-f66d-43de-805d-e1551d0c183b",
+            "value": "Current",
+            "description": "This is the Balance Sheet->Asset->Current",
+            "aliases": [],
+            "keywords": [],
+            "dimensionSrcHints": {},
+            "parent": "c1da615a-fefc-4551-8161-7a54487aa4b4"
+        },
+        {
+            "rowId": "2a8c590f-0975-4243-b2ae-5bd54ed56f64",
+            "value": "AccruedDeferredAssets",
+            "description": "This is the Balance Sheet->Asset->Current->AccruedDeferredAssets",
+            "aliases": [],
+            "keywords": [],
+            "dimensionSrcHints": {},
+            "parent": "31a1c8ff-f66d-43de-805d-e1551d0c183b"
+        },
+        {
+            "rowId": "a0ba5af0-7f61-4b33-8a20-6b581e42ee26",
+            "value": "AccruedRevenue",
+            "description": "This is the Balance Sheet->Asset->Current->AccruedDeferredAssets->AccruedRevenue",
+            "aliases": [],
+            "keywords": [],
+            "dimensionSrcHints": {},
+            "parent": "2a8c590f-0975-4243-b2ae-5bd54ed56f64"
+        },
+        {
+            "rowId": "af91b6ef-ab01-42b2-ba35-af6ed18a82b6",
+            "value": "DeferredExpenses",
+            "description": "This is the Balance Sheet->Asset->Current->AccruedDeferredAssets->DeferredExpenses",
+            "aliases": [],
+            "keywords": [],
+            "dimensionSrcHints": {},
+            "parent": "2a8c590f-0975-4243-b2ae-5bd54ed56f64"
+        },
+        {
+            "rowId": "a4b38779-ec98-416a-9b18-83352e6b1cf7",
+            "value": "PrepaidExpenses",
+            "description": "This is the Balance Sheet->Asset->Current->AccruedDeferredAssets->PrepaidExpenses",
+            "aliases": [],
+            "keywords": [],
+            "dimensionSrcHints": {},
+            "parent": "2a8c590f-0975-4243-b2ae-5bd54ed56f64"
+        },
+        {
+            "rowId": "7340eeb2-4ec7-4ac6-84d0-28a92ca0c576",
+            "value": "AllowanceDoubtfulAccounts",
+            "description": "This is the Balance Sheet->Asset->Current->AllowanceDoubtfulAccounts",
+            "aliases": [],
+            "keywords": [],
+            "dimensionSrcHints": {},
+            "parent": "31a1c8ff-f66d-43de-805d-e1551d0c183b"
+        },
+        {
+            "rowId": "b65bca65-0b87-4123-92d3-9307184e2a1e",
+            "value": "Bank",
+            "description": "This is the Balance Sheet->Asset->Current->Bank",
+            "aliases": [],
+            "keywords": [],
+            "dimensionSrcHints": {},
+            "parent": "31a1c8ff-f66d-43de-805d-e1551d0c183b"
+        },
+        {
+            "rowId": "64b87855-4ab1-479c-8649-27323e31b364",
+            "value": "BankTransfers",
+            "description": "This is the Balance Sheet->Asset->Current->Bank->BankTransfers",
+            "aliases": [],
+            "keywords": [],
+            "dimensionSrcHints": {},
+            "parent": "b65bca65-0b87-4123-92d3-9307184e2a1e"
+        },
+        {
+            "rowId": "918b54c1-d6ed-4ae6-b154-839b34e0afe3",
+            "value": "IntracompanyTransfers",
+            "description": "This is the Balance Sheet->Asset->Current->Bank->BankTransfers->IntracompanyTransfers",
+            "aliases": [],
+            "keywords": [],
+            "dimensionSrcHints": {},
+            "parent": "64b87855-4ab1-479c-8649-27323e31b364"
+        },
+        {
+            "rowId": "176ebf40-032f-4c83-8f36-b84b1b8110f6",
+            "value": "RelatedPartyTransfers",
+            "description": "This is the Balance Sheet->Asset->Current->Bank->BankTransfers->RelatedPartyTransfers",
+            "aliases": [],
+            "keywords": [],
+            "dimensionSrcHints": {},
+            "parent": "64b87855-4ab1-479c-8649-27323e31b364"
+        },
+        {
+            "rowId": "8d757f65-3588-490d-875a-8283e8282dd9",
+            "value": "ShareholderTransfers",
+            "description": "This is the Balance Sheet->Asset->Current->Bank->BankTransfers->ShareholderTransfers",
+            "aliases": [],
+            "keywords": [],
+            "dimensionSrcHints": {},
+            "parent": "64b87855-4ab1-479c-8649-27323e31b364"
+        },
+        {
+            "rowId": "f0bdbad5-85f3-433b-b4db-4a5e6285b393",
+            "value": "Clearing",
+            "description": "This is the Balance Sheet->Asset->Current->Bank->Clearing",
+            "aliases": [],
+            "keywords": [],
+            "dimensionSrcHints": {},
+            "parent": "b65bca65-0b87-4123-92d3-9307184e2a1e"
+        },
+        {
+            "rowId": "9509811c-6516-4106-be90-897a23773618",
+            "value": "CashEquivalents",
+            "description": "This is the Balance Sheet->Asset->Current->CashEquivalents",
+            "aliases": [],
+            "keywords": [],
+            "dimensionSrcHints": {},
+            "parent": "31a1c8ff-f66d-43de-805d-e1551d0c183b"
+        },
+        {
+            "rowId": "19faedbc-3c72-4669-a6c2-7c49c1c244ca",
+            "value": "Cryptocurrency",
+            "description": "This is the Balance Sheet->Asset->Current->CashEquivalents->Cryptocurrency",
+            "aliases": [],
+            "keywords": [],
+            "dimensionSrcHints": {},
+            "parent": "9509811c-6516-4106-be90-897a23773618"
+        },
+        {
+            "rowId": "d92e3374-8ff0-4c16-8e00-26ce35ece518",
+            "value": "Inventory",
+            "description": "This is the Balance Sheet->Asset->Current->Inventory",
+            "aliases": [],
+            "keywords": [],
+            "dimensionSrcHints": {},
+            "parent": "31a1c8ff-f66d-43de-805d-e1551d0c183b"
+        },
+        {
+            "rowId": "02557875-74d3-40fa-a42c-248afa7cbb26",
+            "value": "Obsolete",
+            "description": "This is the Balance Sheet->Asset->Current->Inventory->Obsolete",
+            "aliases": [],
+            "keywords": [],
+            "dimensionSrcHints": {},
+            "parent": "d92e3374-8ff0-4c16-8e00-26ce35ece518"
+        },
+        {
+            "rowId": "fc16569b-0019-41fb-b7bc-0e345456ae79",
+            "value": "FinishedGoods",
+            "description": "This is the Balance Sheet->Asset->Current->Inventory->FinishedGoods",
+            "aliases": [],
+            "keywords": [],
+            "dimensionSrcHints": {},
+            "parent": "d92e3374-8ff0-4c16-8e00-26ce35ece518"
+        },
+        {
+            "rowId": "aae18785-c573-46cc-9f1d-44828005d270",
+            "value": "Merchandise",
+            "description": "This is the Balance Sheet->Asset->Current->Inventory->Merchandise",
+            "aliases": [],
+            "keywords": [],
+            "dimensionSrcHints": {},
+            "parent": "d92e3374-8ff0-4c16-8e00-26ce35ece518"
+        },
+        {
+            "rowId": "20a15aa0-b828-4347-8bdf-3dd786bb592f",
+            "value": "RawMaterials",
+            "description": "This is the Balance Sheet->Asset->Current->Inventory->RawMaterials",
+            "aliases": [],
+            "keywords": [],
+            "dimensionSrcHints": {},
+            "parent": "d92e3374-8ff0-4c16-8e00-26ce35ece518"
+        },
+        {
+            "rowId": "7df3410f-3255-4e11-aaf6-70e045622d0b",
+            "value": "WorkInProcess",
+            "description": "This is the Balance Sheet->Asset->Current->Inventory->WorkInProcess",
+            "aliases": [],
+            "keywords": [],
+            "dimensionSrcHints": {},
+            "parent": "d92e3374-8ff0-4c16-8e00-26ce35ece518"
+        },
+        {
+            "rowId": "c64b8391-156c-4d4d-94eb-bfe099129a5e",
+            "value": "Investments",
+            "description": "This is the Balance Sheet->Asset->Current->Investments",
+            "aliases": [],
+            "keywords": [],
+            "dimensionSrcHints": {},
+            "parent": "31a1c8ff-f66d-43de-805d-e1551d0c183b"
+        },
+        {
+            "rowId": "6c69141c-0b70-42d7-8b71-357c518bc280",
+            "value": "Receivables",
+            "description": "This is the Balance Sheet->Asset->Current->Receivables",
+            "aliases": [],
+            "keywords": [],
+            "dimensionSrcHints": {},
+            "parent": "31a1c8ff-f66d-43de-805d-e1551d0c183b"
+        },
+        {
+            "rowId": "d46e3044-f80c-4f45-b413-e691baf08e86",
+            "value": "AccountsReceivable",
+            "description": "This is the Balance Sheet->Asset->Current->Receivables->AccountsReceivable",
+            "aliases": [],
+            "keywords": [],
+            "dimensionSrcHints": {},
+            "parent": "6c69141c-0b70-42d7-8b71-357c518bc280"
+        },
+        {
+            "rowId": "76151615-6e7a-4e34-9a13-bbbb97441806",
+            "value": "NotesLoansReceivable",
+            "description": "This is the Balance Sheet->Asset->Current->Receivables->NotesLoansReceivable",
+            "aliases": [],
+            "keywords": [],
+            "dimensionSrcHints": {},
+            "parent": "6c69141c-0b70-42d7-8b71-357c518bc280"
+        },
+        {
+            "rowId": "2b08fb69-3a95-4b0f-be01-322838598b8b",
+            "value": "RelatedParties",
+            "description": "This is the Balance Sheet->Asset->Current->RelatedParties",
+            "aliases": [],
+            "keywords": [],
+            "dimensionSrcHints": {},
+            "parent": "31a1c8ff-f66d-43de-805d-e1551d0c183b"
+        },
+        {
+            "rowId": "3474b2e2-aeb2-40a8-af51-569af31adb3c",
+            "value": "EmployeeLoans",
+            "description": "This is the Balance Sheet->Asset->Current->RelatedParties->EmployeeLoans",
+            "aliases": [],
+            "keywords": [],
+            "dimensionSrcHints": {},
+            "parent": "2b08fb69-3a95-4b0f-be01-322838598b8b"
+        },
+        {
+            "rowId": "ea2185fd-4f92-43b4-8d80-e601c0a33aac",
+            "value": "IntercompanyReceivable",
+            "description": "This is the Balance Sheet->Asset->Current->RelatedParties->IntercompanyReceivable",
+            "aliases": [],
+            "keywords": [],
+            "dimensionSrcHints": {},
+            "parent": "2b08fb69-3a95-4b0f-be01-322838598b8b"
+        },
+        {
+            "rowId": "ed5da9df-de47-4fa4-b35d-6325a45346d6",
+            "value": "ShareholderLoans",
+            "description": "This is the Balance Sheet->Asset->Current->RelatedParties->ShareholderLoans",
+            "aliases": [],
+            "keywords": [],
+            "dimensionSrcHints": {},
+            "parent": "2b08fb69-3a95-4b0f-be01-322838598b8b"
+        },
+        {
+            "rowId": "8e50d663-bc7b-45ff-80ae-cff250d79f81",
+            "value": "DirectorsLoans",
+            "description": "This is the Balance Sheet->Asset->Current->RelatedParties->ShareholderLoans->DirectorsLoans",
+            "aliases": [],
+            "keywords": [],
+            "dimensionSrcHints": {},
+            "parent": "ed5da9df-de47-4fa4-b35d-6325a45346d6"
+        },
+        {
+            "rowId": "c6d452df-c11a-48b1-a97e-3074c8b6b142",
+            "value": "RestrictedFunds",
+            "description": "This is the Balance Sheet->Asset->Current->RestrictedFunds",
+            "aliases": [],
+            "keywords": [],
+            "dimensionSrcHints": {},
+            "parent": "31a1c8ff-f66d-43de-805d-e1551d0c183b"
+        },
+        {
+            "rowId": "96c11830-4e5d-4348-9c83-fb24d1a513bf",
+            "value": "ClientFunds",
+            "description": "This is the Balance Sheet->Asset->Current->RestrictedFunds->ClientFunds",
+            "aliases": [],
+            "keywords": [],
+            "dimensionSrcHints": {},
+            "parent": "c6d452df-c11a-48b1-a97e-3074c8b6b142"
+        },
+        {
+            "rowId": "9ae381a8-5f7a-4a8a-b89b-7c004c1a626d",
+            "value": "UndepositedFunds",
+            "description": "This is the Balance Sheet->Asset->Current->UndepositedFunds",
+            "aliases": [],
+            "keywords": [],
+            "dimensionSrcHints": {},
+            "parent": "31a1c8ff-f66d-43de-805d-e1551d0c183b"
+        },
+        {
+            "rowId": "e9c1f742-3dfd-47b2-9f23-41b7dba9333b",
+            "value": "NonCurrent",
+            "description": "This is the Balance Sheet->Asset->NonCurrent",
+            "aliases": [],
+            "keywords": [],
+            "dimensionSrcHints": {},
+            "parent": "c1da615a-fefc-4551-8161-7a54487aa4b4"
+        },
+        {
+            "rowId": "5f741c85-b0af-4ce5-a670-bddd1779e312",
+            "value": "AccruedDeferredAssets",
+            "description": "This is the Balance Sheet->Asset->NonCurrent->AccruedDeferredAssets",
+            "aliases": [],
+            "keywords": [],
+            "dimensionSrcHints": {},
+            "parent": "e9c1f742-3dfd-47b2-9f23-41b7dba9333b"
+        },
+        {
+            "rowId": "17e542d2-e05b-4b19-ace1-a6b6dfb81e78",
+            "value": "DeferredExpenses",
+            "description": "This is the Balance Sheet->Asset->NonCurrent->AccruedDeferredAssets->DeferredExpenses",
+            "aliases": [],
+            "keywords": [],
+            "dimensionSrcHints": {},
+            "parent": "5f741c85-b0af-4ce5-a670-bddd1779e312"
+        },
+        {
+            "rowId": "e35d8b16-a59d-4246-9dd3-3694001807b1",
+            "value": "PrepaidExpenses",
+            "description": "This is the Balance Sheet->Asset->NonCurrent->AccruedDeferredAssets->PrepaidExpenses",
+            "aliases": [],
+            "keywords": [],
+            "dimensionSrcHints": {},
+            "parent": "5f741c85-b0af-4ce5-a670-bddd1779e312"
+        },
+        {
+            "rowId": "e7a6b217-cab7-4b62-85cb-ca34044ee6dd",
+            "value": "AccumulatedCostAllocation",
+            "description": "This is the Balance Sheet->Asset->NonCurrent->AccumulatedCostAllocation",
+            "aliases": [],
+            "keywords": [],
+            "dimensionSrcHints": {},
+            "parent": "e9c1f742-3dfd-47b2-9f23-41b7dba9333b"
+        },
+        {
+            "rowId": "74b98f10-a241-4953-80dd-56bb6b8114c7",
+            "value": "Amortization",
+            "description": "This is the Balance Sheet->Asset->NonCurrent->AccumulatedCostAllocation->Amortization",
+            "aliases": [],
+            "keywords": [],
+            "dimensionSrcHints": {},
+            "parent": "e7a6b217-cab7-4b62-85cb-ca34044ee6dd"
+        },
+        {
+            "rowId": "6a701325-83dd-44ee-9c0d-0661f8ef41a1",
+            "value": "Depletion",
+            "description": "This is the Balance Sheet->Asset->NonCurrent->AccumulatedCostAllocation->Depletion",
+            "aliases": [],
+            "keywords": [],
+            "dimensionSrcHints": {},
+            "parent": "e7a6b217-cab7-4b62-85cb-ca34044ee6dd"
+        },
+        {
+            "rowId": "beace59c-c364-466e-a9d4-cc1bf6063983",
+            "value": "Depreciation",
+            "description": "This is the Balance Sheet->Asset->NonCurrent->AccumulatedCostAllocation->Depreciation",
+            "aliases": [],
+            "keywords": [],
+            "dimensionSrcHints": {},
+            "parent": "e7a6b217-cab7-4b62-85cb-ca34044ee6dd"
+        },
+        {
+            "rowId": "fa013247-2eb2-41a9-8a82-90711a79712a",
+            "value": "RevaluationImpairment",
+            "description": "This is the Balance Sheet->Asset->NonCurrent->AccumulatedCostAllocation->RevaluationImpairment",
+            "aliases": [],
+            "keywords": [],
+            "dimensionSrcHints": {},
+            "parent": "e7a6b217-cab7-4b62-85cb-ca34044ee6dd"
+        },
+        {
+            "rowId": "80ae782a-984f-4986-be6b-10169fefff86",
+            "value": "IntangibleAssets",
+            "description": "This is the Balance Sheet->Asset->NonCurrent->IntangibleAssets",
+            "aliases": [],
+            "keywords": [],
+            "dimensionSrcHints": {},
+            "parent": "e9c1f742-3dfd-47b2-9f23-41b7dba9333b"
+        },
+        {
+            "rowId": "9ef55403-c724-48f4-828f-ccb4c40d8ddf",
+            "value": "AcquisitionsInProgress",
+            "description": "This is the Balance Sheet->Asset->NonCurrent->IntangibleAssets->AcquisitionsInProgress",
+            "aliases": [],
+            "keywords": [],
+            "dimensionSrcHints": {},
+            "parent": "80ae782a-984f-4986-be6b-10169fefff86"
+        },
+        {
+            "rowId": "60dc6656-b5b8-4400-b4e6-e989564c403d",
+            "value": "Packaging",
+            "description": "This is the Balance Sheet->Asset->Current->Inventory->Packaging",
+            "aliases": [],
+            "keywords": [],
+            "dimensionSrcHints": {},
+            "parent": "d92e3374-8ff0-4c16-8e00-26ce35ece518"
+        },
+        {
+            "rowId": "befa548d-8120-4c22-a4f6-c0628d3ce51a",
+            "value": "Goodwill",
+            "description": "This is the Balance Sheet->Asset->NonCurrent->IntangibleAssets->Goodwill",
+            "aliases": [],
+            "keywords": [],
+            "dimensionSrcHints": {},
+            "parent": "80ae782a-984f-4986-be6b-10169fefff86"
+        },
+        {
+            "rowId": "5fa3d84f-16b9-4100-ab91-6824fb162be1",
+            "value": "Investments",
+            "description": "This is the Balance Sheet->Asset->NonCurrent->Investments",
+            "aliases": [],
+            "keywords": [],
+            "dimensionSrcHints": {},
+            "parent": "e9c1f742-3dfd-47b2-9f23-41b7dba9333b"
+        },
+        {
+            "rowId": "7eaea65d-6f18-4698-9e90-7485cd871c0d",
+            "value": "Receivables",
+            "description": "This is the Balance Sheet->Asset->NonCurrent->Receivables",
+            "aliases": [],
+            "keywords": [],
+            "dimensionSrcHints": {},
+            "parent": "e9c1f742-3dfd-47b2-9f23-41b7dba9333b"
+        },
+        {
+            "rowId": "decedf7a-f036-45de-aaed-e98997cbdeb1",
+            "value": "NotesLoansReceivable",
+            "description": "This is the Balance Sheet->Asset->NonCurrent->Receivables->NotesLoansReceivable",
+            "aliases": [],
+            "keywords": [],
+            "dimensionSrcHints": {},
+            "parent": "7eaea65d-6f18-4698-9e90-7485cd871c0d"
+        },
+        {
+            "rowId": "a759f10b-c734-41de-b062-5f8bf9abc69c",
+            "value": "RelatedParties",
+            "description": "This is the Balance Sheet->Asset->NonCurrent->RelatedParties",
+            "aliases": [],
+            "keywords": [],
+            "dimensionSrcHints": {},
+            "parent": "e9c1f742-3dfd-47b2-9f23-41b7dba9333b"
+        },
+        {
+            "rowId": "a909872c-73da-4392-93e8-9f5864dac100",
+            "value": "EmployeeLoans",
+            "description": "This is the Balance Sheet->Asset->NonCurrent->RelatedParties->EmployeeLoans",
+            "aliases": [],
+            "keywords": [],
+            "dimensionSrcHints": {},
+            "parent": "a759f10b-c734-41de-b062-5f8bf9abc69c"
+        },
+        {
+            "rowId": "154dbeee-147e-43ab-a6a8-545c2cd73213",
+            "value": "IntercompanyReceivable",
+            "description": "This is the Balance Sheet->Asset->NonCurrent->RelatedParties->IntercompanyReceivable",
+            "aliases": [],
+            "keywords": [],
+            "dimensionSrcHints": {},
+            "parent": "a759f10b-c734-41de-b062-5f8bf9abc69c"
+        },
+        {
+            "rowId": "25ca2546-554f-46e6-b916-1abc3f238ca0",
+            "value": "TangibleAssets",
+            "description": "This is the Balance Sheet->Asset->NonCurrent->TangibleAssets",
+            "aliases": [],
+            "keywords": [],
+            "dimensionSrcHints": {},
+            "parent": "e9c1f742-3dfd-47b2-9f23-41b7dba9333b"
+        },
+        {
+            "rowId": "fabedc09-d154-409e-8e27-b64cc66b6976",
+            "value": "AssetsUnderConstruction",
+            "description": "This is the Balance Sheet->Asset->NonCurrent->TangibleAssets->AssetsUnderConstruction",
+            "aliases": [],
+            "keywords": [],
+            "dimensionSrcHints": {},
+            "parent": "25ca2546-554f-46e6-b916-1abc3f238ca0"
+        },
+        {
+            "rowId": "848a248c-6495-4b64-b6b1-a27e996e7604",
+            "value": "Automobiles",
+            "description": "This is the Balance Sheet->Asset->NonCurrent->TangibleAssets->Automobiles",
+            "aliases": [],
+            "keywords": [],
+            "dimensionSrcHints": {},
+            "parent": "25ca2546-554f-46e6-b916-1abc3f238ca0"
+        },
+        {
+            "rowId": "c9ccfe50-7f21-4852-aee3-8bbe55f103be",
+            "value": "CapitalLeases",
+            "description": "This is the Balance Sheet->Asset->NonCurrent->TangibleAssets->CapitalLeases",
+            "aliases": [],
+            "keywords": [],
+            "dimensionSrcHints": {},
+            "parent": "25ca2546-554f-46e6-b916-1abc3f238ca0"
+        },
+        {
+            "rowId": "91cb9b5c-8e2a-466a-ab57-4103b5ffc1e2",
+            "value": "EquipmentMachinery",
+            "description": "This is the Balance Sheet->Asset->NonCurrent->TangibleAssets->EquipmentMachinery",
+            "aliases": [],
+            "keywords": [],
+            "dimensionSrcHints": {},
+            "parent": "25ca2546-554f-46e6-b916-1abc3f238ca0"
+        },
+        {
+            "rowId": "7a1f3c9b-6022-493a-b4a7-ddc54b7c3c8b",
+            "value": "FixturesFittings",
+            "description": "This is the Balance Sheet->Asset->NonCurrent->TangibleAssets->FixturesFittings",
+            "aliases": [],
+            "keywords": [],
+            "dimensionSrcHints": {},
+            "parent": "25ca2546-554f-46e6-b916-1abc3f238ca0"
+        },
+        {
+            "rowId": "c8e28094-b4a7-4c45-b003-cb8f4b35c7b2",
+            "value": "LandBuildings",
+            "description": "This is the Balance Sheet->Asset->NonCurrent->TangibleAssets->LandBuildings",
+            "aliases": [],
+            "keywords": [],
+            "dimensionSrcHints": {},
+            "parent": "25ca2546-554f-46e6-b916-1abc3f238ca0"
+        },
+        {
+            "rowId": "b0706be4-5e5f-4e2d-9f35-b25f2f2eafc5",
+            "value": "LandBuildingsImprovements",
+            "description": "This is the Balance Sheet->Asset->NonCurrent->TangibleAssets->LandBuildingsImprovements",
+            "aliases": [],
+            "keywords": [],
+            "dimensionSrcHints": {},
+            "parent": "25ca2546-554f-46e6-b916-1abc3f238ca0"
+        },
+        {
+            "rowId": "efc4efef-1169-4dfe-8a0d-ffe7c4950f2a",
+            "value": "Liability",
+            "description": "This is the Balance Sheet->Liability",
+            "aliases": [],
+            "keywords": [],
+            "dimensionSrcHints": {},
+            "parent": "9f5fa54d-bc2c-40ea-b4e0-ca76950b8bfb"
+        },
+        {
+            "rowId": "80e95045-0ad4-47ff-971e-9eb3c43c5963",
+            "value": "Current",
+            "description": "This is the Balance Sheet->Liability->Current",
+            "aliases": [],
+            "keywords": [],
+            "dimensionSrcHints": {},
+            "parent": "efc4efef-1169-4dfe-8a0d-ffe7c4950f2a"
+        },
+        {
+            "rowId": "6c487b24-c17f-4d9e-89f1-db20f525b87e",
+            "value": "AccountsPayable",
+            "description": "This is the Balance Sheet->Liability->Current->AccountsPayable",
+            "aliases": [],
+            "keywords": [],
+            "dimensionSrcHints": {},
+            "parent": "80e95045-0ad4-47ff-971e-9eb3c43c5963"
+        },
+        {
+            "rowId": "617687c3-54c2-41f1-8575-e86b2ea4198a",
+            "value": "AccruedLiabilities",
+            "description": "This is the Balance Sheet->Liability->Current->AccruedLiabilities",
+            "aliases": [],
+            "keywords": [],
+            "dimensionSrcHints": {},
+            "parent": "80e95045-0ad4-47ff-971e-9eb3c43c5963"
+        },
+        {
+            "rowId": "b0cf3387-8e83-4b18-889a-0b9338ed49f0",
+            "value": "DeferredRevenue",
+            "description": "This is the Balance Sheet->Liability->Current->AccruedLiabilities->DeferredRevenue",
+            "aliases": [],
+            "keywords": [],
+            "dimensionSrcHints": {},
+            "parent": "617687c3-54c2-41f1-8575-e86b2ea4198a"
+        },
+        {
+            "rowId": "a67c75e9-ce29-4df3-be05-818cf6a5d428",
+            "value": "DividendsPayable",
+            "description": "This is the Balance Sheet->Liability->Current->AccruedLiabilities->DividendsPayable",
+            "aliases": [],
+            "keywords": [],
+            "dimensionSrcHints": {},
+            "parent": "617687c3-54c2-41f1-8575-e86b2ea4198a"
+        },
+        {
+            "rowId": "81d526f9-6920-46dd-8c2c-e1556b72c207",
+            "value": "Debt",
+            "description": "This is the Balance Sheet->Liability->Current->Debt",
+            "aliases": [],
+            "keywords": [],
+            "dimensionSrcHints": {},
+            "parent": "80e95045-0ad4-47ff-971e-9eb3c43c5963"
+        },
+        {
+            "rowId": "de8ed5d8-feac-4074-9ff5-60b0c4c7d89a",
+            "value": "CapitalLeasesObligations",
+            "description": "This is the Balance Sheet->Liability->Current->Debt->CapitalLeasesObligations",
+            "aliases": [],
+            "keywords": [],
+            "dimensionSrcHints": {},
+            "parent": "81d526f9-6920-46dd-8c2c-e1556b72c207"
+        },
+        {
+            "rowId": "d8669f8c-ff12-42c6-a5d0-9cd6a7100c9c",
+            "value": "Investments",
+            "description": "This is the Balance Sheet->Liability->Current->Debt->CapitalLeasesObligations->Investments",
+            "aliases": [],
+            "keywords": [],
+            "dimensionSrcHints": {},
+            "parent": "de8ed5d8-feac-4074-9ff5-60b0c4c7d89a"
+        },
+        {
+            "rowId": "cc54531e-9b85-4926-8417-c69cc8e38632",
+            "value": "Repayments",
+            "description": "This is the Balance Sheet->Liability->Current->Debt->CapitalLeasesObligations->Repayments",
+            "aliases": [],
+            "keywords": [],
+            "dimensionSrcHints": {},
+            "parent": "de8ed5d8-feac-4074-9ff5-60b0c4c7d89a"
+        },
+        {
+            "rowId": "c9e9ccc3-e75e-40f8-b727-ad7a21283bc2",
+            "value": "CreditCards",
+            "description": "This is the Balance Sheet->Liability->Current->Debt->CreditCards",
+            "aliases": [],
+            "keywords": [],
+            "dimensionSrcHints": {},
+            "parent": "81d526f9-6920-46dd-8c2c-e1556b72c207"
+        },
+        {
+            "rowId": "0c7cccc4-cb6e-43b5-9240-fba28eb6b0f7",
+            "value": "Purchases",
+            "description": "This is the Balance Sheet->Liability->Current->Debt->CreditCards->Purchases",
+            "aliases": [],
+            "keywords": [],
+            "dimensionSrcHints": {},
+            "parent": "c9e9ccc3-e75e-40f8-b727-ad7a21283bc2"
+        },
+        {
+            "rowId": "f227fbb3-db4e-43ff-8245-ba0f41953385",
+            "value": "Repayments",
+            "description": "This is the Balance Sheet->Liability->Current->Debt->CreditCards->Repayments",
+            "aliases": [],
+            "keywords": [],
+            "dimensionSrcHints": {},
+            "parent": "c9e9ccc3-e75e-40f8-b727-ad7a21283bc2"
+        },
+        {
+            "rowId": "c3f64db9-bd4f-483e-a99b-f973349a49ee",
+            "value": "FinanceLeasesObligations",
+            "description": "This is the Balance Sheet->Liability->Current->Debt->FinanceLeasesObligations",
+            "aliases": [],
+            "keywords": [],
+            "dimensionSrcHints": {},
+            "parent": "81d526f9-6920-46dd-8c2c-e1556b72c207"
+        },
+        {
+            "rowId": "3f5d9fe8-ab58-4649-b020-d1af5cc29137",
+            "value": "Investments",
+            "description": "This is the Balance Sheet->Liability->Current->Debt->FinanceLeasesObligations->Investments",
+            "aliases": [],
+            "keywords": [],
+            "dimensionSrcHints": {},
+            "parent": "c3f64db9-bd4f-483e-a99b-f973349a49ee"
+        },
+        {
+            "rowId": "b6fda6fb-2def-4270-975e-570f342af5a3",
+            "value": "Repayments",
+            "description": "This is the Balance Sheet->Liability->Current->Debt->FinanceLeasesObligations->Repayments",
+            "aliases": [],
+            "keywords": [],
+            "dimensionSrcHints": {},
+            "parent": "c3f64db9-bd4f-483e-a99b-f973349a49ee"
+        },
+        {
+            "rowId": "079991e4-1181-40b7-944a-9b43cb1a8272",
+            "value": "LoansPayable",
+            "description": "This is the Balance Sheet->Liability->Current->Debt->LoansPayable",
+            "aliases": [],
+            "keywords": [],
+            "dimensionSrcHints": {},
+            "parent": "81d526f9-6920-46dd-8c2c-e1556b72c207"
+        },
+        {
+            "rowId": "4aaa05a9-4a3b-4c53-975e-73ab6fd1a469",
+            "value": "Current Portion of Long-Term Debt",
+            "description": "This is the Balance Sheet->Liability->Current->Debt->LoansPayable->Current Portion of Long-Term Debt",
+            "aliases": [],
+            "keywords": [],
+            "dimensionSrcHints": {},
+            "parent": "079991e4-1181-40b7-944a-9b43cb1a8272"
+        },
+        {
+            "rowId": "5134ee5b-e5d9-40e9-840a-10bd837c9b21",
+            "value": "Short-Term Loan",
+            "description": "This is the Balance Sheet->Liability->Current->Debt->LoansPayable->Short-Term Loan",
+            "aliases": [],
+            "keywords": [],
+            "dimensionSrcHints": {},
+            "parent": "079991e4-1181-40b7-944a-9b43cb1a8272"
+        },
+        {
+            "rowId": "27dbcd61-5e99-442e-bd6c-0d04b07db98d",
+            "value": "Overdrafts",
+            "description": "This is the Balance Sheet->Liability->Current->Debt->Overdrafts",
+            "aliases": [],
+            "keywords": [],
+            "dimensionSrcHints": {},
+            "parent": "81d526f9-6920-46dd-8c2c-e1556b72c207"
+        },
+        {
+            "rowId": "99cbae0e-844d-4d85-940f-8a27241f900e",
+            "value": "InterestPayable",
+            "description": "This is the Balance Sheet->Liability->Current->InterestPayable",
+            "aliases": [],
+            "keywords": [],
+            "dimensionSrcHints": {},
+            "parent": "80e95045-0ad4-47ff-971e-9eb3c43c5963"
+        },
+        {
+            "rowId": "534c1e02-9beb-4f9b-a54d-ac5cde60ac7b",
+            "value": "Personnel",
+            "description": "This is the Balance Sheet->Liability->Current->Personnel",
+            "aliases": [],
+            "keywords": [],
+            "dimensionSrcHints": {},
+            "parent": "80e95045-0ad4-47ff-971e-9eb3c43c5963"
+        },
+        {
+            "rowId": "cec17d2a-fed5-4612-bece-c5ccd09e1097",
+            "value": "EmployeeBenefitsPayable",
+            "description": "This is the Balance Sheet->Liability->Current->Personnel->EmployeeBenefitsPayable",
+            "aliases": [],
+            "keywords": [],
+            "dimensionSrcHints": {},
+            "parent": "534c1e02-9beb-4f9b-a54d-ac5cde60ac7b"
+        },
+        {
+            "rowId": "bdb6d954-3f5f-49d9-85ac-6683a31ee9f9",
+            "value": "EmployeeStockCompensation",
+            "description": "This is the Balance Sheet->Liability->Current->Personnel->EmployeeBenefitsPayable->EmployeeStockCompensation",
+            "aliases": [],
+            "keywords": [],
+            "dimensionSrcHints": {},
+            "parent": "cec17d2a-fed5-4612-bece-c5ccd09e1097"
+        },
+        {
+            "rowId": "9023516c-ae5a-415b-ac5d-621dec67fd67",
+            "value": "EmployeeTaxesPayable",
+            "description": "This is the Balance Sheet->Liability->Current->Personnel->EmployeeTaxesPayable",
+            "aliases": [],
+            "keywords": [],
+            "dimensionSrcHints": {},
+            "parent": "534c1e02-9beb-4f9b-a54d-ac5cde60ac7b"
+        },
+        {
+            "rowId": "7e9cf59e-07b7-48db-8364-29b07d5285f5",
+            "value": "EmployeeWagesPayable",
+            "description": "This is the Balance Sheet->Liability->Current->Personnel->EmployeeWagesPayable",
+            "aliases": [],
+            "keywords": [],
+            "dimensionSrcHints": {},
+            "parent": "534c1e02-9beb-4f9b-a54d-ac5cde60ac7b"
+        },
+        {
+            "rowId": "8325af99-0dea-47fe-a141-c0cf4778af01",
+            "value": "PensionsPayable",
+            "description": "This is the Balance Sheet->Liability->Current->Personnel->PensionsPayable",
+            "aliases": [],
+            "keywords": [],
+            "dimensionSrcHints": {},
+            "parent": "534c1e02-9beb-4f9b-a54d-ac5cde60ac7b"
+        },
+        {
+            "rowId": "7c8fbc21-3c60-4795-b672-7a34bfca6019",
+            "value": "RelatedParties",
+            "description": "This is the Balance Sheet->Liability->Current->RelatedParties",
+            "aliases": [],
+            "keywords": [],
+            "dimensionSrcHints": {},
+            "parent": "80e95045-0ad4-47ff-971e-9eb3c43c5963"
+        },
+        {
+            "rowId": "6e755a3d-422c-4cea-828e-776aaa0200a4",
+            "value": "EmployeeLoansPayable",
+            "description": "This is the Balance Sheet->Liability->Current->RelatedParties->EmployeeLoansPayable",
+            "aliases": [],
+            "keywords": [],
+            "dimensionSrcHints": {},
+            "parent": "7c8fbc21-3c60-4795-b672-7a34bfca6019"
+        },
+        {
+            "rowId": "a0d9320a-b28f-463c-96ec-d357d0e9bfbd",
+            "value": "IntercompanyPayable",
+            "description": "This is the Balance Sheet->Liability->Current->RelatedParties->IntercompanyPayable",
+            "aliases": [],
+            "keywords": [],
+            "dimensionSrcHints": {},
+            "parent": "7c8fbc21-3c60-4795-b672-7a34bfca6019"
+        },
+        {
+            "rowId": "0263ede9-5ccd-4902-afea-0dc003635acc",
+            "value": "ShareholderLoansPayable",
+            "description": "This is the Balance Sheet->Liability->Current->RelatedParties->ShareholderLoansPayable",
+            "aliases": [],
+            "keywords": [],
+            "dimensionSrcHints": {},
+            "parent": "7c8fbc21-3c60-4795-b672-7a34bfca6019"
+        },
+        {
+            "rowId": "e9b0efbe-8ef5-4df3-8841-18b9705e21bc",
+            "value": "DirectorsLoansPayable",
+            "description": "This is the Balance Sheet->Liability->Current->RelatedParties->ShareholderLoansPayable->DirectorsLoansPayable",
+            "aliases": [],
+            "keywords": [],
+            "dimensionSrcHints": {},
+            "parent": "0263ede9-5ccd-4902-afea-0dc003635acc"
+        },
+        {
+            "rowId": "4b075ae5-11fc-4472-abb5-8300554e1b50",
+            "value": "TaxesPayable",
+            "description": "This is the Balance Sheet->Liability->Current->TaxesPayable",
+            "aliases": [],
+            "keywords": [],
+            "dimensionSrcHints": {},
+            "parent": "80e95045-0ad4-47ff-971e-9eb3c43c5963"
+        },
+        {
+            "rowId": "8765fb66-e375-4d87-8a84-8f8f7fad462d",
+            "value": "CorporationTaxesPayable",
+            "description": "This is the Balance Sheet->Liability->Current->TaxesPayable->CorporationTaxesPayable",
+            "aliases": [],
+            "keywords": [],
+            "dimensionSrcHints": {},
+            "parent": "4b075ae5-11fc-4472-abb5-8300554e1b50"
+        },
+        {
+            "rowId": "dd7e2a9f-15a5-4c11-be37-dc3e42814e2d",
+            "value": "IncomeTaxesPayable",
+            "description": "This is the Balance Sheet->Liability->Current->TaxesPayable->IncomeTaxesPayable",
+            "aliases": [],
+            "keywords": [],
+            "dimensionSrcHints": {},
+            "parent": "4b075ae5-11fc-4472-abb5-8300554e1b50"
+        },
+        {
+            "rowId": "0f49f4c0-ce9b-4edc-8b22-cfda83f83cb2",
+            "value": "SalesTaxesPayable",
+            "description": "This is the Balance Sheet->Liability->Current->TaxesPayable->SalesTaxesPayable",
+            "aliases": [],
+            "keywords": [],
+            "dimensionSrcHints": {},
+            "parent": "4b075ae5-11fc-4472-abb5-8300554e1b50"
+        },
+        {
+            "rowId": "0d08ac77-6b8d-46f1-ac3e-6a35d8de1daa",
+            "value": "ValueAddedTaxesPayable",
+            "description": "This is the Balance Sheet->Liability->Current->TaxesPayable->ValueAddedTaxesPayable",
+            "aliases": [],
+            "keywords": [],
+            "dimensionSrcHints": {},
+            "parent": "4b075ae5-11fc-4472-abb5-8300554e1b50"
+        },
+        {
+            "rowId": "9e23885f-c825-4fa7-8481-ea3530e6b766",
+            "value": "NonCurrent",
+            "description": "This is the Balance Sheet->Liability->NonCurrent",
+            "aliases": [],
+            "keywords": [],
+            "dimensionSrcHints": {},
+            "parent": "efc4efef-1169-4dfe-8a0d-ffe7c4950f2a"
+        },
+        {
+            "rowId": "b00840e5-6d11-4ace-a8f4-6aca4c30d943",
+            "value": "AccruedLiabilities",
+            "description": "This is the Balance Sheet->Liability->NonCurrent->AccruedLiabilities",
+            "aliases": [],
+            "keywords": [],
+            "dimensionSrcHints": {},
+            "parent": "9e23885f-c825-4fa7-8481-ea3530e6b766"
+        },
+        {
+            "rowId": "9bee07b2-b4c2-4454-bbec-a58149ce835a",
+            "value": "DeferredRevenue",
+            "description": "This is the Balance Sheet->Liability->NonCurrent->AccruedLiabilities->DeferredRevenue",
+            "aliases": [],
+            "keywords": [],
+            "dimensionSrcHints": {},
+            "parent": "b00840e5-6d11-4ace-a8f4-6aca4c30d943"
+        },
+        {
+            "rowId": "90b858cd-55d9-4668-be50-5483e3db65e6",
+            "value": "DeferredTaxes",
+            "description": "This is the Balance Sheet->Liability->NonCurrent->AccruedLiabilities->DeferredTaxes",
+            "aliases": [],
+            "keywords": [],
+            "dimensionSrcHints": {},
+            "parent": "b00840e5-6d11-4ace-a8f4-6aca4c30d943"
+        },
+        {
+            "rowId": "afbf407a-5021-434e-85ff-0fec5b0ede8d",
+            "value": "Debt",
+            "description": "This is the Balance Sheet->Liability->NonCurrent->Debt",
+            "aliases": [],
+            "keywords": [],
+            "dimensionSrcHints": {},
+            "parent": "9e23885f-c825-4fa7-8481-ea3530e6b766"
+        },
+        {
+            "rowId": "5fc8d534-06d1-42f4-94fb-56d9636ae57d",
+            "value": "CapitalLeasesObligations",
+            "description": "This is the Balance Sheet->Liability->NonCurrent->Debt->CapitalLeasesObligations",
+            "aliases": [],
+            "keywords": [],
+            "dimensionSrcHints": {},
+            "parent": "afbf407a-5021-434e-85ff-0fec5b0ede8d"
+        },
+        {
+            "rowId": "082490d4-352d-46e7-b405-1121eafcc711",
+            "value": "FinanceLeasesObligations",
+            "description": "This is the Balance Sheet->Liability->NonCurrent->Debt->FinanceLeasesObligations",
+            "aliases": [],
+            "keywords": [],
+            "dimensionSrcHints": {},
+            "parent": "afbf407a-5021-434e-85ff-0fec5b0ede8d"
+        },
+        {
+            "rowId": "9bc10fac-e3fe-4765-8e73-704451ddbba3",
+            "value": "LoansPayable",
+            "description": "This is the Balance Sheet->Liability->NonCurrent->Debt->LoansPayable",
+            "aliases": [],
+            "keywords": [],
+            "dimensionSrcHints": {},
+            "parent": "afbf407a-5021-434e-85ff-0fec5b0ede8d"
+        },
+        {
+            "rowId": "566412de-4142-4d68-9361-717458c08ffe",
+            "value": "RelatedParties",
+            "description": "This is the Balance Sheet->Liability->NonCurrent->RelatedParties",
+            "aliases": [],
+            "keywords": [],
+            "dimensionSrcHints": {},
+            "parent": "9e23885f-c825-4fa7-8481-ea3530e6b766"
+        },
+        {
+            "rowId": "8f2a7d8f-b54e-49e3-b2c6-28bdd7a0982f",
+            "value": "EmployeeLoansPayable",
+            "description": "This is the Balance Sheet->Liability->NonCurrent->RelatedParties->EmployeeLoansPayable",
+            "aliases": [],
+            "keywords": [],
+            "dimensionSrcHints": {},
+            "parent": "566412de-4142-4d68-9361-717458c08ffe"
+        },
+        {
+            "rowId": "21fc9cda-d9a8-461a-9779-8e0bb9fc99c5",
+            "value": "IntercompanyPayable",
+            "description": "This is the Balance Sheet->Liability->NonCurrent->RelatedParties->IntercompanyPayable",
+            "aliases": [],
+            "keywords": [],
+            "dimensionSrcHints": {},
+            "parent": "566412de-4142-4d68-9361-717458c08ffe"
+        },
+        {
+            "rowId": "1b43f6a3-0f52-4686-8b48-5c46787daf8c",
+            "value": "ShareholderLoansPayable",
+            "description": "This is the Balance Sheet->Liability->NonCurrent->RelatedParties->ShareholderLoansPayable",
+            "aliases": [],
+            "keywords": [],
+            "dimensionSrcHints": {},
+            "parent": "566412de-4142-4d68-9361-717458c08ffe"
+        },
+        {
+            "rowId": "8bcf5e01-acd2-4b89-876f-7cd5a183f5e7",
+            "value": "DirectorsLoansPayable",
+            "description": "This is the Balance Sheet->Liability->NonCurrent->RelatedParties->ShareholderLoansPayable->DirectorsLoansPayable",
+            "aliases": [],
+            "keywords": [],
+            "dimensionSrcHints": {},
+            "parent": "1b43f6a3-0f52-4686-8b48-5c46787daf8c"
+        },
+        {
+            "rowId": "81122740-630a-4b15-b9fd-b52c6da18e6f",
+            "value": "Equity",
+            "description": "This is the Balance Sheet->Equity",
+            "aliases": [],
+            "keywords": [],
+            "dimensionSrcHints": {},
+            "parent": "9f5fa54d-bc2c-40ea-b4e0-ca76950b8bfb"
+        },
+        {
+            "rowId": "26d76abe-04d1-4d87-b983-f59e4337238b",
+            "value": "OtherComprehensiveIncome",
+            "description": "This is the Balance Sheet->Equity->OtherComprehensiveIncome",
+            "aliases": [],
+            "keywords": [],
+            "dimensionSrcHints": {},
+            "parent": "81122740-630a-4b15-b9fd-b52c6da18e6f"
+        },
+        {
+            "rowId": "3dc69663-a777-4925-8cbe-ed71cd73eb1a",
+            "value": "CashFlowHedges",
+            "description": "This is the Balance Sheet->Equity->OtherComprehensiveIncome->CashFlowHedges",
+            "aliases": [],
+            "keywords": [],
+            "dimensionSrcHints": {},
+            "parent": "26d76abe-04d1-4d87-b983-f59e4337238b"
+        },
+        {
+            "rowId": "b4ceccb1-c2ef-44a5-9463-0fe7e5d99bce",
+            "value": "FxCurrencyTranslations",
+            "description": "This is the Balance Sheet->Equity->OtherComprehensiveIncome->FxCurrencyTranslations",
+            "aliases": [],
+            "keywords": [],
+            "dimensionSrcHints": {},
+            "parent": "26d76abe-04d1-4d87-b983-f59e4337238b"
+        },
+        {
+            "rowId": "e6604215-7dec-488f-89c2-4876cad5d547",
+            "value": "OwnersEquity",
+            "description": "This is the Balance Sheet->Equity->OwnersEquity",
+            "aliases": [],
+            "keywords": [],
+            "dimensionSrcHints": {},
+            "parent": "81122740-630a-4b15-b9fd-b52c6da18e6f"
+        },
+        {
+            "rowId": "056a8fb2-00d1-40cf-9b94-c75dcf29417f",
+            "value": "Drawings",
+            "description": "This is the Balance Sheet->Equity->OwnersEquity->Drawings",
+            "aliases": [],
+            "keywords": [],
+            "dimensionSrcHints": {},
+            "parent": "e6604215-7dec-488f-89c2-4876cad5d547"
+        },
+        {
+            "rowId": "6f6d75f9-16a8-4cc3-bdab-2b1502043f2c",
+            "value": "OwnersContributions",
+            "description": "This is the Balance Sheet->Equity->OwnersEquity->OwnersContributions",
+            "aliases": [],
+            "keywords": [],
+            "dimensionSrcHints": {},
+            "parent": "e6604215-7dec-488f-89c2-4876cad5d547"
+        },
+        {
+            "rowId": "503c6fa5-a9c1-4828-8f6d-a7634d32323d",
+            "value": "RelatedParties",
+            "description": "This is the Balance Sheet->Equity->RelatedParties",
+            "aliases": [],
+            "keywords": [],
+            "dimensionSrcHints": {},
+            "parent": "81122740-630a-4b15-b9fd-b52c6da18e6f"
+        },
+        {
+            "rowId": "6029a308-6c91-4712-b303-8706cceab013",
+            "value": "EquityNonControllingInterests",
+            "description": "This is the Balance Sheet->Equity->RelatedParties->EquityNonControllingInterests",
+            "aliases": [],
+            "keywords": [],
+            "dimensionSrcHints": {},
+            "parent": "503c6fa5-a9c1-4828-8f6d-a7634d32323d"
+        },
+        {
+            "rowId": "f4b08a5f-e314-4eb5-9032-dc6e984bf555",
+            "value": "RetainedEarnings",
+            "description": "This is the Balance Sheet->Equity->RetainedEarnings",
+            "aliases": [],
+            "keywords": [],
+            "dimensionSrcHints": {},
+            "parent": "81122740-630a-4b15-b9fd-b52c6da18e6f"
+        },
+        {
+            "rowId": "62bd4647-8275-40ad-9bcc-6508886e443b",
+            "value": "Adjustments",
+            "description": "This is the Balance Sheet->Equity->RetainedEarnings->Adjustments",
+            "aliases": [],
+            "keywords": [],
+            "dimensionSrcHints": {},
+            "parent": "f4b08a5f-e314-4eb5-9032-dc6e984bf555"
+        },
+        {
+            "rowId": "663ce1ef-37ad-4a5a-a7a8-eadf25ed421e",
+            "value": "CapitalIncomeReserves",
+            "description": "This is the Balance Sheet->Equity->RetainedEarnings->CapitalIncomeReserves",
+            "aliases": [],
+            "keywords": [],
+            "dimensionSrcHints": {},
+            "parent": "f4b08a5f-e314-4eb5-9032-dc6e984bf555"
+        },
+        {
+            "rowId": "c6897c8f-7ec5-4503-bfed-45b7a865e54c",
+            "value": "Dividends",
+            "description": "This is the Balance Sheet->Equity->RetainedEarnings->Dividends",
+            "aliases": [],
+            "keywords": [],
+            "dimensionSrcHints": {},
+            "parent": "f4b08a5f-e314-4eb5-9032-dc6e984bf555"
+        },
+        {
+            "rowId": "cd3663d0-f582-4fd5-8d68-acebb0d96af5",
+            "value": "OpeningBalance",
+            "description": "This is the Balance Sheet->Equity->RetainedEarnings->OpeningBalance",
+            "aliases": [],
+            "keywords": [],
+            "dimensionSrcHints": {},
+            "parent": "f4b08a5f-e314-4eb5-9032-dc6e984bf555"
+        },
+        {
+            "rowId": "0c32e3f0-2781-4060-9c2f-f3f81f9e1d54",
+            "value": "ShareCapital",
+            "description": "This is the Balance Sheet->Equity->ShareCapital",
+            "aliases": [],
+            "keywords": [],
+            "dimensionSrcHints": {},
+            "parent": "81122740-630a-4b15-b9fd-b52c6da18e6f"
+        },
+        {
+            "rowId": "83105bea-9684-4a3b-aed1-3a2e160fcb49",
+            "value": "AdditionalPaidInCapital",
+            "description": "This is the Balance Sheet->Equity->ShareCapital->AdditionalPaidInCapital",
+            "aliases": [],
+            "keywords": [],
+            "dimensionSrcHints": {},
+            "parent": "0c32e3f0-2781-4060-9c2f-f3f81f9e1d54"
+        },
+        {
+            "rowId": "68cb8c0e-91f3-408f-b0d4-b52dbce82755",
+            "value": "CommonStock",
+            "description": "This is the Balance Sheet->Equity->ShareCapital->CommonStock",
+            "aliases": [],
+            "keywords": [],
+            "dimensionSrcHints": {},
+            "parent": "0c32e3f0-2781-4060-9c2f-f3f81f9e1d54"
+        },
+        {
+            "rowId": "9f6d1e97-c23c-473a-bf47-cdb0f7352f7c",
+            "value": "EmployeeStockOwnershipPlan",
+            "description": "This is the Balance Sheet->Equity->ShareCapital->EmployeeStockOwnershipPlan",
+            "aliases": [],
+            "keywords": [],
+            "dimensionSrcHints": {},
+            "parent": "0c32e3f0-2781-4060-9c2f-f3f81f9e1d54"
+        },
+        {
+            "rowId": "cf19def1-7682-4499-a233-617b257c1f3a",
+            "value": "PaidInCapital",
+            "description": "This is the Balance Sheet->Equity->ShareCapital->PaidInCapital",
+            "aliases": [],
+            "keywords": [],
+            "dimensionSrcHints": {},
+            "parent": "0c32e3f0-2781-4060-9c2f-f3f81f9e1d54"
+        },
+        {
+            "rowId": "618c89de-4132-44a9-82ea-9631bed57cd3",
+            "value": "PreferredStock",
+            "description": "This is the Balance Sheet->Equity->ShareCapital->PreferredStock",
+            "aliases": [],
+            "keywords": [],
+            "dimensionSrcHints": {},
+            "parent": "0c32e3f0-2781-4060-9c2f-f3f81f9e1d54"
+        },
+        {
+            "rowId": "48cf3df9-a280-43eb-8997-61a76c5cc5bf",
+            "value": "TreasuryStock",
+            "description": "This is the Balance Sheet->Equity->ShareCapital->TreasuryStock",
+            "aliases": [],
+            "keywords": [],
+            "dimensionSrcHints": {},
+            "parent": "0c32e3f0-2781-4060-9c2f-f3f81f9e1d54"
+        }
+    ],
+    "isReplace": true
+}
+
